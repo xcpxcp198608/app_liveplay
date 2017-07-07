@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wiatec.bplay">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="com.wiatec.btv_launcher.provide.Read"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:name=".instance.Application"
+        android:theme="@style/AppTheme">
+        <activity android:name=".view.activity.SplashActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".view.activity.MainActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name=".view.activity.AdScreenActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name=".view.activity.UpgradeActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".view.activity.AdVideoActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".view.activity.MoviesActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".view.activity.ChannelActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".view.activity.ChannelTypeActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".view.activity.PlayActivity"
+            android:screenOrientation="landscape"/>
+    </application>
+
+</manifest>

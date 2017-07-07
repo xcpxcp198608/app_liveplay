@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="loading">
+        <item name="android:indeterminateDrawable">@anim/loading</item>
+        <item name="android:minHeight">72dp</item>
+        <item name="android:minWidth">72dp</item>
+        <item name="android:maxHeight">72dp</item>
+        <item name="android:maxWidth">72dp</item>
+    </style>
+
+</resources>

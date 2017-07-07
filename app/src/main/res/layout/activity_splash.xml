@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout
+    android:orientation="vertical"
+    android:background="@drawable/img_bg_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivSplash"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:gravity="center"
+        android:text="@string/copyright"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="22sp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        tools:text="v1.0.0"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_gravity="bottom|right"
+        android:padding="10dp"
+        android:textColor="@android:color/holo_orange_dark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>
+</layout>

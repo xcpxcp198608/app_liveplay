@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="10dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="@drawable/bg_item_channel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerInside"
+        android:cropToPadding="true"
+        android:padding="20dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/imageView"
+        android:layout_width="210dp"
+        android:layout_height="90dp" />
+
+    <TextView
+        android:background="@color/colorTranslucent7"
+        android:id="@+id/textView"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        tool:text="CCTV-1"
+        android:layout_marginBottom="10dp"
+        android:textSize="18sp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:textColor="@color/colorWhite"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

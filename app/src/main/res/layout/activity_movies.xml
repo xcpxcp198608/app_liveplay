@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:background="@drawable/img_bkeymo"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        tools:context="com.wiatec.bplay.view.activity.MainActivity">
+
+        <ImageView
+            android:id="@+id/ivMovies"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:background="@color/colorTranslucent5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:background="@color/colorTranslucent5"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <LinearLayout
+            android:paddingLeft="100dp"
+            android:paddingRight="100dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <ImageButton
+                android:id="@+id/ibt1"
+                android:background="@drawable/bg_app_shortcut"
+                android:src="@drawable/extras1"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/ibt2"
+                android:background="@drawable/bg_app_shortcut"
+                android:src="@drawable/extras2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/ibt3"
+                android:background="@drawable/bg_app_shortcut"
+                android:src="@drawable/extrascn"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>
