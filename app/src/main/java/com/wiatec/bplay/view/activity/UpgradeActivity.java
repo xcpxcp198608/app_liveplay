@@ -57,7 +57,7 @@ public class UpgradeActivity extends BaseActivity<SplashPresenter> implements Sp
 
                     @Override
                     public void onStart(DownloadInfo downloadInfo) {
-                        binding.pbUpgrade.setVisibility(View.VISIBLE);
+                        binding.llProgress.setVisibility(View.VISIBLE);
                         binding.tvProgress.setText("0%");
                         binding.pbUpgrade.setProgress(0);
                     }
@@ -77,6 +77,7 @@ public class UpgradeActivity extends BaseActivity<SplashPresenter> implements Sp
                     public void onFinished(DownloadInfo downloadInfo) {
                         binding.tvProgress.setText("100%");
                         binding.pbUpgrade.setProgress(100);
+                        binding.llProgress.setVisibility(View.GONE);
                         if(AppUtil.isApkCanInstall(UpgradeActivity.this, downloadInfo.getPath(),
                                 downloadInfo.getName())){
                             AppUtil.installApk(UpgradeActivity.this, downloadInfo.getPath(),

@@ -5,6 +5,7 @@
     android:gravity="center"
     android:layout_margin="10dp"
     android:focusable="true"
+    android:padding="2dp"
     android:focusableInTouchMode="true"
     android:clipChildren="false"
     android:clipToPadding="false"
@@ -20,16 +21,15 @@
         android:adjustViewBounds="true"
         android:id="@+id/imageView"
         android:layout_width="210dp"
-        android:layout_height="90dp" />
+        android:layout_height="95dp" />
 
     <TextView
         android:background="@color/colorTranslucent7"
         android:id="@+id/textView"
         android:gravity="center"
-        android:padding="5dp"
         android:layout_gravity="center"
         tool:text="CCTV-1"
-        android:layout_marginBottom="10dp"
+        android:padding="5dp"
         android:textSize="18sp"
         android:singleLine="true"
         android:ellipsize="marquee"

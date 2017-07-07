@@ -30,6 +30,7 @@
     <color name="colorTranslucent5">#55000000</color>
     <color name="colorTranslucent7">#77000000</color>
     <color name="colorTranslucentA">#aa000000</color>
+    <color name="colorTranslucentB">#bb000000</color>
     <color name="colorTranslucentWhite1">#11ffffff</color>
     <color name="colorTranslucentWhite15">#15ffffff</color>
     <color name="colorTranslucentWhite3">#33ffffff</color>

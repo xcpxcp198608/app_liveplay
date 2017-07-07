@@ -103,17 +103,28 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     mediaPlayer.start();
                 }
             });
+            mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                @Override
+                public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                    if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
+                        binding.pbPlay.setVisibility(View.VISIBLE);
+                    }
+                    if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END){
+                        binding.pbPlay.setVisibility(View.GONE);
+                    }
+                    return false;
+                }
+            });
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    binding.pbPlay.setVisibility(View.VISIBLE);
+                    playVideo(url);
                     return true;
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    binding.pbPlay.setVisibility(View.VISIBLE);
                     playVideo(url);
                 }
             });
