@@ -20,20 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ImageView
-            android:background="@color/colorTranslucent5"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" />
-
         <LinearLayout
             android:paddingLeft="100dp"
             android:paddingRight="100dp"
+            android:background="@color/colorTranslucentA"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="160dp">
 
             <ImageButton
                 android:id="@+id/ibt1"

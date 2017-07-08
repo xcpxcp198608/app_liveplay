@@ -38,7 +38,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
-        presenter.loadAdImage();
+//        presenter.loadAdImage();
         final String type = getIntent().getStringExtra(Constant.key.channel_type);
         presenter.loadChannel(type);
         binding.btRetry.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +83,6 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 if(hasFocus){
                     Zoom.zoomIn10to11(view);
                     binding.tvPosition.setText((position+1)+"");
-                    presenter.loadAdImage();
                     channelAdapter.holder.textView.setSelected(true);
                 }else{
                     Zoom.zoomOut11to10(view);

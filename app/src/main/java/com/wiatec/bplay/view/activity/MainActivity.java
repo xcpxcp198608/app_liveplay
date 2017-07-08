@@ -40,17 +40,20 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
 
     private List<View> createViewList() {
         List<View> viewList = new ArrayList<>();
+        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_movies, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_btv, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_movies, binding.viewPager, false));
+        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_btv, binding.viewPager, false));
         return viewList;
     }
 
     private void initViewPager(){
-        binding.viewPager.setOffscreenPageLimit(3);
+        binding.viewPager.setOffscreenPageLimit(5);
         binding.viewPager.setPageMargin(100);
         binding.viewPager.setPageTransformer(true, new MainViewPagerTransform());
-        MainViewPagerAdapter adapter = new MainViewPagerAdapter(createViewList());
+        final List<View> viewList = createViewList();
+        MainViewPagerAdapter adapter = new MainViewPagerAdapter(viewList);
         binding.viewPager.setAdapter(adapter);
         binding.viewPager.setCurrentItem(1);
         adapter.setOnItemPageClick(new MainViewPagerAdapter.OnItemPageClick() {
@@ -68,6 +71,11 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
             @Override
             public void onPageSelected(int position) {
                 presenter.loadAdImage();
+                if(position == 0){
+                    binding.viewPager.setCurrentItem(viewList.size()-2);
+                }else if(position == viewList.size() -1){
+                    binding.viewPager.setCurrentItem(1);
+                }
             }
 
             @Override
@@ -79,13 +87,13 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
 
     private void launchShortcut(int position){
         switch (position){
-            case 0:
+            case 1:
                 AppUtil.launchApp(MainActivity.this, Constant.packageName.btv);
                 break;
-            case 1:
+            case 2:
                 startActivity(new Intent(MainActivity.this, ChannelTypeActivity.class));
                 break;
-            case 2:
+            case 3:
                 startActivity(new Intent(MainActivity.this, MoviesActivity.class));
                 break;
             default:
