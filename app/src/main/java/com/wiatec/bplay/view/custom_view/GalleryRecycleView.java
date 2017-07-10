@@ -59,11 +59,11 @@ public class GalleryRecycleView extends RecyclerView {
         if(childLeftPx>centerLeft){//子view左边距比居中view大（说明子view靠父view的右边，此时需要把子view向左平移
             //平移的起始位置就是子view的左边距，平移的距离就是两者之差
             mLastx = childLeftPx;
-            mScroller.startScroll(childLeftPx,0,centerLeft-childLeftPx,0,100);
+            mScroller.startScroll(childLeftPx,0,centerLeft-childLeftPx,0,80);
             postInvalidate();
         }else if(childRightPx<centerRight){
             mLastx = childRightPx;
-            mScroller.startScroll(childRightPx,0,centerRight-childRightPx,0,100);
+            mScroller.startScroll(childRightPx,0,centerRight-childRightPx,0,80);
             postInvalidate();
         }
 

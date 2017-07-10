@@ -30,6 +30,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private Subscription keyEventSubscription;
     protected boolean isSubscribe = true;
     protected int userLevel;
+    protected boolean startAd = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onResume() {
         super.onResume();
+        startAd = true;
         subscribeKeyEvent();
     }
 
@@ -72,21 +74,22 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        startActivity(new Intent(BaseActivity.this , AdScreenActivity.class));
+                        if(startAd) {
+                            startActivity(new Intent(BaseActivity.this, AdScreenActivity.class));
+                        }
                     }
                 });
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyEventSubscription != null){
-            keyEventSubscription.unsubscribe();
-        }
+        release();
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        startAd = true;
         subscribeKeyEvent();
         return super.onKeyUp(keyCode, event);
     }
@@ -111,6 +114,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     private void release(){
+        startAd = false;
         if(keyEventSubscription != null){
             keyEventSubscription.unsubscribe();
         }

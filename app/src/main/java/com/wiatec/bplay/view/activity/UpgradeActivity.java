@@ -44,6 +44,12 @@ public class UpgradeActivity extends BaseActivity<SplashPresenter> implements Sp
         startUpgrade(upgradeInfo);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isSubscribe = false;
+    }
+
     private void startUpgrade(UpgradeInfo upgradeInfo) {
         HttpMaster.download(UpgradeActivity.this)
                 .url(upgradeInfo.getUrl())
