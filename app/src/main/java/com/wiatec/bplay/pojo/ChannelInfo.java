@@ -31,7 +31,7 @@ public class ChannelInfo implements Parcelable {
     private String style;
     //visible (0 - gone , 1 - visible)
     private short visible;
-    private boolean isLocked;
+    private boolean locked;
 
     public int getId() {
         return id;
@@ -122,11 +122,11 @@ public class ChannelInfo implements Parcelable {
     }
 
     public boolean isLocked() {
-        return isLocked;
+        return locked;
     }
 
     public void setLocked(boolean locked) {
-        isLocked = locked;
+        this.locked = locked;
     }
 
     @Override
@@ -143,7 +143,7 @@ public class ChannelInfo implements Parcelable {
                 ", country='" + country + '\'' +
                 ", style='" + style + '\'' +
                 ", visible=" + visible +
-                ", isLocked=" + isLocked +
+                ", locked=" + locked +
                 '}';
     }
 
@@ -165,7 +165,7 @@ public class ChannelInfo implements Parcelable {
         dest.writeString(this.country);
         dest.writeString(this.style);
         dest.writeInt(this.visible);
-        dest.writeByte(this.isLocked ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.locked ? (byte) 1 : (byte) 0);
     }
 
     public ChannelInfo() {
@@ -183,7 +183,7 @@ public class ChannelInfo implements Parcelable {
         this.country = in.readString();
         this.style = in.readString();
         this.visible = (short) in.readInt();
-        this.isLocked = in.readByte() != 0;
+        this.locked = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<ChannelInfo> CREATOR = new Parcelable.Creator<ChannelInfo>() {

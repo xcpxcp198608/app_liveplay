@@ -83,10 +83,10 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 if(hasFocus){
                     Zoom.zoomIn10to11(view);
                     binding.tvPosition.setText((position+1)+"");
-                    channelAdapter.holder.textView.setSelected(true);
+                    view.setSelected(true);
                 }else{
                     Zoom.zoomOut11to10(view);
-                    channelAdapter.holder.textView.setSelected(false);
+                    view.setSelected(false);
                 }
             }
         });

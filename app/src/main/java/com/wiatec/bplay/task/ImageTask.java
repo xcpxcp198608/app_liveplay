@@ -3,7 +3,6 @@ package com.wiatec.bplay.task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.DownloadListener;
 import com.px.common.utils.CommonApplication;
 import com.px.common.utils.Logger;
 import com.wiatec.bplay.instance.Application;
@@ -55,7 +54,7 @@ public class ImageTask implements Runnable {
                             fileNameList.add(imageInfo.getName());
                             download(imageInfo);
                         }
-                        deleteOldImage(Application.PATH_ADIMAGE, fileNameList);
+                        deleteOldImage(Application.PATH_AD_IMAGE, fileNameList);
                     }
                 });
     }
@@ -65,7 +64,7 @@ public class ImageTask implements Runnable {
         HttpMaster.download(CommonApplication.context)
                 .name(imageInfo.getName())
                 .url(imageInfo.getUrl())
-                .path(Application.PATH_ADIMAGE)
+                .path(Application.PATH_AD_IMAGE)
                 .startDownload(null);
     }
 

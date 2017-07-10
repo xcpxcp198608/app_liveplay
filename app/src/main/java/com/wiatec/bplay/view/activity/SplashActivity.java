@@ -93,6 +93,9 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         }
     }
 
+    /**
+     * 显示不支持的设备对话框
+     */
     private void showDeviceNotSupportDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
         alertDialog.show();
@@ -156,9 +159,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+        return event.getKeyCode() == KeyEvent.KEYCODE_BACK || super.onKeyDown(keyCode, event);
     }
 }

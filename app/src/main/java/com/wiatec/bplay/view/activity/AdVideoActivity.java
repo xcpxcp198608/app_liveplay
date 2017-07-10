@@ -62,8 +62,9 @@ public class AdVideoActivity extends AppCompatActivity {
         }catch (Exception e){
             userLevel = 1;
         }
-        if(userLevel >= 3){
+        if(userLevel >= 4){
             skipAds();
+            return;
         }
         playVideo();
         if(time >0){
@@ -76,7 +77,7 @@ public class AdVideoActivity extends AppCompatActivity {
                         public void call(Long aLong) {
                             int i = (int) (time -1 -aLong);
                             binding.tvDelayTime.setText(i +" s");
-                            if(userLevel == 2){
+                            if(userLevel >= 2){
                                 int j = (int) (SKIP_TIME -aLong);
                                 if(j <0){
                                     j = 0;
@@ -136,10 +137,7 @@ public class AdVideoActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+        return event.getKeyCode() == KeyEvent.KEYCODE_BACK || super.onKeyDown(keyCode, event);
     }
 
     @Override

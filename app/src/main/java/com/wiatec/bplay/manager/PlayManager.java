@@ -3,7 +3,10 @@ package com.wiatec.bplay.manager;
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AESUtil;
+import com.px.common.utils.CommonApplication;
+import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
+import com.wiatec.bplay.R;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
 
@@ -11,8 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by patrick on 06/07/2017.
- * create time : 10:13 AM
+ * play manager
  */
 
 public class PlayManager {
@@ -54,7 +56,7 @@ public class PlayManager {
         String url = AESUtil.decrypt(channelInfo.getUrl(), AESUtil.KEY);
         if("live".equals(type)){
             if(channelInfo.isLocked()){
-                if(level > 1){
+                if(level > 2){
                     if(mPlayListener != null){
                         mPlayListener.play(url);
                     }
@@ -66,6 +68,7 @@ public class PlayManager {
                         }
                     }else{
                         if(mPlayListener != null){
+                            EmojiToast.show(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
                             mPlayListener.playAd();
                         }
                     }
@@ -77,7 +80,7 @@ public class PlayManager {
             }
         }else if("relay".equals(type)){
             if(channelInfo.isLocked()){
-                if(level > 1){
+                if(level > 2){
                     relayUrl(url);
                 }else{
                     String experience = UserContentResolver.get("experience");
@@ -85,6 +88,7 @@ public class PlayManager {
                         relayUrl(url);
                     }else{
                         if(mPlayListener != null){
+                            EmojiToast.showLong(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
                             mPlayListener.playAd();
                         }
                     }

@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
         final List<View> viewList = createViewList();
         MainViewPagerAdapter adapter = new MainViewPagerAdapter(viewList);
         binding.viewPager.setAdapter(adapter);
-        binding.viewPager.setCurrentItem(1);
+        binding.viewPager.setCurrentItem(2);
         adapter.setOnItemPageClick(new MainViewPagerAdapter.OnItemPageClick() {
             @Override
             public void onClick(View view, int position) {

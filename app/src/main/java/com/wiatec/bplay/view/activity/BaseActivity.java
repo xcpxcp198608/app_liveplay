@@ -62,8 +62,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if(!isSubscribe){
             return;
         }
-        //用户等级大于1级时不进行按键事件监听
-        if(userLevel > 1){
+        //用户等级大于2级时不进行按键事件监听
+        if(userLevel > 2){
             return;
         }
         keyEventSubscription = Observable.timer(1200 , TimeUnit.SECONDS)
