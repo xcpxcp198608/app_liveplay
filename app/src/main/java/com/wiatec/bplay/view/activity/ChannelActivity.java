@@ -75,7 +75,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         binding.tvPosition.setText(1+"");
         final ChannelAdapter channelAdapter = new ChannelAdapter(channelInfoList);
         binding.rcvChannel.setAdapter(channelAdapter);
-        binding.rcvChannel.setLayoutManager(new GridLayoutManager(this, 5 ,
+        binding.rcvChannel.setLayoutManager(new GridLayoutManager(this, 5,
                 GridLayoutManager.VERTICAL, false));
         channelAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
             @Override
