@@ -9,6 +9,10 @@ import com.wiatec.bplay.view.activity.ChannelType;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
+
 /**
  * channel type presenter
  */
@@ -16,14 +20,14 @@ import java.util.List;
 public class ChannelTypePresenter extends BasePresenter<ChannelType> {
 
     private ChannelType channelType;
-    private AdImageProvider adImageProvider;
-    private ChannelTypeProvider channelTypeProvider;
+    AdImageProvider adImageProvider;
+    ChannelTypeProvider channelTypeProvider;
 
 
     public ChannelTypePresenter(ChannelType channelType) {
         this.channelType = channelType;
-        channelTypeProvider = new ChannelTypeProvider();
         adImageProvider = new AdImageProvider();
+        channelTypeProvider = new ChannelTypeProvider();
     }
 
     //调用model - AdImageProvider 获取需要的Image文件

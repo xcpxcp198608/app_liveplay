@@ -11,11 +11,18 @@ import com.wiatec.bplay.pojo.ChannelTypeInfo;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * channel type data model
  */
 
 public class ChannelTypeProvider implements LoadService<List<ChannelTypeInfo>>{
+
+    @Inject
+    public ChannelTypeProvider() {
+    }
+
     @Override
     public void load(final OnLoadListener<List<ChannelTypeInfo>> onLoadListener) {
         HttpMaster.get(Constant.url.channel_type)

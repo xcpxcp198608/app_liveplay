@@ -10,6 +10,8 @@ import com.wiatec.bplay.view.activity.Channel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * channel presenter
  */
@@ -17,19 +19,19 @@ import java.util.List;
 public class ChannelPresenter extends BasePresenter {
 
     private Channel channel;
-    private LoadService<ImageInfo> loadService;
-    private ChannelLoadService<List<ChannelInfo>> channelLoadService;
+    AdImageProvider adImageProvider;
+    ChannelProvider channelProvider;
 
     public ChannelPresenter(Channel channel) {
         this.channel = channel;
-        loadService = new AdImageProvider();
-        channelLoadService = new ChannelProvider();
+        adImageProvider= new AdImageProvider();
+        channelProvider = new ChannelProvider();
     }
 
     //调用model - loadService 获取需要的Image文件
     public void loadAdImage(){
-        if(loadService != null){
-            loadService.load(new LoadService.OnLoadListener<ImageInfo>() {
+        if(adImageProvider != null){
+            adImageProvider.load(new LoadService.OnLoadListener<ImageInfo>() {
                 @Override
                 public void onLoad(boolean execute, ImageInfo imageInfo) {
                     channel.loadAdImage(execute, imageInfo);
@@ -40,8 +42,8 @@ public class ChannelPresenter extends BasePresenter {
 
     //调用model - channelLoadService 获取需要的Image文件
     public void loadChannel(String type){
-        if(channelLoadService != null){
-            channelLoadService.load(type, new ChannelLoadService.OnLoadListener<List<ChannelInfo>>() {
+        if(channelProvider != null){
+            channelProvider.load(type, new ChannelLoadService.OnLoadListener<List<ChannelInfo>>() {
                 @Override
                 public void onLoad(boolean execute, List<ChannelInfo> channelInfos) {
                     channel.loadChannel(execute, channelInfos);

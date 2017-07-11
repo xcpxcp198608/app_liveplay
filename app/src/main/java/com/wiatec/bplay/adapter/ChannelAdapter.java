@@ -38,8 +38,8 @@ public class ChannelAdapter extends BaseRecycleAdapter<ChannelViewHolder> {
         this.holder = holder;
         ChannelInfo channelInfo = channelInfoList.get(position);
         holder.textView.setText(channelInfo.getName());
-        ImageMaster.load(channelInfo.getIcon(), holder.imageView, R.drawable.img_hold2,
-                R.drawable.img_hold2);
+        ImageMaster.load(channelInfo.getIcon(), holder.imageView, R.drawable.img_hold3,
+                R.drawable.img_hold3);
     }
 
     @Override

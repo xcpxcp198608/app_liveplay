@@ -6,11 +6,16 @@ import com.wiatec.bplay.pojo.ImageInfo;
 import java.io.File;
 import java.util.Random;
 
+import javax.inject.Inject;
+
 /**
  * ad image data model
  */
-
 public class AdImageProvider implements LoadService<ImageInfo> {
+
+    @Inject
+    public AdImageProvider() {
+    }
 
     //从已经下载的图片文件中随机选取一张
     @Override

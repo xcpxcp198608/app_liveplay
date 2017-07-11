@@ -27,9 +27,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     protected T presenter;
     protected abstract T createPresenter();
+    protected int userLevel;
     private Subscription keyEventSubscription;
     protected boolean isSubscribe = true;
-    protected int userLevel;
     protected boolean startAd = true;
 
     @Override

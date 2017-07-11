@@ -12,11 +12,17 @@ import com.wiatec.bplay.pojo.ChannelInfo;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * channel provider
  */
 
 public class ChannelProvider implements ChannelLoadService<List<ChannelInfo>> {
+
+    @Inject
+    public ChannelProvider() {
+    }
 
     @Override
     public void load(String type, final OnLoadListener<List<ChannelInfo>> onLoadListener) {

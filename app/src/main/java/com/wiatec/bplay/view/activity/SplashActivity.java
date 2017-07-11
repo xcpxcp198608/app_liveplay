@@ -42,6 +42,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         binding.tvVersion.setText(AppUtil.getVersionName(SplashActivity.this , getPackageName()));
         presenter.loadAdImage();
+
     }
 
     @Override
@@ -53,11 +54,52 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             showDeviceNotSupportDialog();
             return;
         }
-        if(NetUtils.isConnected(this)){
-            presenter.checkUpgrade();
-        }else{
-            nextPage();
+        boolean showAgree = (boolean) SPUtils.get(SplashActivity.this, "agree", true);
+        if(showAgree) {
+            showAgreement();
+        }else {
+            if (NetUtils.isConnected(this)) {
+                presenter.checkUpgrade();
+            } else {
+                nextPage();
+            }
         }
+    }
+
+    private void showAgreement() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        Window window = alertDialog.getWindow();
+        if(window == null) return;
+        window.setContentView(R.layout.dialog_update);
+        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
+        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
+        TextView tvTitle = (TextView) window.findViewById(R.id.tvTitle);
+        TextView textView = (TextView) window.findViewById(R.id.tv_info);
+        btConfirm.setText(getString(R.string.agree));
+        btCancel.setText(getString(R.string.reject));
+        tvTitle.setText(getString(R.string.agreement));
+        textView.setTextSize(15);
+        textView.setText(getString(R.string.agreement_content));
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SPUtils.put(SplashActivity.this, "agree", false);
+                alertDialog.dismiss();
+                if(NetUtils.isConnected(SplashActivity.this)){
+                    presenter.checkUpgrade();
+                }else{
+                    nextPage();
+                }
+            }
+        });
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**

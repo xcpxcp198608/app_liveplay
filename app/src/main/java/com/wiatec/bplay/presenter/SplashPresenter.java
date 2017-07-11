@@ -7,14 +7,16 @@ import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.view.activity.Splash;
 
+import javax.inject.Inject;
+
 /**
  * splash presenter
  */
 
 public class SplashPresenter extends BasePresenter<Splash> {
 
-    private AdImageProvider adImageProvider;
-    private UpgradeProvider upgradeProvider;
+    AdImageProvider adImageProvider;
+    UpgradeProvider upgradeProvider;
     private Splash splash;
 
     public SplashPresenter(Splash splash){
@@ -37,13 +39,11 @@ public class SplashPresenter extends BasePresenter<Splash> {
 
     //检查app upgradeProvider
     public void checkUpgrade(){
-        if(upgradeProvider != null){
             upgradeProvider.load(new LoadService.OnLoadListener<UpgradeInfo>() {
                 @Override
                 public void onLoad(boolean execute, UpgradeInfo upgradeInfo) {
                     splash.checkUpgrade(execute, upgradeInfo);
                 }
             });
-        }
     }
 }

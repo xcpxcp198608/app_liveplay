@@ -15,11 +15,15 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 /**
- * Created by patrick on 04/07/2017.
- * create time : 5:57 PM
+ * upgrade provider
  */
 
 public class UpgradeProvider implements LoadService<UpgradeInfo> {
+
+    @Inject
+    public UpgradeProvider() {
+        
+    }
 
     @Override
     public void load(final OnLoadListener<UpgradeInfo> onLoadListener) {

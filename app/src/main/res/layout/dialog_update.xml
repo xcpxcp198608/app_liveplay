@@ -9,6 +9,7 @@
 
 
     <TextView
+        android:id="@+id/tvTitle"
         android:text="@string/update_notice"
         android:textSize="30sp"
         android:textColor="@color/colorWhite"
