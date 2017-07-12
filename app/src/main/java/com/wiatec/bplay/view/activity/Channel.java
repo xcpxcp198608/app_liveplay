@@ -13,4 +13,5 @@ public interface Channel {
 
     void loadAdImage(boolean execute, ImageInfo imageInfo);
     void loadChannel(boolean execute, List<ChannelInfo> channelInfoList);
+    void loadFavorite(boolean execute, List<ChannelInfo> channelInfoList);
 }

@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
@@ -19,6 +20,7 @@ import com.wiatec.bplay.databinding.ActivityPlayBinding;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.manager.PlayManager;
 import com.wiatec.bplay.pojo.ChannelInfo;
+import com.wiatec.bplay.sql.FavoriteChannelDao;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,12 +29,15 @@ import java.util.List;
  * play
  */
 
-public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Callback, PlayManager.PlayListener{
+public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Callback,
+        PlayManager.PlayListener,View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
     private ActivityPlayBinding binding;
     private SurfaceHolder surfaceHolder;
     private PlayManager playManager;
     private MediaPlayer mediaPlayer;
+    private FavoriteChannelDao favoriteChannelDao;
+    private boolean isShow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +51,18 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         int position = getIntent().getIntExtra("position", 0);
         playManager = new PlayManager(channelInfoList, position);
         playManager.setPlayListener(this);
+        favoriteChannelDao = FavoriteChannelDao.getInstance();
+        binding.flPlay.setOnClickListener(this);
+        binding.cbFavorite.setOnCheckedChangeListener(this);
+        showFavoriteStatus();
+    }
+
+    private void showFavoriteStatus(){
+        if(favoriteChannelDao.exists(playManager.getChannelInfo())){
+            binding.cbFavorite.setChecked(true);
+        }else{
+            binding.cbFavorite.setChecked(false);
+        }
     }
 
     @Override
@@ -65,6 +82,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     public void play(final String url) {
+        showFavoriteStatus();
         playVideo(url);
     }
 
@@ -160,7 +178,47 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.flPlay:
+                if(binding.llController.getVisibility() == View.VISIBLE){
+                    binding.llController.setVisibility(View.GONE);
+                }else{
+                    binding.llController.setVisibility(View.VISIBLE);
+                    binding.cbFavorite.requestFocus();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()){
+            case R.id.cbFavorite:
+                ChannelInfo channelInfo = playManager.getChannelInfo();
+                if(isChecked){
+                    if(favoriteChannelDao.insertOrUpdate(channelInfo)){
+                        binding.cbFavorite.setChecked(true);
+                    }
+                }else{
+                    favoriteChannelDao.delete(channelInfo);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            if(binding.llController.getVisibility() == View.VISIBLE){
+                binding.llController.setVisibility(View.GONE);
+                return true;
+            }
+        }
         if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PREVIOUS){
             playManager.previousChannel();
         }

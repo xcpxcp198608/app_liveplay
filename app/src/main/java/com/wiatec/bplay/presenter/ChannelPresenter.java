@@ -51,4 +51,15 @@ public class ChannelPresenter extends BasePresenter {
             });
         }
     }
+
+    public void loadFavorite(){
+        if(channelProvider != null){
+            channelProvider.loadFavorite(new ChannelLoadService.OnLoadListener<List<ChannelInfo>>() {
+                @Override
+                public void onLoad(boolean execute, List<ChannelInfo> channelInfos) {
+                    channel.loadFavorite(execute, channelInfos);
+                }
+            });
+        }
+    }
 }

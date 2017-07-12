@@ -40,7 +40,11 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
 //        presenter.loadAdImage();
         final String type = getIntent().getStringExtra(Constant.key.channel_type);
-        presenter.loadChannel(type);
+        if("FAVORITE".equals(type)){
+            presenter.loadFavorite();
+        }else {
+            presenter.loadChannel(type);
+        }
         binding.btRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +66,15 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
 
     @Override
     public void loadChannel(boolean execute, final List<ChannelInfo> channelInfoList) {
+        load(execute, channelInfoList);
+    }
+
+    @Override
+    public void loadFavorite(boolean execute, List<ChannelInfo> channelInfoList) {
+        load(execute, channelInfoList);
+    }
+
+    private void load(boolean execute, final List<ChannelInfo> channelInfoList) {
         if(!execute){
             binding.pbLoading.setVisibility(View.GONE);
             binding.tvLoading.setText(getString(R.string.data_load_error));
