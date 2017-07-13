@@ -1,5 +1,6 @@
 package com.wiatec.bplay.view.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +9,12 @@ import android.view.View;
 import com.px.common.animator.Zoom;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
+import com.px.common.utils.CommonApplication;
 import com.px.common.utils.EmojiToast;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityMoviesBinding;
 import com.wiatec.bplay.instance.Constant;
+import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.presenter.SplashPresenter;
@@ -63,6 +66,18 @@ public class MoviesActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void onClick(View v) {
+        int level;
+        String levelStr = UserContentResolver.get("userLevel");
+        try {
+            level = Integer.parseInt(levelStr);
+        }catch (Exception e){
+            level = 1;
+        }
+        if(level <= 2){
+            EmojiToast.show(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
+            startActivity(new Intent(MoviesActivity.this, AdScreenActivity.class));
+            return;
+        }
         switch (v.getId()){
             case R.id.ibt1:
                 launchApp(Constant.packageName.terrarium_tv);
