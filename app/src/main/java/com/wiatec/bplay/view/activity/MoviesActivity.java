@@ -53,8 +53,8 @@ public class MoviesActivity extends BaseActivity<SplashPresenter> implements Spl
     @Override
     public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
-            ImageMaster.load(imageInfo.getUrl(), binding.ivMovies, R.drawable.img_ld_gold,
-                    R.drawable.img_ld_gold);
+            ImageMaster.load(imageInfo.getUrl(), binding.ivMovies, R.drawable.img_hold4,
+                    R.drawable.img_hold4);
         }
     }
 

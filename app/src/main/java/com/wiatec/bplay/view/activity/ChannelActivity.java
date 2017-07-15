@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.image.ImageMaster;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelAdapter;
+import com.wiatec.bplay.adapter.ChannelAdapter1;
+import com.wiatec.bplay.adapter.ChannelAdapter2;
 import com.wiatec.bplay.databinding.ActivityChannelBinding;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ChannelInfo;
@@ -86,27 +89,42 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         binding.tvTotal.setText(channelInfoList.size()+"");
         binding.tvSplit.setVisibility(View.VISIBLE);
         binding.tvPosition.setText(1+"");
-        final ChannelAdapter channelAdapter = new ChannelAdapter(channelInfoList);
-        binding.rcvChannel.setAdapter(channelAdapter);
-        binding.rcvChannel.setLayoutManager(new GridLayoutManager(this, 5,
-                GridLayoutManager.VERTICAL, false));
-        channelAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
+//        ChannelAdapter1 channelAdapter1 = new ChannelAdapter1(channelInfoList);
+//        binding.rcvChannel.setAdapter(channelAdapter1);
+//        binding.rcvChannel.setLayoutManager(new GridLayoutManager(ChannelActivity.this, 5,
+//                GridLayoutManager.VERTICAL, false));
+//        channelAdapter1.setOnItemFocusListener(new ChannelAdapter1.OnItemFocusListener() {
+//            @Override
+//            public void onFocus(View view, int position, boolean hasFocus) {
+//                if(hasFocus) {
+//                    binding.tvPosition.setText((position + 1) + "");
+//                }
+//            }
+//        });
+//        channelAdapter1.setOnItemClickListener(new ChannelAdapter1.OnItemClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+//                launchPlay(channelInfoList, position);
+//            }
+//        });
+        ChannelAdapter2 channelAdapter2 = new ChannelAdapter2(this, channelInfoList);
+        binding.gvChannel.setAdapter(channelAdapter2);
+        binding.gvChannel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onFocus(View view, int position, boolean hasFocus) {
-                if(hasFocus){
-                    Zoom.zoomIn10to11(view);
-                    binding.tvPosition.setText((position+1)+"");
-                    view.setSelected(true);
-                }else{
-                    Zoom.zoomOut11to10(view);
-                    view.setSelected(false);
-                }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                launchPlay(channelInfoList, position);
             }
         });
-        channelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
+        binding.gvChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                launchPlay(channelInfoList, position);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                binding.tvPosition.setText((position + 1) + "");
+                Zoom.zoomIn09to10(view);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }

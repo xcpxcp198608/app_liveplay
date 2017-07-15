@@ -104,8 +104,8 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
     @Override
     public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
-            ImageMaster.load(imageInfo.getUrl(), binding.ivMain, R.drawable.img_ld_gold,
-                    R.drawable.img_ld_gold);
+            ImageMaster.load(imageInfo.getUrl(), binding.ivMain, R.drawable.img_hold4,
+                    R.drawable.img_hold4);
         }
     }
 
