@@ -19,9 +19,11 @@ import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivitySplashBinding;
+import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.presenter.SplashPresenter;
+import com.wiatec.bplay.task.ImageTask;
 
 /**
  * splash activity
@@ -42,7 +44,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         binding.tvVersion.setText(AppUtil.getVersionName(SplashActivity.this , getPackageName()));
         presenter.loadAdImage();
-
+        Application.getExecutorService().execute(new ImageTask());
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.image.ImageMaster;
+import com.px.common.utils.Logger;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelAdapter;
 import com.wiatec.bplay.adapter.ChannelAdapter1;
