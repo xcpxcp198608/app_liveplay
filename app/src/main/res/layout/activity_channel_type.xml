@@ -53,12 +53,23 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <com.wiatec.bplay.view.custom_view.GalleryRecycleView
-        android:layout_margin="40dp"
-        android:id="@+id/rcvChannelType"
+    <FrameLayout
+        android:background="@color/colorTranslucentA"
         android:layout_gravity="bottom"
+        android:clipChildren="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <com.wiatec.bplay.view.custom_view.GalleryRecycleView
+            android:layout_margin="40dp"
+            android:id="@+id/rcvChannelType"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </FrameLayout>
+
+
 
 </FrameLayout>
 </layout>
