@@ -27,6 +27,7 @@ import java.util.List;
 public class ChannelActivity extends BaseActivity<ChannelPresenter> implements Channel {
 
     private ActivityChannelBinding binding;
+    private String type;
 
     @Override
     protected ChannelPresenter createPresenter() {
@@ -37,8 +38,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
-//        presenter.loadAdImage();
-        final String type = getIntent().getStringExtra(Constant.key.channel_type);
+        type = getIntent().getStringExtra(Constant.key.channel_type);
         if("FAVORITE".equals(type)){
             presenter.loadFavorite();
         }else {
@@ -76,9 +76,13 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     private void load(boolean execute, final List<ChannelInfo> channelInfoList) {
         if(!execute){
             binding.pbLoading.setVisibility(View.GONE);
-            binding.tvLoading.setText(getString(R.string.data_load_error));
-            binding.btRetry.setVisibility(View.VISIBLE);
-            binding.btRetry.requestFocus();
+            if(Constant.key.type_favorite.equals(type)){
+                binding.tvLoading.setText(getString(R.string.favorite_load_empty));
+            }else {
+                binding.tvLoading.setText(getString(R.string.data_load_error));
+                binding.btRetry.setVisibility(View.VISIBLE);
+                binding.btRetry.requestFocus();
+            }
             return;
         }
         binding.llLoading.setVisibility(View.GONE);

@@ -52,7 +52,8 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         super.onStart();
         isSubscribe = false;
         if(!"BTVi3".equals(Build.MODEL) && !"MorphoBT E110".equals(Build.MODEL) &&
-                !"BTV3".equals(Build.MODEL)){
+                !"BTV3".equals(Build.MODEL) && !"Z69".equals(Build.MODEL) &&
+                !"X96".equals(Build.MODEL)){
             showDeviceNotSupportDialog();
             return;
         }

@@ -42,6 +42,7 @@
     <string name="confirm_exit">Do you confirm exit?</string>
     <string name="data_loading">Loading...</string>
     <string name="data_load_error">Load failure, please try again later</string>
+    <string name="favorite_load_empty">Favorites folder is empty</string>
     <string name="favorite_empty">favorite is empty</string>
     <string name="hi">Hi</string>
     <string name="playing">Now playing</string>

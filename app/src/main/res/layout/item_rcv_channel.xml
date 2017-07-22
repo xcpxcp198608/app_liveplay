@@ -13,10 +13,9 @@
 
     <ImageView
         android:layout_gravity="center_horizontal"
-        android:scaleType="centerInside"
-        android:cropToPadding="true"
-        android:padding="20dp"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"
         android:id="@+id/imageView"
         android:layout_width="210dp"
         android:layout_height="95dp" />
