@@ -17,7 +17,6 @@ import java.util.List;
 public class ChannelAdapter extends BaseRecycleAdapter<ChannelViewHolder> {
 
     private List<ChannelInfo> channelInfoList;
-    public ChannelViewHolder holder;
 
     public ChannelAdapter(List<ChannelInfo> channelInfoList) {
         this.channelInfoList = channelInfoList;
@@ -34,8 +33,7 @@ public class ChannelAdapter extends BaseRecycleAdapter<ChannelViewHolder> {
     }
 
     @Override
-    protected void bindHolder(final ChannelViewHolder holder, int position) {
-        this.holder = holder;
+    protected void bindHolder(final ChannelViewHolder holder, final int position) {
         ChannelInfo channelInfo = channelInfoList.get(position);
         holder.textView.setText(channelInfo.getName());
         ImageMaster.load(channelInfo.getIcon(), holder.imageView, R.drawable.img_hold3,

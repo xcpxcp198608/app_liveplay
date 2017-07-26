@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
-import android.widget.AdapterView;
 
+import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.image.ImageMaster;
 import com.wiatec.bplay.R;
-import com.wiatec.bplay.adapter.ChannelAdapter2;
+import com.wiatec.bplay.adapter.ChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelBinding;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ChannelInfo;
@@ -89,24 +90,27 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         binding.tvTotal.setText(channelInfoList.size()+"");
         binding.tvSplit.setVisibility(View.VISIBLE);
         binding.tvPosition.setText(1+"");
-        ChannelAdapter2 channelAdapter2 = new ChannelAdapter2(this, channelInfoList);
-        binding.gvChannel.setAdapter(channelAdapter2);
-        binding.gvChannel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        ChannelAdapter channelAdapter = new ChannelAdapter(channelInfoList);
+        binding.rcvChannel.setAdapter(channelAdapter);
+        binding.rcvChannel.setLayoutManager(new GridLayoutManager(this, 5));
+        channelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 launchPlay(channelInfoList, position);
             }
         });
-        binding.gvChannel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        channelAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.tvPosition.setText((position + 1) + "");
-                Zoom.zoomIn09to10(view);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onFocus(View view, int position, boolean hasFocus) {
+                if(hasFocus){
+                    binding.tvPosition.setText((position + 1) + "");
+                    Zoom.zoomIn10to11(view);
+                    view.setSelected(true);
+                }else{
+                    Zoom.zoomOut11to10(view);
+                    view.setSelected(false);
+                }
             }
         });
     }

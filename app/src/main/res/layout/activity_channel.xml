@@ -59,6 +59,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:clipChildren="false"
             android:layout_marginRight="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -93,11 +94,9 @@
 
         </LinearLayout>
 
-        <GridView
-            android:numColumns="5"
-            android:verticalSpacing="20dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/gvChannel"
+        <com.wiatec.bplay.view.custom_view.ItemRecyclerView
+            android:clipChildren="false"
+            android:id="@+id/rcvChannel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
