@@ -35,6 +35,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         presenter = createPresenter();
         presenter.attach(this);
     }
@@ -55,7 +56,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onResume() {
         super.onResume();
         startAd = true;
-//        subscribeKeyEvent();
+        subscribeKeyEvent();
     }
 
     private void subscribeKeyEvent(){
@@ -89,7 +90,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         startAd = true;
-//        subscribeKeyEvent();
+        subscribeKeyEvent();
         return super.onKeyUp(keyCode, event);
     }
 
