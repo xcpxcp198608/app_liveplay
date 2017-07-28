@@ -74,9 +74,12 @@ public class MoviesActivity extends BaseActivity<SplashPresenter> implements Spl
             level = 1;
         }
         if(level <= 2){
-            EmojiToast.show(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
-            startActivity(new Intent(MoviesActivity.this, AdScreenActivity.class));
-            return;
+            String experience = UserContentResolver.get("experience");
+            if(!"true".equals(experience)) {
+                EmojiToast.show(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
+                startActivity(new Intent(MoviesActivity.this, AdScreenActivity.class));
+                return;
+            }
         }
         switch (v.getId()){
             case R.id.ibt1:
