@@ -7,8 +7,7 @@ import com.wiatec.bplay.pojo.UpgradeInfo;
  * splash activity interface
  */
 
-public interface Splash {
-
-    void loadAdImage(boolean isSuccess, ImageInfo imageInfo);
+public interface Splash extends Common {
+    
     void checkUpgrade(boolean upgrade, UpgradeInfo upgradeInfo);
 }

@@ -5,11 +5,13 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:layout_width="600dp"
-    android:layout_height="400dp">
+    android:background="@drawable/bg_item_channel_type"
+    android:padding="2dp"
+    android:layout_width="404dp"
+    android:layout_height="204dp">
 
     <ImageView
-        android:src="@drawable/ic_movie_focus"
+        android:src="@drawable/img_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

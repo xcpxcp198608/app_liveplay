@@ -16,18 +16,19 @@ import com.wiatec.bplay.databinding.ActivityMainBinding;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.UpgradeInfo;
+import com.wiatec.bplay.presenter.MainPresenter;
 import com.wiatec.bplay.presenter.SplashPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity<SplashPresenter> implements Splash {
+public class MainActivity extends BaseActivity<MainPresenter> implements Common {
 
     private ActivityMainBinding binding;
 
     @Override
-    protected SplashPresenter createPresenter() {
-        return new SplashPresenter(this);
+    protected MainPresenter createPresenter() {
+        return new MainPresenter(this);
     }
 
     @Override
@@ -40,16 +41,17 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
 
     private List<View> createViewList() {
         List<View> viewList = new ArrayList<>();
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_movies, binding.viewPager, false));
+        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_radio_music, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_btv, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_movies, binding.viewPager, false));
+        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_radio_music, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_btv, binding.viewPager, false));
         return viewList;
     }
 
     private void initViewPager(){
-        binding.viewPager.setOffscreenPageLimit(5);
+        binding.viewPager.setOffscreenPageLimit(6);
         binding.viewPager.setPageMargin(100);
         binding.viewPager.setPageTransformer(true, new MainViewPagerTransform());
         final List<View> viewList = createViewList();
@@ -96,6 +98,11 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
             case 3:
                 startActivity(new Intent(MainActivity.this, MoviesActivity.class));
                 break;
+            case 4:
+                Intent intent = new Intent(MainActivity.this, ChannelActivity.class);
+                intent.putExtra(Constant.key.channel_type, Constant.key.radio_music);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -109,9 +116,4 @@ public class MainActivity extends BaseActivity<SplashPresenter> implements Splas
         }
     }
 
-    //ignore this
-    @Override
-    public void checkUpgrade(boolean upgrade, UpgradeInfo upgradeInfo) {
-
-    }
 }

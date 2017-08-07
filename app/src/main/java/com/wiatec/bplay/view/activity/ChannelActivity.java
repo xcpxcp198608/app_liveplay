@@ -10,6 +10,7 @@ import android.view.View;
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.image.ImageMaster;
+import com.px.common.utils.Logger;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelBinding;
@@ -40,7 +41,8 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
         type = getIntent().getStringExtra(Constant.key.channel_type);
-        if("FAVORITE".equals(type)){
+        Logger.d(type);
+        if(Constant.key.type_favorite.equals(type)){
             presenter.loadFavorite();
         }else {
             presenter.loadChannel(type);

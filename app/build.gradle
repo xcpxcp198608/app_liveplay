@@ -8,13 +8,13 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 105
-        versionName "v1.0.5"
+        versionName "v1.0.6 beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
             storeFile file("/KeyStore/234.jks")
-            storePassword  KEYSTORE_PASSWORD
+            storePassword KEYSTORE_PASSWORD
             keyAlias "234"
             keyPassword KEY_PASSWORD
         }
@@ -70,14 +70,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     compile project(':common')
 
     //dagger2
     compile 'com.google.dagger:dagger:2.0'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.0'
     compile 'org.glassfish:javax.annotation:10.0-b28'
-
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.0'
 }

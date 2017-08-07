@@ -87,9 +87,15 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         channelTypeAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(ChannelTypeActivity.this , ChannelActivity.class);
-                intent.putExtra(Constant.key.channel_type, channelTypeInfoList.get(position).getName());
-                startActivity(intent);
+                ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
+                if(channelTypeInfo.getFlag() == 1){
+                    Intent intent = new Intent(ChannelTypeActivity.this, TvSeriesActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
+                    intent.putExtra(Constant.key.channel_type, channelTypeInfo.getName());
+                    startActivity(intent);
+                }
             }
         });
     }

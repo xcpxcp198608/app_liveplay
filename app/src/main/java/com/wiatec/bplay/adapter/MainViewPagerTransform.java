@@ -17,11 +17,11 @@ public class MainViewPagerTransform implements ViewPager.PageTransformer {
             page.setScaleY(1f);
         }else if(position <= 0){
             page.setAlpha(1.0f);
-            page.setScaleX(1.3f);
-            page.setScaleY(1.3f);
+            page.setScaleX(1.2f);
+            page.setScaleY(1.2f);
         }else if (position <= 1){
-            page.setScaleX(1.3f);
-            page.setScaleY(1.3f);
+            page.setScaleX(1.2f);
+            page.setScaleY(1.2f);
             page.setAlpha(1-position);
         }else{
             page.setScaleX(1f);

@@ -9,8 +9,7 @@ import java.util.List;
  * channel type
  */
 
-public interface ChannelType {
+public interface ChannelType extends Common {
 
-    void loadAdImage(boolean execute, ImageInfo imageInfo);
     void loadChannelType(boolean execute, List<ChannelTypeInfo> channelTypeInfoList);
 }
