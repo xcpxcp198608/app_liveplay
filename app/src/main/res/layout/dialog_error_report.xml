@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog"
+    android:layout_width="match_parent"
+    android:padding="30dp"
+    android:layout_height="wrap_content">
+
+    <RadioGroup
+        android:layout_margin="20dp"
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:button="@drawable/bg_radio_button"
+            android:id="@+id/rbMessage1"
+            android:textSize="30sp"
+            android:text="@string/error_msg1"
+            android:textColor="@drawable/text_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:button="@drawable/bg_radio_button"
+            android:id="@+id/rbMessage2"
+            android:textSize="30sp"
+            android:text="@string/error_msg2"
+            android:textColor="@drawable/text_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:button="@drawable/bg_radio_button"
+            android:id="@+id/rbMessage3"
+            android:textSize="30sp"
+            android:text="@string/error_msg3"
+            android:textColor="@drawable/text_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RadioGroup>
+
+    <Button
+        android:layout_margin="20dp"
+        android:id="@+id/btSend"
+        android:text="@string/send"
+        android:textColor="@drawable/text_login"
+        android:textSize="25sp"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

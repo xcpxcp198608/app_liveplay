@@ -14,6 +14,7 @@ public final class Constant {
         public static final String token = "/9B67E88314F416F2092AB8ECA6A7C8EDCCE3D6D85A816E6E6F9F919B2E6C277D";
         public static final String channel = base+"channels/list/";
         public static final String channel_type = base+"channel_type"+token;
+        public static final String channel_send_error_report = base+"report/send";
         public static final String upgrade = base+"upgrade"+token;
     }
 

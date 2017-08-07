@@ -29,10 +29,18 @@
         android:layout_height="68dp">
 
         <CheckBox
+            android:background="@android:color/transparent"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:button="@drawable/bg_favorite"
             android:id="@+id/cbFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:id="@+id/ibtReport"
+            android:background="@drawable/bg_send_report"
             android:layout_width="48dp"
             android:layout_height="48dp" />
 

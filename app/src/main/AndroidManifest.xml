@@ -44,6 +44,7 @@
         <activity android:name=".view.activity.ChannelTypeActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".view.activity.PlayActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="landscape"/>
     </application>
 
