@@ -4,34 +4,29 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
+import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
-import com.wiatec.bplay.databinding.ActivityPlayBinding;
+import com.wiatec.bplay.databinding.ActivityFmPlayBinding;
 import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
@@ -41,29 +36,28 @@ import com.wiatec.bplay.sql.FavoriteChannelDao;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-/**
- * play
- */
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
-public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Callback,
-        PlayManager.PlayListener,View.OnClickListener, CompoundButton.OnCheckedChangeListener{
+public class FMPlayActivity extends AppCompatActivity implements PlayManager.PlayListener,
+        CompoundButton.OnCheckedChangeListener, View.OnClickListener{
 
-    private ActivityPlayBinding binding;
-    private SurfaceHolder surfaceHolder;
+    private ActivityFmPlayBinding binding;
     private PlayManager playManager;
     private MediaPlayer mediaPlayer;
     private FavoriteChannelDao favoriteChannelDao;
     private String errorMessage = "";
+    private Subscription subscription;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_play);
-        surfaceHolder = binding.surfaceView.getHolder();
-        surfaceHolder.addCallback(this);
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_fm_play);
         List<ChannelInfo> channelInfoList = (List<ChannelInfo>) getIntent().getSerializableExtra("channelInfoList");
         int position = getIntent().getIntExtra("position", 0);
         playManager = new PlayManager(channelInfoList, position);
@@ -84,57 +78,57 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
+    protected void onStart() {
+        super.onStart();
         playManager.dispatchChannel();
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        releaseMediaPlayer();
-    }
-
-    @Override
-    public void play(final String url) {
-        showFavoriteStatus();
-        playVideo(url);
+    public void play(String url) {
+        showImage();
+        playFM(url);
     }
 
     @Override
     public void playAd() {
-        startActivity(new Intent(PlayActivity.this, AdScreenActivity.class));
+        startActivity(new Intent(FMPlayActivity.this, AdScreenActivity.class));
         finish();
     }
 
     @Override
     public void launchApp(String packageName) {
-        if(AppUtil.isInstalled(PlayActivity.this , packageName)) {
-            AppUtil.launchApp(PlayActivity.this, packageName);
+        if(AppUtil.isInstalled(FMPlayActivity.this , packageName)) {
+            AppUtil.launchApp(FMPlayActivity.this, packageName);
         }else{
             EmojiToast.show(getString(R.string.notice1), EmojiToast.EMOJI_SAD);
-            AppUtil.launchApp(PlayActivity.this, Constant.packageName.market);
+            AppUtil.launchApp(FMPlayActivity.this, Constant.packageName.market);
         }
         finish();
     }
 
-    private void playVideo(final String url) {
-        binding.pbPlay.setVisibility(View.VISIBLE);
+    private void showImage(){
+        String icon = playManager.getChannelInfo().getIcon();
+        ImageMaster.load(FMPlayActivity.this, icon, binding.ivFM, R.drawable.img_hold3, R.drawable.img_hold3);
+    }
+
+    private void playFM(final String url) {
+        if(subscription != null){
+            subscription.unsubscribe();
+        }
+        binding.progressBar.setVisibility(View.VISIBLE);
         try {
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
             mediaPlayer.reset();
             mediaPlayer.setDataSource(url);
-            mediaPlayer.setDisplay(surfaceHolder);
             mediaPlayer.prepareAsync();
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    binding.pbPlay.setVisibility(View.GONE);
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.vsvFM.setVisibility(View.VISIBLE);
+                    voiceViewStart();
                     EmojiToast.show(playManager.getChannelInfo().getName()+" playing" , EmojiToast.EMOJI_SMILE);
                     mediaPlayer.start();
                 }
@@ -144,10 +138,10 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 public boolean onInfo(MediaPlayer mp, int what, int extra) {
                     Logger.d("onInfo:" + what + "/" + extra);
                     if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
-                        binding.pbPlay.setVisibility(View.VISIBLE);
+                        binding.progressBar.setVisibility(View.VISIBLE);
                     }
                     if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END){
-                        binding.pbPlay.setVisibility(View.GONE);
+                        binding.vsvFM.setVisibility(View.GONE);
                     }
                     return false;
                 }
@@ -156,15 +150,17 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     Logger.d("onError:" + what + "/" + extra);
-                    playVideo(url);
+                    binding.vsvFM.setVisibility(View.GONE);
+                    playFM(url);
                     return true;
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    binding.vsvFM.setVisibility(View.GONE);
                     Logger.d("onCompletions");
-                    playVideo(url);
+                    playFM(url);
                 }
             });
         } catch (IOException e) {
@@ -172,11 +168,32 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
     }
 
+    private void voiceViewStart(){
+        subscription = Observable.interval(0,200 , TimeUnit.MILLISECONDS)
+                .repeat()
+                .map(new Func1<Long, Object>() {
+                    @Override
+                    public Object call(Long aLong) {
+                        binding.vsvFM.start();
+                        return null;
+                    }
+                })
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+
+                    }
+                });
+    }
+
     private void releaseMediaPlayer(){
         if(mediaPlayer != null){
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+        if(subscription != null){
+            subscription.unsubscribe();
         }
     }
 
@@ -311,11 +328,13 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT &&
                 binding.llController.getVisibility() == View.GONE) ||
                 event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PREVIOUS){
+            binding.vsvFM.setVisibility(View.GONE);
             playManager.previousChannel();
         }
         if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT &&
                 binding.llController.getVisibility() == View.GONE) ||
                 event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_NEXT){
+            binding.vsvFM.setVisibility(View.GONE);
             playManager.nextChannel();
         }
         return super.onKeyDown(keyCode, event);

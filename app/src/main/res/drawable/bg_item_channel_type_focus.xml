@@ -4,5 +4,5 @@
         android:angle="270"
         android:startColor="@android:color/transparent"
         android:endColor="@android:color/transparent"/>
-    <stroke android:color="@color/colorAccent" android:width="2dp"/>
+    <stroke android:color="@color/colorAccent" android:width="3dp"/>
 </shape>

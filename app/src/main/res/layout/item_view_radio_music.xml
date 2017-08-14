@@ -6,9 +6,9 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@drawable/bg_item_channel_type"
-    android:padding="2dp"
-    android:layout_width="404dp"
-    android:layout_height="204dp">
+    android:padding="3dp"
+    android:layout_width="406dp"
+    android:layout_height="206dp">
 
     <ImageView
         android:src="@drawable/img_radio_music"

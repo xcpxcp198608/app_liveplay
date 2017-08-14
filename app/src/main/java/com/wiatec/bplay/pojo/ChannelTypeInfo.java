@@ -7,6 +7,7 @@ package com.wiatec.bplay.pojo;
 public class ChannelTypeInfo {
 
     private int id;
+    private String tag;
     private String name;
     private String icon;
     private int flag;
@@ -18,6 +19,14 @@ public class ChannelTypeInfo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getName() {
@@ -56,6 +65,7 @@ public class ChannelTypeInfo {
     public String toString() {
         return "ChannelTypeInfo{" +
                 "id=" + id +
+                ", tag='" + tag + '\'' +
                 ", name='" + name + '\'' +
                 ", icon='" + icon + '\'' +
                 ", flag=" + flag +

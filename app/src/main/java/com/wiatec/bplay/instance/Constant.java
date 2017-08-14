@@ -15,7 +15,7 @@ public final class Constant {
         public static final String channel = base+"channels/list/";
         public static final String channel_type = base+"channel_type"+token;
         public static final String channel_send_error_report = base+"report/send";
-        public static final String tv_series = base+"tvseries/";
+        public static final String channel_type2 = base+"channel_type2/";
         public static final String upgrade = base+"upgrade"+token;
     }
 

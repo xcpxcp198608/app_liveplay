@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout
+    android:id="@+id/flPlay"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wiatec.bplay.view.activity.FMPlayActivity">
+
+    <ImageView
+        android:id="@+id/ivFM"
+        android:scaleType="centerInside"
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+
+    <FrameLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <com.wiatec.bplay.view.custom_view.VoiceSpectrumView
+            android:id="@+id/vsvFM"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llController"
+        android:layout_gravity="bottom"
+        android:padding="10dp"
+        android:background="@color/colorTranslucent7"
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <CheckBox
+            android:background="@android:color/transparent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:button="@drawable/bg_favorite"
+            android:id="@+id/cbFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:id="@+id/ibtReport"
+            android:background="@drawable/bg_send_report"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+    </LinearLayout>
+</FrameLayout>
+</layout>

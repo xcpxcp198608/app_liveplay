@@ -1,13 +1,18 @@
 package com.wiatec.bplay.view.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.px.common.utils.Logger;
+import com.wiatec.bplay.R;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.presenter.BasePresenter;
 
@@ -94,6 +99,20 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         return super.onKeyUp(keyCode, event);
     }
 
+    private void jumpToChannelById() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        window.setGravity(Gravity.TOP|Gravity.LEFT);
+        layoutParams.x = 0;
+        layoutParams.y = 0;
+        window.setAttributes(layoutParams);
+        dialog.setContentView(R.layout.dialog_jump_channel);
+        EditText etChannelId = (EditText) window.findViewById(R.id.etChannelId);
+        etChannelId.requestFocus();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -119,4 +138,5 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             keyEventSubscription.unsubscribe();
         }
     }
+
 }

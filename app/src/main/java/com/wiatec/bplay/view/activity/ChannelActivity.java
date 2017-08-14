@@ -41,7 +41,6 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
         type = getIntent().getStringExtra(Constant.key.channel_type);
-        Logger.d(type);
         if(Constant.key.type_favorite.equals(type)){
             presenter.loadFavorite();
         }else {
@@ -99,7 +98,12 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         channelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                launchPlay(channelInfoList, position);
+                ChannelInfo channelInfo = channelInfoList.get(position);
+                if("FM".equals(channelInfo.getStyle())){
+                    launchFMPlay(channelInfoList, position);
+                }else {
+                    launchPlay(channelInfoList, position);
+                }
             }
         });
         channelAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
@@ -119,6 +123,13 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
 
     private void launchPlay(List<ChannelInfo> channelInfoList, int position){
         Intent intent = new Intent(ChannelActivity.this , PlayActivity.class);
+        intent.putExtra("channelInfoList", (Serializable) channelInfoList);
+        intent.putExtra("position", position);
+        startActivity(intent);
+    }
+
+    private void launchFMPlay(List<ChannelInfo> channelInfoList, int position){
+        Intent intent = new Intent(ChannelActivity.this , FMPlayActivity.class);
         intent.putExtra("channelInfoList", (Serializable) channelInfoList);
         intent.putExtra("position", position);
         startActivity(intent);

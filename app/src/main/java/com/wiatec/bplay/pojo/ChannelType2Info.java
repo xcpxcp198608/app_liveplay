@@ -1,16 +1,17 @@
 package com.wiatec.bplay.pojo;
 
 /**
- * Created by patrick on 07/08/2017.
- * create time : 3:41 PM
+ * channel type info
  */
 
-public class TvSeriesInfo {
+public class ChannelType2Info {
 
     private int id;
     private String tag;
     private String name;
     private String url;
+    private String type;
+    private int flag;
 
     public int getId() {
         return id;
@@ -44,13 +45,31 @@ public class TvSeriesInfo {
         this.url = url;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
     @Override
     public String toString() {
-        return "TvSeriesInfo{" +
+        return "ChannelType2Info{" +
                 "id=" + id +
                 ", tag='" + tag + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
+                ", type='" + type + '\'' +
+                ", flag=" + flag +
                 '}';
     }
 }

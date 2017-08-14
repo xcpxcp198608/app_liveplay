@@ -9,7 +9,7 @@
         tools:context="com.wiatec.bplay.view.activity.MainActivity">
 
         <ImageView
-            android:id="@+id/ivTvSeries"
+            android:id="@+id/ivChannelType2"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -56,7 +56,7 @@
         <com.wiatec.bplay.view.custom_view.ItemRecyclerView
             android:layout_margin="40dp"
             android:clipChildren="false"
-            android:id="@+id/rcvTvSeries"
+            android:id="@+id/rcvChannelType2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
