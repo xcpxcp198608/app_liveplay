@@ -6,6 +6,10 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  * network utils
  */
@@ -72,6 +76,45 @@ public class NetUtils {
         }else {
             return 0;//没信号
         }
+    }
+
+    /**
+     * 获取当前网络数据量
+     * @return 总的网络数据量，单位b
+     */
+    public static int getNetSpeedBytes() {
+        String line;
+        String[] segs;
+        int received = 0;
+        int i;
+        int tmp = 0;
+        boolean isNum;
+        try {
+            FileReader fr = new FileReader("/proc/net/dev");
+            BufferedReader in = new BufferedReader(fr, 500);
+            while ((line = in.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("rmnet") || line.startsWith("eth") || line.startsWith("wlan")) {
+                    segs = line.split(":")[1].split(" ");
+                    for (i = 0; i < segs.length; i++) {
+                        isNum = true;
+                        try {
+                            tmp = Integer.parseInt(segs[i]);
+                        } catch (Exception e) {
+                            isNum = false;
+                        }
+                        if (isNum) {
+                            received = received + tmp;
+                            break;
+                        }
+                    }
+                }
+            }
+            in.close();
+        } catch (IOException e) {
+            return -1;
+        }
+        return received;
     }
 
 }

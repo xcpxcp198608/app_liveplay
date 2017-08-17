@@ -17,7 +17,7 @@ import com.wiatec.bplay.presenter.ChannelType2Presenter;
 
 import java.util.List;
 
-public class ChannelType2Activity extends BaseActivity<ChannelType2Presenter> implements ChannelType2 {
+public class ChannelTypeActivity2 extends BaseActivity<ChannelType2Presenter> implements ChannelType2 {
 
     private ActivityChannelType2Binding binding;
 
@@ -61,12 +61,11 @@ public class ChannelType2Activity extends BaseActivity<ChannelType2Presenter> im
             @Override
             public void onItemClick(View view, int position) {
                 ChannelType2Info channelType2Info = channelType2InfoList.get(position);
-                Intent intent = new Intent(ChannelType2Activity.this, ChannelActivity.class);
+                Intent intent = new Intent(ChannelTypeActivity2.this, ChannelActivity.class);
                 intent.putExtra(Constant.key.channel_type, channelType2Info.getTag());
                 startActivity(intent);
             }
         });
     }
-
 
 }

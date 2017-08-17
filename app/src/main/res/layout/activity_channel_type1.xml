@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        android:background="@android:color/black"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        tools:context="com.wiatec.bplay.view.activity.MainActivity">
+
+        <ImageView
+            android:id="@+id/ivChannelType1"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:background="@color/colorTranslucentB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/llLoading"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvLoading"
+                android:text="@string/data_loading"
+                android:textSize="50sp"
+                android:textColor="@color/colorAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btRetry"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:textSize="22sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_button_retry"
+                android:text="@string/retry"
+                android:layout_width="150dp"
+                android:layout_height="60dp" />
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                style="@style/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <com.wiatec.bplay.view.custom_view.ItemRecyclerView
+            android:layout_margin="40dp"
+            android:clipChildren="false"
+            android:id="@+id/rcvChannelType1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </FrameLayout>
+</layout>

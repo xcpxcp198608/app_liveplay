@@ -62,7 +62,7 @@ public abstract class BaseRecycleAdapter<VH extends RecyclerView.ViewHolder> ext
                 @Override
                 public boolean onLongClick(View v) {
                     onItemLongClickListener.onItemLongClick(v, position);
-                    return false;
+                    return true;
                 }
             });
         }

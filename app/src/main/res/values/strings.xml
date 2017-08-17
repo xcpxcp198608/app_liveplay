@@ -63,6 +63,6 @@
 \r\n\nIn case of copyright infringement, please directly contact the responsible parties.  LivePlay operates as a search engine of TV, TV Shows and movies content found publicly on the internet, in principle conducting in the same way as Google.  However, LivePlay strongly believes in the protection of intellectual property and would be willing to assist when possible and applicable.  LivePlay does not accept responsibility or contents hosted on third party websites, nor do we upload videos ourselves or encourage others to do so.  The videos are streamed directly form the third-party video sharing services mentioned above.  All other trademarks, logos, and images are the property of their respective and rightful owners.
 
 \r\n\nUse LivePlay at your own risk.</string>
-    <string name="notice_protect">If you need protect this item ,please type in your password and confirm, if not press cancel</string>
+    <string name="notice_protect">Parental control:\nTo setup,please type in your password and confirm. If not required, please press cancel</string>
 
 </resources>

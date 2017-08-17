@@ -99,6 +99,13 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 handleProtect(channelTypeInfo);
             }
         });
+        channelTypeAdapter.setOnItemLongClickListener(new BaseRecycleAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
+                showSettingPasswordDialog(channelTypeInfo.getTag());
+            }
+        });
     }
 
     private void handleProtect(ChannelTypeInfo channelTypeInfo){
@@ -191,7 +198,11 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
 
     private void showChannel(ChannelTypeInfo channelTypeInfo){
         if(channelTypeInfo.getFlag() == 1){
-            Intent intent = new Intent(ChannelTypeActivity.this, ChannelType2Activity.class);
+            Intent intent = new Intent(ChannelTypeActivity.this, ChannelTypeActivity1.class);
+            intent.putExtra("type", channelTypeInfo.getTag());
+            startActivity(intent);
+        }else if(channelTypeInfo.getFlag() == 2){
+            Intent intent = new Intent(ChannelTypeActivity.this, ChannelTypeActivity2.class);
             intent.putExtra("type", channelTypeInfo.getTag());
             startActivity(intent);
         }else {

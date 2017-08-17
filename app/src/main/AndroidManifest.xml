@@ -53,7 +53,8 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".view.activity.FMPlayActivity" />
-        <activity android:name=".view.activity.ChannelType2Activity"></activity>
+        <activity android:name=".view.activity.ChannelTypeActivity1"/>
+        <activity android:name=".view.activity.ChannelTypeActivity2"/>
     </application>
 
 </manifest>

@@ -13,8 +13,8 @@
         <item name="android:indeterminateDrawable">@anim/loading</item>
         <item name="android:minHeight">72dp</item>
         <item name="android:minWidth">72dp</item>
-        <item name="android:maxHeight">72dp</item>
-        <item name="android:maxWidth">72dp</item>
+        <item name="android:maxHeight">80dp</item>
+        <item name="android:maxWidth">80dp</item>
     </style>
 
 </resources>

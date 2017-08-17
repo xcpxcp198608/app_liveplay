@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class VoiceSpectrumView extends View {
     private Paint mPaint;
-    private int mCount = 60; //柱子数量
+    private int mCount = 80; //柱子数量
     private int mWidth; //控件宽度
     private int mRectWidth; //单个柱子宽度
     private int mRectHeight; //单个柱子高度

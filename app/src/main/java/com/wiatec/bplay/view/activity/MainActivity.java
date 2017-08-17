@@ -16,9 +16,7 @@ import com.wiatec.bplay.adapter.MainViewPagerTransform;
 import com.wiatec.bplay.databinding.ActivityMainBinding;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ImageInfo;
-import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.presenter.MainPresenter;
-import com.wiatec.bplay.presenter.SplashPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +98,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
                 startActivity(new Intent(MainActivity.this, MoviesActivity.class));
                 break;
             case 4:
-                Intent intent = new Intent(MainActivity.this, ChannelActivity.class);
-                intent.putExtra(Constant.key.channel_type, Constant.key.radio_music);
+                Intent intent = new Intent(MainActivity.this, ChannelTypeActivity2.class);
+                intent.putExtra("type", Constant.key.radio_music);
                 startActivity(intent);
                 break;
             default:

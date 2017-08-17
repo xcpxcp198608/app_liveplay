@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +32,7 @@ import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
+import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
@@ -40,6 +44,7 @@ import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.sql.FavoriteChannelDao;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -55,6 +60,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private MediaPlayer mediaPlayer;
     private FavoriteChannelDao favoriteChannelDao;
     private String errorMessage = "";
+    private boolean send = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,6 +128,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void playVideo(final String url) {
+        sendNetSpeed();
         binding.pbPlay.setVisibility(View.VISIBLE);
         try {
             if(mediaPlayer == null){
@@ -136,6 +143,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 public void onPrepared(MediaPlayer mp) {
                     binding.pbPlay.setVisibility(View.GONE);
                     EmojiToast.show(playManager.getChannelInfo().getName()+" playing" , EmojiToast.EMOJI_SMILE);
+                    binding.tvNetSpeed.setVisibility(View.GONE);
                     mediaPlayer.start();
                 }
             });
@@ -145,9 +153,11 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     Logger.d("onInfo:" + what + "/" + extra);
                     if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
                         binding.pbPlay.setVisibility(View.VISIBLE);
+                        binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     }
                     if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END){
                         binding.pbPlay.setVisibility(View.GONE);
+                        binding.tvNetSpeed.setVisibility(View.GONE);
                     }
                     return false;
                 }
@@ -157,6 +167,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     Logger.d("onError:" + what + "/" + extra);
                     playVideo(url);
+                    binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     return true;
                 }
             });
@@ -320,4 +331,37 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    private void sendNetSpeed(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (send){
+                    int s1 = NetUtils.getNetSpeedBytes();
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    int s2 = NetUtils.getNetSpeedBytes();
+                    float f  = (s2-s1)/2/1024F;
+                    DecimalFormat decimalFormat = new DecimalFormat("##0.00");
+                    String s = decimalFormat.format(f);
+                    Message m = handler.obtainMessage();
+                    m.obj = s;
+                    handler.sendMessage(m);
+                }
+            }
+        }).start();
+    }
+
+    private Handler handler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String s = msg.obj.toString();
+            Logger.d(s);
+            binding.tvNetSpeed.setText(s+"kbs");
+        }
+    };
 }
