@@ -18,9 +18,11 @@
         android:layout_height="match_parent" />
 
     <TextView
+        android:background="@color/colorTranslucentA"
         android:layout_gravity="bottom"
         android:id="@+id/textView"
         tools:text="USA"
+        android:textStyle="bold"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"

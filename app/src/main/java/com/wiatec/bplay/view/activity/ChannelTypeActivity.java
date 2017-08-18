@@ -146,14 +146,14 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 String p1 = etP1.getText().toString().trim();
                 String p2 = etP2.getText().toString().trim();
                 if(TextUtils.isEmpty(p1) || TextUtils.isEmpty(p2) || !p1.equals(p2)){
-                    EmojiToast.show("password format error", EmojiToast.EMOJI_SAD);
+                    EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
                     return;
                 }
                 SPUtils.put(ChannelTypeActivity.this, "protectpassword", p1);
                 SPUtils.put(ChannelTypeActivity.this, tag, true);
                 SPUtils.put(ChannelTypeActivity.this, tag+"protect", true);
                 dialog.dismiss();
-                EmojiToast.show("password setting successfully", EmojiToast.EMOJI_SMILE);
+                EmojiToast.show(getString(R.string.password_setting_success), EmojiToast.EMOJI_SMILE);
             }
         });
         btCancel.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +162,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 SPUtils.put(ChannelTypeActivity.this, "protectpassword", "");
                 SPUtils.put(ChannelTypeActivity.this, tag, false);
                 dialog.dismiss();
-                EmojiToast.show("protect password dismiss", EmojiToast.EMOJI_SMILE);
+                EmojiToast.show(getString(R.string.parent_control_disabled), EmojiToast.EMOJI_SMILE);
             }
         });
     }
@@ -182,7 +182,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             public void onClick(View v) {
                 String p = etPassword.getText().toString().trim();
                 if(TextUtils.isEmpty(p)){
-                    EmojiToast.show("password format error", EmojiToast.EMOJI_SAD);
+                    EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
                     return;
                 }
                 String cp = (String) SPUtils.get(ChannelTypeActivity.this, "protectpassword", "");
@@ -190,7 +190,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     showChannel(channelTypeInfo);
                     dialog.dismiss();
                 }else{
-                    EmojiToast.show("password incorrect", EmojiToast.EMOJI_SMILE);
+                    EmojiToast.show(getString(R.string.password_incorrect), EmojiToast.EMOJI_SMILE);
                 }
             }
         });
@@ -207,7 +207,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             startActivity(intent);
         }else {
             Intent intent = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
-            intent.putExtra(Constant.key.channel_type, channelTypeInfo.getName());
+            intent.putExtra(Constant.key.channel_type, channelTypeInfo.getTag());
             startActivity(intent);
         }
     }

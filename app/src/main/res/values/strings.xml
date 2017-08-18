@@ -64,5 +64,8 @@
 
 \r\n\nUse LivePlay at your own risk.</string>
     <string name="notice_protect">Parental control:\nTo setup,please type in your password and confirm. If not required, please press cancel</string>
-
+    <string name="password_format_error">password format error</string>
+    <string name="password_setting_success">password setting successfully</string>
+    <string name="parent_control_disabled">Parental Control disabled</string>
+    <string name="password_incorrect">password incorrect</string>
 </resources>
