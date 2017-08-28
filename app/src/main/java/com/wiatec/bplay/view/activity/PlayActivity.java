@@ -76,8 +76,9 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         playManager.setPlayListener(this);
         favoriteChannelDao = FavoriteChannelDao.getInstance();
         binding.flPlay.setOnClickListener(this);
-        binding.cbFavorite.setOnCheckedChangeListener(this);
+        binding.ibtStartStop.setOnClickListener(this);
         binding.ibtReport.setOnClickListener(this);
+        binding.cbFavorite.setOnCheckedChangeListener(this);
         showFavoriteStatus();
     }
 
@@ -141,6 +142,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
+                    binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_pause);
                     binding.pbPlay.setVisibility(View.GONE);
                     EmojiToast.show(playManager.getChannelInfo().getName()+" playing" , EmojiToast.EMOJI_SMILE);
                     binding.tvNetSpeed.setVisibility(View.GONE);
@@ -299,13 +301,26 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 if(binding.llController.getVisibility() == View.VISIBLE){
                     binding.llController.setVisibility(View.GONE);
                 }else{
+                    binding.ibtStartStop.requestFocus();
+                    if(mediaPlayer.isPlaying()){
+                        binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_pause);
+                    }else{
+                        binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_play);
+                    }
                     binding.llController.setVisibility(View.VISIBLE);
-                    binding.cbFavorite.requestFocus();
                 }
                 break;
             case R.id.ibtReport:
                 showErrorReportDialog();
                 break;
+            case R.id.ibtStartStop:
+                if(mediaPlayer.isPlaying()){
+                    mediaPlayer.pause();
+                    binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_play);
+                }else{
+                    mediaPlayer.start();
+                    binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_pause);
+                }
             default:
                 break;
         }
