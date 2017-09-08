@@ -53,10 +53,12 @@
     <string name="skip_ad1">JOIN LD GOLD TO SKIP ALL ADS </string>
     <string name="skip">SKIP</string>
     <string name="authority">PRESS BACK TO EXIT</string>
+    <string name="notice2">You can watch vip channel in next 1m </string>
     <string name="agreement">Agreement</string>
     <string name="error_msg1">Channel down</string>
     <string name="error_msg2">Video/Voice don’t sync</string>
     <string name="error_msg3">Channel and name don’t match</string>
+    <string name="error_msg4">Channel content repeat</string>
     <string name="error_input_format">Message input format error</string>
     <string name="agreement_content">LivePlay is absolutely legal and contain only links to other sites on the Internet （youtube, ZStream, Dizimag, TheVideo,etc). It does not host or upload any videos, films or media files.  LivePlay simply aggregates links in a convenient, user-friendly interface.  LivePlay is not responsible for the accuracy, compliance, copyright, legality, decency, or any other aspect of the content of other linked sites.  If you have any legal issues, please contact the appropriate media file owners or host sites.   Any legal issues regarding the free online tv, tv shows and movies on this application should be taken up with the actual file hosts and providers themselves, as we’re not affiliated with them.
 

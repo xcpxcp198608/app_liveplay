@@ -233,6 +233,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         break;
                     case R.id.rbMessage3:
                         errorMessage = getString(R.string.error_msg3);
+                    case R.id.rbMessage4:
+                        errorMessage = getString(R.string.error_msg4);
                         break;
                     default:
                         break;

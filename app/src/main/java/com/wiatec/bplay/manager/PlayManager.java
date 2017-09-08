@@ -6,7 +6,9 @@ import com.px.common.utils.AESUtil;
 import com.px.common.utils.CommonApplication;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
+import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
+import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
 
@@ -68,8 +70,18 @@ public class PlayManager {
                         }
                     }else{
                         if(mPlayListener != null){
-                            EmojiToast.show(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
-                            mPlayListener.playAd();
+                            long lastExperienceTime = (long) SPUtils.get(Application.context, "lastExperienceTime",0L);
+                            if(lastExperienceTime + 60000 > System.currentTimeMillis()){
+                                if(mPlayListener != null){
+                                    mPlayListener.play(url);
+                                }
+                            }else {
+                                SPUtils.put(Application.context,"lastExperienceTime",System.currentTimeMillis());
+                                if(mPlayListener != null){
+                                    EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2), EmojiToast.EMOJI_SMILE);
+                                    mPlayListener.playAd();
+                                }
+                            }
                         }
                     }
                 }
@@ -87,9 +99,17 @@ public class PlayManager {
                     if("true".equals(experience)){
                         relayUrl(url);
                     }else{
-                        if(mPlayListener != null){
-                            EmojiToast.showLong(CommonApplication.context.getString(R.string.authority), EmojiToast.EMOJI_SAD);
-                            mPlayListener.playAd();
+                        long lastExperienceTime = (long) SPUtils.get(Application.context, "lastExperienceTime",0L);
+                        if(lastExperienceTime + 60000 > System.currentTimeMillis()){
+                            if(mPlayListener != null){
+                                mPlayListener.play(url);
+                            }
+                        }else {
+                            SPUtils.put(Application.context,"lastExperienceTime",System.currentTimeMillis());
+                            if(mPlayListener != null){
+                                EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2), EmojiToast.EMOJI_SMILE);
+                                mPlayListener.playAd();
+                            }
                         }
                     }
                 }

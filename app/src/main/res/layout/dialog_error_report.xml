@@ -41,6 +41,15 @@
             android:textColor="@drawable/text_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:button="@drawable/bg_radio_button"
+            android:id="@+id/rbMessage4"
+            android:textSize="30sp"
+            android:text="@string/error_msg4"
+            android:textColor="@drawable/text_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </RadioGroup>
 
