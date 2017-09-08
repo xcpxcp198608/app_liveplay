@@ -40,6 +40,7 @@ import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.manager.PlayManager;
+import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.sql.FavoriteChannelDao;
 
@@ -251,7 +252,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void sendErrorReport(String message) {
-        String userName = (String) SPUtils.get(Application.context, "userName", "test");
+        String userName = UserContentResolver.get("userName");
+        if(TextUtils.isEmpty(userName)) userName = "test";
         HttpMaster.post(Constant.url.channel_send_error_report)
                 .parames("userName",userName)
                 .parames("channelName",playManager.getChannelInfo().getName())

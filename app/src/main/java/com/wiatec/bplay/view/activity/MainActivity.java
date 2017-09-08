@@ -89,7 +89,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
     private void launchShortcut(int position){
         switch (position){
             case 1:
-                AppUtil.launchApp(MainActivity.this, Constant.packageName.btv);
+                Intent intent1 = new Intent(MainActivity.this, ChannelTypeActivity2.class);
+                intent1.putExtra("type", Constant.key.btv);
+                startActivity(intent1);
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this, ChannelTypeActivity.class));
