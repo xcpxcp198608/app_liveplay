@@ -103,7 +103,11 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             @Override
             public void onItemLongClick(View view, int position) {
                 ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
-                showSettingPasswordDialog(channelTypeInfo.getTag());
+                boolean isSetting = (boolean) SPUtils.get(ChannelTypeActivity.this,
+                        channelTypeInfo.getTag()+"protect", false);
+                if(!isSetting) {
+                    showSettingPasswordDialog(channelTypeInfo.getTag());
+                }
             }
         });
     }
@@ -112,7 +116,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         String tag = channelTypeInfo.getTag();
         boolean isProtect = (boolean) SPUtils.get(ChannelTypeActivity.this, tag, true);
         boolean isSetting = (boolean) SPUtils.get(ChannelTypeActivity.this, tag+"protect", false);
-        String password = (String) SPUtils.get(ChannelTypeActivity.this, "protectpassword", "");
+        String password = (String) SPUtils.get(ChannelTypeActivity.this, tag+"protectpassword", "");
         if(isProtect){
             if(TextUtils.isEmpty(password)) {
                 showSettingPasswordDialog(tag);
@@ -149,7 +153,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
                     return;
                 }
-                SPUtils.put(ChannelTypeActivity.this, "protectpassword", p1);
+                SPUtils.put(ChannelTypeActivity.this, tag+"protectpassword", p1);
                 SPUtils.put(ChannelTypeActivity.this, tag, true);
                 SPUtils.put(ChannelTypeActivity.this, tag+"protect", true);
                 dialog.dismiss();
@@ -159,7 +163,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         btCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SPUtils.put(ChannelTypeActivity.this, "protectpassword", "");
+                SPUtils.put(ChannelTypeActivity.this, tag+"protectpassword", "");
                 SPUtils.put(ChannelTypeActivity.this, tag, false);
                 dialog.dismiss();
                 EmojiToast.show(getString(R.string.parent_control_disabled), EmojiToast.EMOJI_SMILE);
@@ -185,7 +189,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
                     return;
                 }
-                String cp = (String) SPUtils.get(ChannelTypeActivity.this, "protectpassword", "");
+                String cp = (String) SPUtils.get(ChannelTypeActivity.this, channelTypeInfo.getTag()+"protectpassword", "");
                 if(cp.equals(p)){
                     showChannel(channelTypeInfo);
                     dialog.dismiss();
