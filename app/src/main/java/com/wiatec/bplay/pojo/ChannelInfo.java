@@ -23,14 +23,14 @@ public class ChannelInfo implements Parcelable {
     private String url;
     //channel icon
     private String icon;
-    //channel type
-    private String type;
     //the country of channel
     private String country;
+    //channel type  1--live , 2--app , 3 -- relay
+    private int type;
     //the style of channel
-    private String style;
+    private int style;
     //visible (0 - gone , 1 - visible)
-    private short visible;
+    private boolean visible;
     private boolean locked;
 
     public int getId() {
@@ -89,14 +89,6 @@ public class ChannelInfo implements Parcelable {
         this.icon = icon;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -105,19 +97,27 @@ public class ChannelInfo implements Parcelable {
         this.country = country;
     }
 
-    public String getStyle() {
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getStyle() {
         return style;
     }
 
-    public void setStyle(String style) {
+    public void setStyle(int style) {
         this.style = style;
     }
 
-    public short getVisible() {
+    public boolean isVisible() {
         return visible;
     }
 
-    public void setVisible(short visible) {
+    public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
@@ -139,9 +139,9 @@ public class ChannelInfo implements Parcelable {
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", icon='" + icon + '\'' +
-                ", type='" + type + '\'' +
                 ", country='" + country + '\'' +
-                ", style='" + style + '\'' +
+                ", type=" + type +
+                ", style=" + style +
                 ", visible=" + visible +
                 ", locked=" + locked +
                 '}';
@@ -161,10 +161,10 @@ public class ChannelInfo implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.url);
         dest.writeString(this.icon);
-        dest.writeString(this.type);
         dest.writeString(this.country);
-        dest.writeString(this.style);
-        dest.writeInt(this.visible);
+        dest.writeInt(this.type);
+        dest.writeInt(this.style);
+        dest.writeByte(this.visible ? (byte) 1 : (byte) 0);
         dest.writeByte(this.locked ? (byte) 1 : (byte) 0);
     }
 
@@ -179,10 +179,10 @@ public class ChannelInfo implements Parcelable {
         this.name = in.readString();
         this.url = in.readString();
         this.icon = in.readString();
-        this.type = in.readString();
         this.country = in.readString();
-        this.style = in.readString();
-        this.visible = (short) in.readInt();
+        this.type = in.readInt();
+        this.style = in.readInt();
+        this.visible = in.readByte() != 0;
         this.locked = in.readByte() != 0;
     }
 

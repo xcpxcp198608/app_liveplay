@@ -20,10 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -46,6 +43,8 @@ import com.wiatec.bplay.sql.FavoriteChannelDao;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,6 +61,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private FavoriteChannelDao favoriteChannelDao;
     private String errorMessage = "";
     private boolean send = true;
+    private int currentPlayPosition = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,13 +109,32 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void play(final String url) {
         showFavoriteStatus();
-        playVideo(url);
+        playVideo(handleUrl(url));
     }
 
     @Override
     public void playAd() {
         startActivity(new Intent(PlayActivity.this, AdScreenActivity.class));
         finish();
+    }
+
+    private List<String> handleUrl(String url){
+        List<String> urlList;
+        if(url.contains("#")){
+            urlList = new ArrayList<>(Arrays.asList(url.split("#")));
+        }else{
+            urlList = new ArrayList<>();
+            urlList.add(url);
+        }
+        List<String> urlList1 = new ArrayList<>();
+        for (String u : urlList){
+            if (u.contains("protv.company")){
+                String streamToken = (String) SPUtils.get("streamToken", "123");
+                u += "?token=" + streamToken;
+            }
+            urlList1.add(u);
+        }
+        return urlList1;
     }
 
     @Override
@@ -129,15 +148,16 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         finish();
     }
 
-    private void playVideo(final String url) {
+    private void playVideo(final List<String> urlList) {
         sendNetSpeed();
         binding.pbPlay.setVisibility(View.VISIBLE);
         try {
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
+            Logger.d(urlList.get(currentPlayPosition));
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(url);
+            mediaPlayer.setDataSource(urlList.get(currentPlayPosition));
             mediaPlayer.setDisplay(surfaceHolder);
             mediaPlayer.prepareAsync();
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -169,7 +189,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     Logger.d("onError:" + what + "/" + extra);
-                    playVideo(url);
+                    PlayOtherUrlOnVideo(urlList);
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     return true;
                 }
@@ -178,12 +198,20 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     Logger.d("onCompletions");
-                    playVideo(url);
+                    PlayOtherUrlOnVideo(urlList);
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.d(e.getMessage());
         }
+    }
+
+    private void PlayOtherUrlOnVideo(List<String> urlList){
+        currentPlayPosition ++;
+        if(currentPlayPosition >= urlList.size()){
+            currentPlayPosition =0 ;
+        }
+        playVideo(urlList);
     }
 
     private void releaseMediaPlayer(){
@@ -210,6 +238,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     protected void onDestroy() {
         super.onDestroy();
         releaseMediaPlayer();
+        send = false;
     }
 
     private void showErrorReportDialog(){
@@ -263,9 +292,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     public void onSuccess(String s) throws IOException {
                         ResultInfo resultInfo = new Gson().fromJson(s,
                                 new TypeToken<ResultInfo>(){}.getType());
-                        if(resultInfo == null){
-                            return;
-                        }
+                        if(resultInfo == null) return;
                         if(resultInfo.getCode() == ResultInfo.CODE_OK) {
                             EmojiToast.show(resultInfo.getMessage(), EmojiToast.EMOJI_SMILE);
                         }else{
@@ -367,6 +394,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     DecimalFormat decimalFormat = new DecimalFormat("##0.00");
                     String s = decimalFormat.format(f);
                     Message m = handler.obtainMessage();
+                    m.what = 1;
                     m.obj = s;
                     handler.sendMessage(m);
                 }
@@ -378,9 +406,23 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String s = msg.obj.toString();
-            Logger.d(s);
-            binding.tvNetSpeed.setText(s+"kbs");
+            switch (msg.what) {
+                case 1:
+                    String s = msg.obj.toString();
+                    binding.tvNetSpeed.setText(s + "kbs");
+                    if(playManager.getChannelInfo().isLocked() && playManager.getLevel() <= 2 &&
+                            !playManager.isExperience()) {
+                        long lastExperienceTime = (long) SPUtils.get("lastExperienceTime", 0L);
+                        if (lastExperienceTime + 300000 < System.currentTimeMillis()) {
+                            boolean isLastExperience = (boolean) SPUtils.get("isLastExperience", true);
+                            SPUtils.put("isLastExperience", !isLastExperience);
+                            SPUtils.put("lastExperienceTime", System.currentTimeMillis());
+                            EmojiToast.show(getString(R.string.notice3), EmojiToast.EMOJI_SAD);
+                            finish();
+                        }
+                    }
+                    break;
+            }
         }
     };
 }

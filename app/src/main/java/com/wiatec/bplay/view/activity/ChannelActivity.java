@@ -99,7 +99,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
             @Override
             public void onItemClick(View view, int position) {
                 ChannelInfo channelInfo = channelInfoList.get(position);
-                if("FM".equals(channelInfo.getStyle())){
+                if(channelInfo.getStyle() == 1){
                     launchFMPlay(channelInfoList, position);
                 }else {
                     launchPlay(channelInfoList, position);

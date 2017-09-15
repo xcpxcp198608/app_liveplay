@@ -265,7 +265,7 @@ public class FMPlayActivity extends AppCompatActivity implements PlayManager.Pla
     }
 
     private void sendErrorReport(String message) {
-        String userName = (String) SPUtils.get(Application.context, "userName", "test");
+        String userName = (String) SPUtils.get("userName", "test");
         HttpMaster.post(Constant.url.channel_send_error_report)
                 .parames("userName",userName)
                 .parames("channelName",playManager.getChannelInfo().getName())

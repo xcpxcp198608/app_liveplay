@@ -2,7 +2,9 @@ package com.wiatec.bplay.instance;
 
 import com.px.common.utils.CommonApplication;
 import com.wiatec.bplay.task.ImageTask;
+import com.wiatec.bplay.task.TokenTask;
 
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,10 +24,16 @@ public class Application extends CommonApplication {
         PATH_AD_IMAGE = getExternalFilesDir("ad_images").getAbsolutePath();
         PATH_DOWNLOAD = getExternalFilesDir("download").getAbsolutePath();
         executorService = Executors.newCachedThreadPool();
+        executorService.execute(new ImageTask());
+        handleToken();
     }
 
     public static ExecutorService getExecutorService(){
         return executorService;
+    }
+
+    private void handleToken(){
+        new Timer().schedule(new TokenTask(), 0,  18000000);
     }
 
 }

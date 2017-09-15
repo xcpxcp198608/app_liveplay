@@ -13,6 +13,10 @@ public class SPUtils {
 
     private static final String NAME = "sp";
 
+    public static void put (String key , Object object){
+        put(CommonApplication.context, key, object);
+    }
+
     /**
      * 根据传入的object对象类型存成对应类型的键值对
      * @param context Application context
@@ -40,6 +44,11 @@ public class SPUtils {
         }
         editor.apply();
     }
+
+    public static Object get(String key , Object defaultObject) {
+        return get(CommonApplication.context, key, defaultObject);
+    }
+
 
     /**
      * 根据默认值类型从shared preferences中取出对应类型和Key的值

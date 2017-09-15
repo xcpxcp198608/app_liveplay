@@ -8,7 +8,6 @@ import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
-import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
 
@@ -26,6 +25,9 @@ public class PlayManager {
     private ChannelInfo channelInfo;
     private PlayListener mPlayListener;
     private int level;
+    private static final long DURATION = 300000;
+    private static final int DURATION_MINUTE = (int) (DURATION / 1000 / 60);
+    private String experience;
 
     public PlayManager(List<ChannelInfo> channelInfoList, int currentPosition) {
         this.channelInfoList = channelInfoList;
@@ -37,6 +39,7 @@ public class PlayManager {
         }catch (Exception e){
             level = 1;
         }
+        experience = UserContentResolver.get("experience");
     }
 
     public interface PlayListener{
@@ -53,111 +56,87 @@ public class PlayManager {
         return channelInfo;
     }
 
+    //get user level
+    public int getLevel() {
+        return level;
+    }
+
+    // check user is in experience
+    public boolean isExperience(){
+        return "true".equals(experience);
+    }
+
     public void dispatchChannel(){
-        String type = channelInfo.getType();
+        if(!channelInfo.isLocked()) {
+            handlePlay();
+            return;
+        }
+        if(level > 2){
+            handlePlay();
+            return;
+        }
+        if("true".equals(experience)){
+            handlePlay();
+            return;
+        }
+        long lastExperienceTime = (long) SPUtils.get("lastExperienceTime", 0L);
+        boolean isLastExperience = (boolean) SPUtils.get("isLastExperience", true);
+        if(lastExperienceTime + DURATION > System.currentTimeMillis() && isLastExperience){
+            handlePlay();
+            return;
+        }
+        int minute = 0;
+        if (lastExperienceTime <= System.currentTimeMillis() - DURATION){
+            SPUtils.put("lastExperienceTime", System.currentTimeMillis());
+        }else {
+            long leftTime = System.currentTimeMillis() - lastExperienceTime;
+            minute = (int) (leftTime / 1000 / 60);
+            minute = DURATION_MINUTE - minute;
+            minute = minute < 1 && minute > 0 ? 1 : minute;
+        }
+        if(minute <= 0) SPUtils.put("isLastExperience", true);
+        EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2) + " " + minute +
+                " minutes", EmojiToast.EMOJI_SMILE);
+        if(mPlayListener != null) mPlayListener.playAd();
+    }
+
+    private void handlePlay(){
+        int type = channelInfo.getType();
         String url = AESUtil.decrypt(channelInfo.getUrl(), AESUtil.KEY);
-        if("live".equals(type)){
-            if(channelInfo.isLocked()){
-                if(level > 2){
-                    if(mPlayListener != null){
-                        mPlayListener.play(url);
-                    }
-                }else{
-                    String experience = UserContentResolver.get("experience");
-                    if("true".equals(experience)){
-                        if(mPlayListener != null){
-                            mPlayListener.play(url);
+        if(type == 1){ //live
+            if(mPlayListener != null) mPlayListener.play(url);
+        }else if(type == 3) { //relay
+            HttpMaster.get(url)
+                    .enqueue(new StringListener() {
+                        @Override
+                        public void onSuccess(String s) throws IOException {
+                            if(s == null) return;
+                            if(mPlayListener != null) mPlayListener.play(s);
                         }
-                    }else{
-                        if(mPlayListener != null){
-                            long lastExperienceTime = (long) SPUtils.get(Application.context, "lastExperienceTime",0L);
-                            if(lastExperienceTime + 60000 > System.currentTimeMillis()){
-                                if(mPlayListener != null){
-                                    mPlayListener.play(url);
-                                }
-                            }else {
-                                SPUtils.put(Application.context,"lastExperienceTime",System.currentTimeMillis());
-                                if(mPlayListener != null){
-                                    EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2), EmojiToast.EMOJI_SMILE);
-                                    mPlayListener.playAd();
-                                }
-                            }
+
+                        @Override
+                        public void onFailure(String e) {
+                            Logger.d(e);
                         }
-                    }
-                }
-            }else{
-                if(mPlayListener != null){
-                    mPlayListener.play(url);
-                }
-            }
-        }else if("relay".equals(type)){
-            if(channelInfo.isLocked()){
-                if(level > 2){
-                    relayUrl(url);
-                }else{
-                    String experience = UserContentResolver.get("experience");
-                    if("true".equals(experience)){
-                        relayUrl(url);
-                    }else{
-                        long lastExperienceTime = (long) SPUtils.get(Application.context, "lastExperienceTime",0L);
-                        if(lastExperienceTime + 60000 > System.currentTimeMillis()){
-                            if(mPlayListener != null){
-                                mPlayListener.play(url);
-                            }
-                        }else {
-                            SPUtils.put(Application.context,"lastExperienceTime",System.currentTimeMillis());
-                            if(mPlayListener != null){
-                                EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2), EmojiToast.EMOJI_SMILE);
-                                mPlayListener.playAd();
-                            }
-                        }
-                    }
-                }
-            }else{
-                relayUrl(url);
-            }
-        }else if("app".equals(type)){
-            if(mPlayListener != null){
-                mPlayListener.launchApp(AESUtil.decrypt(channelInfo.getUrl(), AESUtil.KEY));
-            }
+                    });
+        }else if(type == 2){ // app
+            if(mPlayListener != null) mPlayListener.launchApp(AESUtil.decrypt(channelInfo.getUrl(),
+                    AESUtil.KEY));
         }else{
             Logger.d("type error");
         }
     }
 
-    private void relayUrl(String url){
-        HttpMaster.get(url)
-                .enqueue(new StringListener() {
-                    @Override
-                    public void onSuccess(String s) throws IOException {
-                        if(s != null){
-                            if(mPlayListener != null){
-                                mPlayListener.play(s);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(String e) {
-                        Logger.d(e);
-                    }
-                });
-    }
-
     public void previousChannel(){
         currentPosition -- ;
-        if(currentPosition < 0){
-            currentPosition = channelInfoList.size()-1;
-        }
+        if(currentPosition < 0) currentPosition = channelInfoList.size() - 1;
         channelInfo = channelInfoList.get(currentPosition);
         dispatchChannel();
     }
 
     public void nextChannel(){
         currentPosition ++ ;
-        if(currentPosition >= channelInfoList.size()){
-            currentPosition = 0;
-        }
+        if(currentPosition >= channelInfoList.size()) currentPosition = 0;
         channelInfo = channelInfoList.get(currentPosition);
         dispatchChannel();
     }

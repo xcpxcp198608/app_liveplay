@@ -44,7 +44,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         binding.tvVersion.setText(AppUtil.getVersionName(SplashActivity.this , getPackageName()));
         presenter.loadAdImage();
-        Application.getExecutorService().execute(new ImageTask());
     }
 
     @Override
@@ -57,7 +56,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             showDeviceNotSupportDialog();
             return;
         }
-        boolean showAgree = (boolean) SPUtils.get(SplashActivity.this, "agree", true);
+        boolean showAgree = (boolean) SPUtils.get("agree", true);
         if(showAgree) {
             showAgreement();
         }else {
@@ -194,7 +193,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
      */
     private void nextPage(){
         long  currentTime = System.currentTimeMillis();
-        long recorderTime = (long) SPUtils.get(SplashActivity.this, "recorderTime" , 0L);
+        long recorderTime = (long) SPUtils.get("recorderTime" , 0L);
         if (currentTime >= recorderTime+10800000){
             startActivity(new Intent(SplashActivity.this, AdVideoActivity.class));
         }else{

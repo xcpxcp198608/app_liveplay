@@ -63,7 +63,7 @@ public class FavoriteChannelDao {
             contentValues.put("type", channelInfo.getType());
             contentValues.put("country", channelInfo.getCountry());
             contentValues.put("style", channelInfo.getStyle());
-            contentValues.put("visible", channelInfo.getVisible());
+            contentValues.put("visible", channelInfo.isVisible());
             contentValues.put("locked", channelInfo.isLocked());
             sqLiteDatabase.insert(SQLiteHelper.TABLE_NAME, null, contentValues);
         }catch(Exception e){
@@ -84,7 +84,7 @@ public class FavoriteChannelDao {
             contentValues.put("type", channelInfo.getType());
             contentValues.put("country", channelInfo.getCountry());
             contentValues.put("style", channelInfo.getStyle());
-            contentValues.put("visible", channelInfo.getVisible());
+            contentValues.put("visible", channelInfo.isVisible());
             contentValues.put("locked", channelInfo.isLocked());
             sqLiteDatabase.update(SQLiteHelper.TABLE_NAME, contentValues, "tag=?",
                     new String[]{channelInfo.getTag()});
@@ -116,10 +116,10 @@ public class FavoriteChannelDao {
             channelInfo.setName(cursor.getString(cursor.getColumnIndex("name")));
             channelInfo.setUrl(cursor.getString(cursor.getColumnIndex("url")));
             channelInfo.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
-            channelInfo.setType(cursor.getString(cursor.getColumnIndex("type")));
+            channelInfo.setType(cursor.getInt(cursor.getColumnIndex("type")));
             channelInfo.setCountry(cursor.getString(cursor.getColumnIndex("country")));
-            channelInfo.setStyle(cursor.getString(cursor.getColumnIndex("style")));
-            channelInfo.setVisible(cursor.getShort(cursor.getColumnIndex("visible")));
+            channelInfo.setStyle(cursor.getInt(cursor.getColumnIndex("style")));
+            channelInfo.setVisible(cursor.getInt(cursor.getColumnIndex("visible")) == 1);
             channelInfo.setLocked(cursor.getInt(cursor.getColumnIndex("locked")) == 1);
             channelInfoList.add(channelInfo);
         }

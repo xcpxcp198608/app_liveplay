@@ -14,10 +14,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "favorite";
     private static final String CREATE_TABLE = "create table if not exists "+TABLE_NAME
             +"(_id integer primary key autoincrement, channelId integer, sequence integer, " +
-            "tag text, name text, url text, icon text, type text, country text, style text, " +
-            "visible integer, locked boolean)";
+            "tag text, name text, url text, icon text, country text, type integer, style integer, " +
+            "visible boolean, locked boolean)";
     private static final String DROP_TABLE = "drop table if exists " + TABLE_NAME;
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
