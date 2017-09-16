@@ -24,6 +24,9 @@ import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.presenter.SplashPresenter;
 import com.wiatec.bplay.task.ImageTask;
+import com.wiatec.bplay.task.TokenTask;
+
+import java.util.Timer;
 
 /**
  * splash activity
@@ -32,6 +35,7 @@ import com.wiatec.bplay.task.ImageTask;
 public class SplashActivity extends BaseActivity<SplashPresenter> implements Splash {
 
     ActivitySplashBinding binding;
+    private Timer timer;
 
     @Override
     protected SplashPresenter createPresenter() {
@@ -44,6 +48,10 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         binding.tvVersion.setText(AppUtil.getVersionName(SplashActivity.this , getPackageName()));
         presenter.loadAdImage();
+        Application.getExecutorService().execute(new ImageTask());
+        if(timer != null) timer = null;
+        timer = new Timer();
+        timer.schedule(new TokenTask(), 0,  18000000);
     }
 
     @Override

@@ -155,7 +155,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
-            Logger.d(urlList.get(currentPlayPosition));
+//            Logger.d(urlList.get(currentPlayPosition));
             mediaPlayer.reset();
             mediaPlayer.setDataSource(urlList.get(currentPlayPosition));
             mediaPlayer.setDisplay(surfaceHolder);
@@ -173,7 +173,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                 @Override
                 public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                    Logger.d("onInfo:" + what + "/" + extra);
+//                    Logger.d("onInfo:" + what + "/" + extra);
                     if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
                         binding.pbPlay.setVisibility(View.VISIBLE);
                         binding.tvNetSpeed.setVisibility(View.VISIBLE);
@@ -188,7 +188,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    Logger.d("onError:" + what + "/" + extra);
+//                    Logger.d("onError:" + what + "/" + extra);
                     PlayOtherUrlOnVideo(urlList);
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     return true;
@@ -197,7 +197,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    Logger.d("onCompletions");
+//                    Logger.d("onCompletions");
                     PlayOtherUrlOnVideo(urlList);
                 }
             });
