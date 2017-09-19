@@ -56,6 +56,10 @@ public class PlayManager {
         return channelInfo;
     }
 
+    public void setChannelInfo(ChannelInfo channelInfo) {
+        this.channelInfo = channelInfo;
+    }
+
     //get user level
     public int getLevel() {
         return level;

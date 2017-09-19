@@ -22,6 +22,7 @@ import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelTypeAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelTypeBinding;
 import com.wiatec.bplay.instance.Constant;
+import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelTypeInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.presenter.ChannelTypePresenter;
@@ -105,7 +106,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
                 boolean isSetting = (boolean) SPUtils.get(channelTypeInfo.getTag()+"protect", false);
                 if(!isSetting) {
-                    showSettingPasswordDialog(channelTypeInfo.getTag());
+                    showInputPasswordDialog(channelTypeInfo);
                 }
             }
         });
@@ -180,6 +181,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         window.setContentView(R.layout.dialog_input_password);
         final EditText etPassword = (EditText) window.findViewById(R.id.etPassword);
         Button btConfirm = (Button) window.findViewById(R.id.btConfirm);
+        Button btReset = (Button) window.findViewById(R.id.btReset);
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +196,46 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     dialog.dismiss();
                 }else{
                     EmojiToast.show(getString(R.string.password_incorrect), EmojiToast.EMOJI_SMILE);
+                }
+            }
+        });
+        btReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showResetDialog(channelTypeInfo);
+            }
+        });
+    }
+
+    private void showResetDialog(final ChannelTypeInfo channelTypeInfo){
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        if(window == null) return;
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        window.setContentView(R.layout.dialog_input_password);
+        final EditText etPassword = (EditText) window.findViewById(R.id.etPassword);
+        etPassword.setHint("type in your username");
+        Button btConfirm = (Button) window.findViewById(R.id.btConfirm);
+        Button btReset = (Button) window.findViewById(R.id.btReset);
+        btReset.setVisibility(View.GONE);
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String p = etPassword.getText().toString().trim();
+                if(TextUtils.isEmpty(p)){
+                    EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
+                    return;
+                }
+                String username = UserContentResolver.get("userName");
+                if(username.equals(p)){
+                    showSettingPasswordDialog(channelTypeInfo.getTag());
+                    dialog.dismiss();
+                }else{
+                    EmojiToast.show(getString(R.string.username_incorrect), EmojiToast.EMOJI_SMILE);
                 }
             }
         });

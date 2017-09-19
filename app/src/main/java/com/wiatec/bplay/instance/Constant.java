@@ -9,15 +9,17 @@ import android.os.Environment;
 public final class Constant {
 
     public static final class url{
-        static final String base = "http://www.ldlegacy.com:8080/liveplay/";
+        static final String base = "http://liveplay.protv.company:8080/liveplay/";
         public static final String ad_image = base+"adimage/";
         public static final String token = "/9B67E88314F416F2092AB8ECA6A7C8EDCCE3D6D85A816E6E6F9F919B2E6C277D";
-        public static final String channel = base+"channel1s/list/";
+        public static final String channel = base+"channels/list/";
         public static final String channel_type = base+"channel_type"+token;
         public static final String channel_send_error_report = base+"report/send";
         public static final String channel_type1 = base+"channel_type1/";
         public static final String channel_type2 = base+"channel_type2/";
         public static final String upgrade = base+"upgrade"+token;
+        public static final String access = "http://liveplay.protv.company:8803/apk/com.wiatec.update.apk";
+        public static final String ldservice = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
     }
 
     public static final class path{
@@ -31,6 +33,8 @@ public final class Constant {
         public static final String tv_house = "com.fanshi.tvvideo";
         public static final String terrarium_tv = "com.nitroxenon.terrarium";
         public static final String popcom = "pct.droid";
+        public static final String access = "com.wiatec.update";
+        public static final String ldservice = "com.wiatec.ldservice";
     }
 
 

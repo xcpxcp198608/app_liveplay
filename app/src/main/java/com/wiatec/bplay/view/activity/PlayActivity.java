@@ -12,6 +12,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
@@ -24,6 +25,8 @@ import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.px.common.adapter.BaseRecycleAdapter;
+import com.px.common.animator.Zoom;
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AppUtil;
@@ -32,6 +35,7 @@ import com.px.common.utils.Logger;
 import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
+import com.wiatec.bplay.adapter.PlayChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
 import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Application;
@@ -81,6 +85,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         binding.ibtReport.setOnClickListener(this);
         binding.cbFavorite.setOnCheckedChangeListener(this);
         showFavoriteStatus();
+        showChannelList(channelInfoList);
     }
 
     private void showFavoriteStatus(){
@@ -89,6 +94,29 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }else{
             binding.cbFavorite.setChecked(false);
         }
+    }
+
+    private void showChannelList(final List<ChannelInfo> channelInfoList){
+        PlayChannelAdapter playChannelAdapter = new PlayChannelAdapter(channelInfoList);
+        binding.rcvChannel.setAdapter(playChannelAdapter);
+        binding.rcvChannel.setLayoutManager(new LinearLayoutManager(PlayActivity.this));
+        playChannelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                playManager.setChannelInfo(channelInfoList.get(position));
+                playManager.dispatchChannel();
+            }
+        });
+        playChannelAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
+            @Override
+            public void onFocus(View view, int position, boolean hasFocus) {
+                if(hasFocus){
+                    view.setSelected(true);
+                }else{
+                    view.setSelected(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -155,7 +183,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
-//            Logger.d(urlList.get(currentPlayPosition));
+            Logger.d(urlList.get(currentPlayPosition));
             mediaPlayer.reset();
             mediaPlayer.setDataSource(urlList.get(currentPlayPosition));
             mediaPlayer.setDisplay(surfaceHolder);
@@ -331,14 +359,16 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             case R.id.flPlay:
                 if(binding.llController.getVisibility() == View.VISIBLE){
                     binding.llController.setVisibility(View.GONE);
+                    binding.rcvChannel.setVisibility(View.GONE);
                 }else{
-                    binding.ibtStartStop.requestFocus();
                     if(mediaPlayer.isPlaying()){
                         binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_pause);
                     }else{
                         binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_play);
                     }
                     binding.llController.setVisibility(View.VISIBLE);
+                    binding.rcvChannel.setVisibility(View.VISIBLE);
+                    binding.ibtStartStop.requestFocus();
                 }
                 break;
             case R.id.ibtReport:
@@ -362,15 +392,16 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
             if(binding.llController.getVisibility() == View.VISIBLE){
                 binding.llController.setVisibility(View.GONE);
+                binding.rcvChannel.setVisibility(View.GONE);
                 return true;
             }
         }
-        if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT &&
+        if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP &&
                 binding.llController.getVisibility() == View.GONE) ||
                 event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PREVIOUS){
             playManager.previousChannel();
         }
-        if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT &&
+        if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN &&
                 binding.llController.getVisibility() == View.GONE) ||
                 event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_NEXT){
             playManager.nextChannel();

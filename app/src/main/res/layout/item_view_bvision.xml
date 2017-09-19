@@ -11,7 +11,7 @@
     android:layout_height="206dp">
 
     <ImageView
-        android:src="@drawable/img_radio_music"
+        android:src="@drawable/bvision"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

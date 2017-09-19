@@ -34,7 +34,6 @@ public class TokenTask extends TimerTask {
         time = time / 1000;
         String t = AESUtil.MD5(PRE+PWD+time);
         String url = URL + "reg_date="+time+"&token="+t;
-        Logger.d(url);
         HttpMaster.get(url)
                 .enqueue(new StringListener() {
                     @Override
@@ -43,7 +42,6 @@ public class TokenTask extends TimerTask {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject data = jsonObject.getJSONObject("data");
                             String streamToken = data.getString("token");
-                            Logger.d(streamToken);
                             SPUtils.put(Application.context, "streamToken", streamToken);
                         } catch (JSONException e) {
                             Logger.d("token json format error");
