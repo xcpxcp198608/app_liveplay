@@ -41,8 +41,13 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
         type = getIntent().getStringExtra(Constant.key.channel_type);
+        String key = getIntent().getStringExtra(Constant.key.key_search);
         if(Constant.key.type_favorite.equals(type)){
             presenter.loadFavorite();
+        }else if(Constant.key.type_history.equals(type)){
+            presenter.loadHistory();
+        }else if(Constant.key.type_search.equals(type)){
+            presenter.loadSearch(key);
         }else {
             presenter.loadChannel(type);
         }
@@ -75,11 +80,25 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         load(execute, channelInfoList);
     }
 
+    @Override
+    public void loadHistory(boolean execute, List<ChannelInfo> channelInfoList) {
+        load(execute, channelInfoList);
+    }
+
+    @Override
+    public void loadSearch(boolean execute, List<ChannelInfo> channelInfoList) {
+        load(execute, channelInfoList);
+    }
+
     private void load(boolean execute, final List<ChannelInfo> channelInfoList) {
         if(!execute){
             binding.pbLoading.setVisibility(View.GONE);
             if(Constant.key.type_favorite.equals(type)){
                 binding.tvLoading.setText(getString(R.string.favorite_load_empty));
+            }else if(Constant.key.type_history.equals(type)){
+                binding.tvLoading.setText(getString(R.string.history_load_empty));
+            }else if(Constant.key.type_search.equals(type)){
+                binding.tvLoading.setText(getString(R.string.search_load_empty));
             }else {
                 binding.tvLoading.setText(getString(R.string.data_load_error));
                 binding.btRetry.setVisibility(View.VISIBLE);

@@ -13,13 +13,16 @@ public final class Constant {
         public static final String ad_image = base+"adimage/";
         public static final String token = "/9B67E88314F416F2092AB8ECA6A7C8EDCCE3D6D85A816E6E6F9F919B2E6C277D";
         public static final String channel = base+"channels/list/";
-        public static final String channel_type = base+"channel_type"+token;
+        public static final String channel_type = base+"channel_type/";
         public static final String channel_send_error_report = base+"report/send";
         public static final String channel_type1 = base+"channel_type1/";
         public static final String channel_type2 = base+"channel_type2/";
+        public static final String channel_search = base+"channels/search/";
         public static final String upgrade = base+"upgrade"+token;
         public static final String access = "http://liveplay.protv.company:8803/apk/com.wiatec.update.apk";
         public static final String ldservice = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
+        public static final String start_view = base+"log_view/start/";
+        public static final String stop_view = base+"log_view/end/";
     }
 
     public static final class path{
@@ -41,6 +44,9 @@ public final class Constant {
     public static final class key{
         public static final String channel_type = "channelType";
         public static final String type_favorite = "FAVORITE";
+        public static final String type_history = "HISTORY";
+        public static final String type_search = "SEARCH";
+        public static final String key_search = "KEY_SEARCH";
         public static final String radio_music = "RADIO MUSIC";
         public static final String btv = "BTV";
     }

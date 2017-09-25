@@ -62,4 +62,26 @@ public class ChannelPresenter extends BasePresenter {
             });
         }
     }
+
+    public void loadHistory(){
+        if(channelProvider != null){
+            channelProvider.loadHistory(new ChannelLoadService.OnLoadListener<List<ChannelInfo>>() {
+                @Override
+                public void onLoad(boolean execute, List<ChannelInfo> channelInfos) {
+                    channel.loadHistory(execute, channelInfos);
+                }
+            });
+        }
+    }
+
+    public void loadSearch(String key){
+        if(channelProvider != null){
+            channelProvider.loadSearch(key, new ChannelLoadService.OnLoadListener<List<ChannelInfo>>() {
+                @Override
+                public void onLoad(boolean execute, List<ChannelInfo> channelInfos) {
+                    channel.loadSearch(execute, channelInfos);
+                }
+            });
+        }
+    }
 }

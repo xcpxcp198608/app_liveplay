@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +30,7 @@ import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
+import com.px.common.utils.AESUtil;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
@@ -66,6 +68,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private String errorMessage = "";
     private boolean send = true;
     private int currentPlayPosition = 0;
+    private String tag = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +85,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         favoriteChannelDao = FavoriteChannelDao.getInstance();
         binding.flPlay.setOnClickListener(this);
         binding.ibtStartStop.setOnClickListener(this);
+        binding.ibtFastRewind.setOnClickListener(this);
+        binding.ibtFastForward.setOnClickListener(this);
         binding.ibtReport.setOnClickListener(this);
         binding.cbFavorite.setOnCheckedChangeListener(this);
         showFavoriteStatus();
@@ -103,6 +108,9 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         playChannelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                if(tag != null){
+                    playManager.stopView(tag);
+                }
                 playManager.setChannelInfo(channelInfoList.get(position));
                 playManager.dispatchChannel();
             }
@@ -138,6 +146,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public void play(final String url) {
         showFavoriteStatus();
         playVideo(handleUrl(url));
+        tag = AESUtil.MD5(System.currentTimeMillis() + playManager.getChannelInfo().getName());
+        playManager.startView(tag);
     }
 
     @Override
@@ -229,6 +239,12 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     PlayOtherUrlOnVideo(urlList);
                 }
             });
+            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+                    mediaPlayer.start();
+                }
+            });
         } catch (IOException e) {
             Logger.d(e.getMessage());
         }
@@ -266,6 +282,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     protected void onDestroy() {
         super.onDestroy();
         releaseMediaPlayer();
+        playManager.stopView(tag);
         send = false;
     }
 
@@ -382,6 +399,19 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     mediaPlayer.start();
                     binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_pause);
                 }
+                break;
+            case R.id.ibtFastRewind:
+                if(mediaPlayer.getDuration() <= 0 ) return;
+                int t1 = mediaPlayer.getCurrentPosition() - 5000;
+                if(t1 < 0 ) t1 = 0;
+                mediaPlayer.seekTo(t1);
+                break;
+            case R.id.ibtFastForward:
+                if(mediaPlayer.getDuration() <= 0 ) return;
+                int t2 = mediaPlayer.getCurrentPosition() + 5000;
+                if(t2 > mediaPlayer.getDuration()) t2 = mediaPlayer.getDuration();
+                mediaPlayer.seekTo(t2);
+                break;
             default:
                 break;
         }

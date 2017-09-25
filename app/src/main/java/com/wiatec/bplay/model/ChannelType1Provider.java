@@ -20,12 +20,12 @@ import java.util.List;
 public class ChannelType1Provider implements LoadServiceWithParam<List<ChannelType1Info>> {
     @Override
     public void load(String param , final OnLoadListener<List<ChannelType1Info>> onLoadListener) {
-        Logger.d(param);
+//        Logger.d(param);
         HttpMaster.get(Constant.url.channel_type1 + param + Constant.url.token)
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {
-                        Logger.d(s);
+//                        Logger.d(s);
                         List<ChannelType1Info> channelType1InfoList = new Gson().fromJson(s,
                                 new TypeToken<List<ChannelType1Info>>(){}.getType());
                         if(channelType1InfoList != null && channelType1InfoList.size() > 0){

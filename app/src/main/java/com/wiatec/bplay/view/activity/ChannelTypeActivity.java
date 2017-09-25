@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.image.ImageMaster;
+import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
@@ -33,9 +34,10 @@ import java.util.List;
  * channel type activity
  */
 
-public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> implements ChannelType {
+public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> implements ChannelType, View.OnClickListener {
 
     private ActivityChannelTypeBinding binding;
+    private int type;
 
     @Override
     protected ChannelTypePresenter createPresenter() {
@@ -46,17 +48,12 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel_type);
+        type = getIntent().getIntExtra("type", 0);
         presenter.loadAdImage();
-        presenter.loadChannelType();
-        binding.btRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.tvLoading.setText(getString(R.string.data_loading));
-                binding.pbLoading.setVisibility(View.VISIBLE);
-                binding.btRetry.setVisibility(View.GONE);
-                presenter.loadChannelType();
-            }
-        });
+        presenter.loadChannelType(type+"");
+        binding.btRetry.setOnClickListener(this);
+        binding.ibtHistory.setOnClickListener(this);
+        binding.ibtSearch.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +78,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         binding.rcvChannelType.setAdapter(channelTypeAdapter);
         binding.rcvChannelType.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
+        binding.rcvChannelType.requestFocus();
         channelTypeAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
             @Override
             public void onFocus(View view, int position, boolean hasFocus) {
@@ -110,6 +108,32 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btRetry:
+                binding.tvLoading.setText(getString(R.string.data_loading));
+                binding.pbLoading.setVisibility(View.VISIBLE);
+                binding.btRetry.setVisibility(View.GONE);
+                presenter.loadChannelType(type+"");
+                break;
+            case R.id.ibtHistory:
+                Intent intent = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
+                intent.putExtra(Constant.key.channel_type, Constant.key.type_history);
+                startActivity(intent);
+                break;
+            case R.id.ibtSearch:
+                String key = binding.etSearch.getText().toString().trim();
+                Intent intent1 = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
+                intent1.putExtra(Constant.key.channel_type, Constant.key.type_search);
+                intent1.putExtra(Constant.key.key_search, key);
+                startActivity(intent1);
+                break;
+            default:
+                break;
+        }
     }
 
     private void handleProtect(ChannelTypeInfo channelTypeInfo){
@@ -250,6 +274,8 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             Intent intent = new Intent(ChannelTypeActivity.this, ChannelTypeActivity2.class);
             intent.putExtra("type", channelTypeInfo.getTag());
             startActivity(intent);
+        }else if(channelTypeInfo.getFlag() == 3){
+            AppUtil.launchApp(ChannelTypeActivity.this, channelTypeInfo.getTag());
         }else {
             Intent intent = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
             intent.putExtra(Constant.key.channel_type, channelTypeInfo.getTag());

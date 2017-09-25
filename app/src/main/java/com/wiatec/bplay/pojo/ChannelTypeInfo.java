@@ -11,7 +11,7 @@ public class ChannelTypeInfo {
     private String name;
     private String icon;
     private int flag;
-    private int isLock;
+    private int type;
 
     public int getId() {
         return id;
@@ -53,12 +53,12 @@ public class ChannelTypeInfo {
         this.flag = flag;
     }
 
-    public int getIsLock() {
-        return isLock;
+    public int getType() {
+        return type;
     }
 
-    public void setIsLock(int isLock) {
-        this.isLock = isLock;
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ChannelTypeInfo {
                 ", name='" + name + '\'' +
                 ", icon='" + icon + '\'' +
                 ", flag=" + flag +
-                ", isLock=" + isLock +
+                ", type=" + type +
                 '}';
     }
 }

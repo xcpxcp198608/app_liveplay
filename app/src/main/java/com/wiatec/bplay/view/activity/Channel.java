@@ -13,4 +13,6 @@ public interface Channel extends Common {
 
     void loadChannel(boolean execute, List<ChannelInfo> channelInfoList);
     void loadFavorite(boolean execute, List<ChannelInfo> channelInfoList);
+    void loadHistory(boolean execute, List<ChannelInfo> channelInfoList);
+    void loadSearch(boolean execute, List<ChannelInfo> channelInfoList);
 }

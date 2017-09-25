@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 <FrameLayout
     android:background="@drawable/img_ld_gold"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,6 +18,39 @@
         android:background="@color/colorTranslucent"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:background="@color/colorTranslucent5"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:hint="@string/search"
+            android:textColorHint="@color/colorGray"
+            android:background="@drawable/bg_et_search"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/ibtSearch"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/ibtHistory"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_button_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llLoading"
@@ -64,7 +96,7 @@
             android:layout_margin="40dp"
             android:id="@+id/rcvChannelType"
             android:layout_gravity="center"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </FrameLayout>

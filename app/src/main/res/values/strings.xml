@@ -45,6 +45,8 @@
     <string name="data_loading">Loading...</string>
     <string name="data_load_error">Load failure, please try again later</string>
     <string name="favorite_load_empty">Favorites folder is empty</string>
+    <string name="history_load_empty">History folder is empty</string>
+    <string name="search_load_empty">No result match search</string>
     <string name="favorite_empty">favorite is empty</string>
     <string name="hi">Hi</string>
     <string name="playing">Now playing</string>
@@ -93,5 +95,8 @@ We hope that you wish to help us improve your experience.  If yes, click confirm
     <string name="download_title">Downloading Resources</string>
     <string name="download_message">please wait download finish</string>
     <string name="install_error">install error</string>
+    <string name="report">report</string>
+    <string name="start">start</string>
+    <string name="time_demo">00:00:00</string>
 
 </resources>

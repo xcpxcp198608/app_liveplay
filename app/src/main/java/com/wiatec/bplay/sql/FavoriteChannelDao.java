@@ -43,7 +43,7 @@ public class FavoriteChannelDao {
     }
 
     public boolean exists(ChannelInfo channelInfo){
-        Cursor cursor = sqLiteDatabase.query(SQLiteHelper.TABLE_NAME, null, "tag=?",
+        Cursor cursor = sqLiteDatabase.query(SQLiteHelper.FAVORITE_TABLE_NAME, null, "tag=?",
                 new String[]{channelInfo.getTag()}, null, null, null);
         boolean exists = cursor.moveToNext();
         cursor.close();
@@ -65,7 +65,7 @@ public class FavoriteChannelDao {
             contentValues.put("style", channelInfo.getStyle());
             contentValues.put("visible", channelInfo.isVisible());
             contentValues.put("locked", channelInfo.isLocked());
-            sqLiteDatabase.insert(SQLiteHelper.TABLE_NAME, null, contentValues);
+            sqLiteDatabase.insert(SQLiteHelper.FAVORITE_TABLE_NAME, null, contentValues);
         }catch(Exception e){
             flag = false;
         }
@@ -86,7 +86,7 @@ public class FavoriteChannelDao {
             contentValues.put("style", channelInfo.getStyle());
             contentValues.put("visible", channelInfo.isVisible());
             contentValues.put("locked", channelInfo.isLocked());
-            sqLiteDatabase.update(SQLiteHelper.TABLE_NAME, contentValues, "tag=?",
+            sqLiteDatabase.update(SQLiteHelper.FAVORITE_TABLE_NAME, contentValues, "tag=?",
                     new String[]{channelInfo.getTag()});
         }catch(Exception e){
             flag = false;
@@ -97,7 +97,7 @@ public class FavoriteChannelDao {
     public boolean delete(ChannelInfo channelInfo){
         boolean flag = true;
         try{
-            sqLiteDatabase.delete(SQLiteHelper.TABLE_NAME, "tag=?", new String[]{channelInfo.getTag()});
+            sqLiteDatabase.delete(SQLiteHelper.FAVORITE_TABLE_NAME, "tag=?", new String[]{channelInfo.getTag()});
         }catch(Exception e){
             flag = false;
         }
@@ -105,7 +105,7 @@ public class FavoriteChannelDao {
     }
 
     public List<ChannelInfo> queryAll(){
-        Cursor cursor = sqLiteDatabase.query(SQLiteHelper.TABLE_NAME, null, "_id>?",
+        Cursor cursor = sqLiteDatabase.query(SQLiteHelper.FAVORITE_TABLE_NAME, null, "_id>?",
                 new String[]{"0"}, null, null, "name");
         List<ChannelInfo> channelInfoList = new ArrayList<>();
         while (cursor.moveToNext()){

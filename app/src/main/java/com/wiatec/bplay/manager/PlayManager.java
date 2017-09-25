@@ -1,5 +1,7 @@
 package com.wiatec.bplay.manager;
 
+import android.text.TextUtils;
+
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AESUtil;
@@ -7,9 +9,12 @@ import com.px.common.utils.CommonApplication;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.px.common.utils.SPUtils;
+import com.px.common.utils.SysUtils;
 import com.wiatec.bplay.R;
+import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
+import com.wiatec.bplay.sql.HistoryChannelDao;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,10 +33,12 @@ public class PlayManager {
     private static final long DURATION = 300000;
     private static final int DURATION_MINUTE = (int) (DURATION / 1000 / 60);
     private String experience;
+    private HistoryChannelDao historyChannelDao;
 
     public PlayManager(List<ChannelInfo> channelInfoList, int currentPosition) {
         this.channelInfoList = channelInfoList;
         this.currentPosition = currentPosition;
+        historyChannelDao = HistoryChannelDao.getInstance();
         channelInfo = channelInfoList.get(currentPosition);
         String levelStr = UserContentResolver.get("userLevel");
         try {
@@ -106,6 +113,7 @@ public class PlayManager {
 
     private void handlePlay(){
         int type = channelInfo.getType();
+        historyChannelDao.insertOrUpdate(channelInfo);
         String url = AESUtil.decrypt(channelInfo.getUrl(), AESUtil.KEY);
         if(type == 1){ //live
             if(mPlayListener != null) mPlayListener.play(url);
@@ -143,5 +151,44 @@ public class PlayManager {
         if(currentPosition >= channelInfoList.size()) currentPosition = 0;
         channelInfo = channelInfoList.get(currentPosition);
         dispatchChannel();
+    }
+
+    public void startView(String tag){
+        if(tag == null) return;
+        String username = UserContentResolver.get("userName");
+        if(TextUtils.isEmpty(username)) username = "default";
+        HttpMaster.post(Constant.url.start_view)
+                .parames("tag", tag)
+                .parames("channelName", getChannelInfo().getName())
+                .parames("username", username)
+                .parames("mac", SysUtils.getEthernetMac())
+                .enqueue(new StringListener() {
+                    @Override
+                    public void onSuccess(String s) throws IOException {
+
+                    }
+
+                    @Override
+                    public void onFailure(String e) {
+
+                    }
+                });
+    }
+
+    public void stopView(String tag){
+        if(tag == null) return;
+        HttpMaster.post(Constant.url.stop_view)
+                .parames("tag", tag)
+                .enqueue(new StringListener() {
+                    @Override
+                    public void onSuccess(String s) throws IOException {
+
+                    }
+
+                    @Override
+                    public void onFailure(String e) {
+
+                    }
+                });
     }
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout
+    android:id="@+id/flPlay"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/pbPlay"
+        android:layout_gravity="center"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+    <TextView
+        android:id="@+id/tvNetSpeed"
+        android:gravity="center"
+        android:layout_gravity="center"
+        tools:text="11.22kbs"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcvChannel"
+        android:visibility="gone"
+        android:background="@color/colorTranslucent7"
+        android:layout_marginBottom="68dp"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/llController"
+        android:layout_gravity="bottom"
+        android:padding="10dp"
+        android:background="@color/colorTranslucent7"
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <ImageButton
+            android:background="@drawable/bg_button_pause"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/ibtStartStop"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <ImageButton
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/ibtReport"
+            android:background="@drawable/bg_send_report"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <CheckBox
+            android:layout_toLeftOf="@id/ibtReport"
+            android:background="@android:color/transparent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:button="@drawable/bg_favorite"
+            android:id="@+id/cbFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+    </RelativeLayout>
+
+</FrameLayout>
+</layout>

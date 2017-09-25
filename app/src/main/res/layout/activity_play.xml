@@ -49,21 +49,41 @@
 
         <ImageButton
             android:background="@drawable/bg_button_pause"
-            android:layout_centerHorizontal="true"
             android:id="@+id/ibtStartStop"
+            android:layout_centerHorizontal="true"
             android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:contentDescription="@string/start" />
 
         <ImageButton
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_button_rewind"
+            android:id="@+id/ibtFastRewind"
+            android:layout_toStartOf="@id/ibtStartStop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/start" />
+
+        <ImageButton
+            android:layout_marginStart="20dp"
+            android:background="@drawable/bg_button_forward"
+            android:id="@+id/ibtFastForward"
+            android:layout_toEndOf="@id/ibtStartStop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/start" />
+
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
             android:id="@+id/ibtReport"
             android:background="@drawable/bg_send_report"
             android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:contentDescription="@string/report" />
 
         <CheckBox
-            android:layout_toLeftOf="@id/ibtReport"
+            android:layout_toStartOf="@id/ibtReport"
             android:background="@android:color/transparent"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -71,7 +91,6 @@
             android:id="@+id/cbFavorite"
             android:layout_width="48dp"
             android:layout_height="48dp" />
-
 
 
     </RelativeLayout>

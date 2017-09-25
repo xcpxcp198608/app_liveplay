@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.wiatec.bplay"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 107
         versionName "v1.0.8beta"
@@ -59,6 +59,12 @@ android {
             }
         }
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 def releaseTime() {
@@ -67,6 +73,7 @@ def releaseTime() {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile(name: 'libvlc', ext: 'aar')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

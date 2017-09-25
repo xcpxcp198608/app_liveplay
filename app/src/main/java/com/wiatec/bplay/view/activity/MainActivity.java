@@ -97,26 +97,28 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
     }
 
     private void launchShortcut(int position){
+        Intent intent = new Intent();
         switch (position){
             case 1:
                 if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.access)) {
-                    Intent intent1 = new Intent(MainActivity.this, ChannelTypeActivity2.class);
-                    intent1.putExtra("type", Constant.key.btv);
-                    startActivity(intent1);
+                    intent.setClass(MainActivity.this, ChannelTypeActivity.class);
+                    intent.putExtra("type", 1);
+                    startActivity(intent);
                 }else{
-                    showInstallNoticeDialog("access", Constant.url.access, Constant.packageName.access);
+                    showInstallNoticeDialog("Access2.0", Constant.url.access, Constant.packageName.access);
                 }
                 break;
             case 2:
-                Intent intent = new Intent(MainActivity.this, ChannelActivity.class);
+                intent.setClass(MainActivity.this, ChannelActivity.class);
                 intent.putExtra(Constant.key.channel_type, "BVISION");
                 startActivity(intent);
                 break;
             case 3:
                 if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.ldservice)) {
-                    startActivity(new Intent(MainActivity.this, ChannelTypeActivity.class));
+                    intent.setClass(MainActivity.this, ChannelTypeActivity.class);
+                    startActivity(intent);
                 }else{
-                    showInstallNoticeDialog("service", Constant.url.ldservice, Constant.packageName.ldservice);
+                    showInstallNoticeDialog("GoldService", Constant.url.ldservice, Constant.packageName.ldservice);
                 }
                 break;
             default:
