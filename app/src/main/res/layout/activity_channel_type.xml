@@ -20,6 +20,8 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
+        android:id="@+id/llSearch"
+        android:visibility="gone"
         android:background="@color/colorTranslucent5"
         android:padding="10dp"
         android:layout_width="match_parent"

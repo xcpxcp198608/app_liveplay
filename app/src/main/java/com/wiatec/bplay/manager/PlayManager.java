@@ -17,6 +17,8 @@ import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.sql.HistoryChannelDao;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -190,5 +192,24 @@ public class PlayManager {
 
                     }
                 });
+    }
+
+    public static List<String> parseUrl(String url){
+        List<String> urlList;
+        if(url.contains("#")){
+            urlList = new ArrayList<>(Arrays.asList(url.split("#")));
+        }else{
+            urlList = new ArrayList<>();
+            urlList.add(url);
+        }
+        List<String> urlList1 = new ArrayList<>();
+        for (String u : urlList){
+            if (u.contains("protv.company")){
+                String streamToken = (String) SPUtils.get("streamToken", "123");
+                u += "?token=" + streamToken;
+            }
+            urlList1.add(u);
+        }
+        return urlList1;
     }
 }

@@ -19,15 +19,14 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.adapter.BaseRecycleAdapter;
-import com.px.common.animator.Zoom;
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AESUtil;
@@ -38,19 +37,18 @@ import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.PlayChannelAdapter;
+import com.wiatec.bplay.adapter.PlayChannelListAdapter;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
 import com.wiatec.bplay.entity.ResultInfo;
-import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.manager.PlayManager;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.sql.FavoriteChannelDao;
+import com.wiatec.bplay.view.custom_view.TvGridLayoutManager;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -145,7 +143,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void play(final String url) {
         showFavoriteStatus();
-        playVideo(handleUrl(url));
+        playVideo(PlayManager.parseUrl(url));
         tag = AESUtil.MD5(System.currentTimeMillis() + playManager.getChannelInfo().getName());
         playManager.startView(tag);
     }
@@ -154,25 +152,6 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public void playAd() {
         startActivity(new Intent(PlayActivity.this, AdScreenActivity.class));
         finish();
-    }
-
-    private List<String> handleUrl(String url){
-        List<String> urlList;
-        if(url.contains("#")){
-            urlList = new ArrayList<>(Arrays.asList(url.split("#")));
-        }else{
-            urlList = new ArrayList<>();
-            urlList.add(url);
-        }
-        List<String> urlList1 = new ArrayList<>();
-        for (String u : urlList){
-            if (u.contains("protv.company")){
-                String streamToken = (String) SPUtils.get("streamToken", "123");
-                u += "?token=" + streamToken;
-            }
-            urlList1.add(u);
-        }
-        return urlList1;
     }
 
     @Override
@@ -193,7 +172,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
-            Logger.d(urlList.get(currentPlayPosition));
+//            Logger.d(urlList.get(currentPlayPosition));
             mediaPlayer.reset();
             mediaPlayer.setDataSource(urlList.get(currentPlayPosition));
             mediaPlayer.setDisplay(surfaceHolder);
@@ -227,7 +206,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
 //                    Logger.d("onError:" + what + "/" + extra);
-                    PlayOtherUrlOnVideo(urlList);
+                    playOtherUrlOnVideo(urlList);
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     return true;
                 }
@@ -236,7 +215,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 @Override
                 public void onCompletion(MediaPlayer mp) {
 //                    Logger.d("onCompletions");
-                    PlayOtherUrlOnVideo(urlList);
+                    playOtherUrlOnVideo(urlList);
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
@@ -250,7 +229,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
     }
 
-    private void PlayOtherUrlOnVideo(List<String> urlList){
+    private void playOtherUrlOnVideo(List<String> urlList){
         currentPlayPosition ++;
         if(currentPlayPosition >= urlList.size()){
             currentPlayPosition =0 ;

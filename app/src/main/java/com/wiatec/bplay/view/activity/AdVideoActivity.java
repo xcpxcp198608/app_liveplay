@@ -39,12 +39,6 @@ public class AdVideoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_ad_video);
-        String videoTime = UserContentResolver.get("adTime");
-        try {
-            time = Integer.parseInt(videoTime);
-        }catch (Exception e){
-            time = 0;
-        }
         binding.btSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +61,36 @@ public class AdVideoActivity extends AppCompatActivity {
             return;
         }
         playVideo();
+    }
+
+    private void playVideo() {
+        binding.videoView.setVideoPath(Constant.path.ad_video);
+        binding.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                time = mp.getDuration() / 1000 + 1 ;
+                showTime();
+                SPUtils.put(AdVideoActivity.this, "recorderTime", System.currentTimeMillis());
+                binding.videoView.start();
+            }
+        });
+        binding.videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                skipAds();
+                return true;
+            }
+        });
+        binding.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                binding.llDelay.setVisibility(View.GONE);
+                skipAds();
+            }
+        });
+    }
+
+    private void showTime(){
         if(time >0){
             binding.llDelay.setVisibility(View.VISIBLE);
             subscription = Observable.interval(0,1, TimeUnit.SECONDS).take(time)
@@ -93,33 +117,6 @@ public class AdVideoActivity extends AppCompatActivity {
         }
     }
 
-    //播放video
-    private void playVideo() {
-        binding.videoView.setVideoPath(Constant.path.ad_video);
-        binding.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                SPUtils.put(AdVideoActivity.this, "recorderTime", System.currentTimeMillis());
-                binding.videoView.start();
-            }
-        });
-        binding.videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                skipAds();
-                return true;
-            }
-        });
-        binding.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                binding.llDelay.setVisibility(View.GONE);
-                skipAds();
-            }
-        });
-    }
-
-    //跳过影片广告
     private void skipAds() {
         release();
         startActivity(new Intent(AdVideoActivity.this, MainActivity.class));

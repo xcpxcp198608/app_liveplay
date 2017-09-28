@@ -53,8 +53,14 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".view.activity.FMPlayActivity" />
-        <activity android:name=".view.activity.ChannelTypeActivity1"/>
-        <activity android:name=".view.activity.ChannelTypeActivity2"/>
+        <activity android:name=".view.activity.ChannelTypeActivity1" />
+        <activity android:name=".view.activity.ChannelTypeActivity2" />
+        <activity android:name=".view.activity.AutomaticPlayActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.wiatec.bplay.view.activity.AutomaticPlayActivity"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -31,7 +31,6 @@ public class ChannelTypePresenter extends BasePresenter<ChannelType> {
         channelTypeProvider = new ChannelTypeProvider();
     }
 
-    //调用model - AdImageProvider 获取需要的Image文件
     public void loadAdImage(){
         if(adImageProvider != null){
             adImageProvider.load(new LoadService.OnLoadListener<ImageInfo>() {

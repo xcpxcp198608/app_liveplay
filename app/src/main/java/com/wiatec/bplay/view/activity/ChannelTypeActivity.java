@@ -1,6 +1,7 @@
 package com.wiatec.bplay.view.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -12,16 +13,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
+import com.px.common.http.Bean.DownloadInfo;
+import com.px.common.http.HttpMaster;
+import com.px.common.http.Listener.DownloadListener;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
+import com.px.common.utils.FileUtils;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelTypeAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelTypeBinding;
+import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelTypeInfo;
@@ -49,6 +56,9 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel_type);
         type = getIntent().getIntExtra("type", 0);
+        if(type == 0){
+            binding.llSearch.setVisibility(View.VISIBLE);
+        }
         presenter.loadAdImage();
         presenter.loadChannelType(type+"");
         binding.btRetry.setOnClickListener(this);
@@ -141,6 +151,10 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         boolean isProtect = (boolean) SPUtils.get(tag, true);
         boolean isSetting = (boolean) SPUtils.get(tag+"protect", false);
         String password = (String) SPUtils.get(tag+"protectpassword", "");
+        if(channelTypeInfo.getType() == 2){
+            showChannel(channelTypeInfo);
+            return;
+        }
         if(isProtect){
             if(TextUtils.isEmpty(password)) {
                 showSettingPasswordDialog(tag);
@@ -275,11 +289,105 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             intent.putExtra("type", channelTypeInfo.getTag());
             startActivity(intent);
         }else if(channelTypeInfo.getFlag() == 3){
-            AppUtil.launchApp(ChannelTypeActivity.this, channelTypeInfo.getTag());
+            if(AppUtil.isInstalled(ChannelTypeActivity.this, Constant.packageName.access)) {
+                AppUtil.launchApp(ChannelTypeActivity.this, channelTypeInfo.getTag());
+            }else{
+                showInstallNoticeDialog("Access2.0", Constant.url.access, Constant.packageName.access);
+            }
         }else {
             Intent intent = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
             intent.putExtra(Constant.key.channel_type, channelTypeInfo.getTag());
             startActivity(intent);
         }
+    }
+
+    private void showInstallNoticeDialog(String name, final String url, final String packageName){
+        final android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.
+                AlertDialog.Builder(ChannelTypeActivity.this).create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        Window window = alertDialog.getWindow();
+        if(window == null) return;
+        window.setContentView(R.layout.dialog_update);
+        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
+        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
+        TextView textView = (TextView) window.findViewById(R.id.tv_info);
+        textView.setText(getString(R.string.install_notice) + " " + name + ", " +
+                getString(R.string.install_notice1));
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                showDownloadDialog(url, packageName);
+            }
+        });
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    public void showDownloadDialog(String url, String packageName) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(getString(R.string.download_title));
+        progressDialog.setMessage(getString(R.string.download_message));
+        progressDialog.setIndeterminate(false);
+        progressDialog.setMax(100);
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
+        HttpMaster.download(this)
+                .url(url)
+                .path(Application.PATH_DOWNLOAD)
+                .name(packageName+".apk")
+                .startDownload(new DownloadListener() {
+                    @Override
+                    public void onPending(DownloadInfo downloadInfo) {
+
+                    }
+
+                    @Override
+                    public void onStart(DownloadInfo downloadInfo) {
+                        progressDialog.setProgress(downloadInfo.getProgress());
+                    }
+
+                    @Override
+                    public void onPause(DownloadInfo downloadInfo) {
+
+                    }
+
+                    @Override
+                    public void onProgress(DownloadInfo downloadInfo) {
+                        progressDialog.setProgress(downloadInfo.getProgress());
+                    }
+
+                    @Override
+                    public void onFinished(DownloadInfo downloadInfo) {
+                        progressDialog.setProgress(100);
+                        progressDialog.dismiss();
+                        if(AppUtil.isApkCanInstall(ChannelTypeActivity.this,
+                                Application.PATH_DOWNLOAD, downloadInfo.getName())){
+                            AppUtil.installApk(ChannelTypeActivity.this,
+                                    Application.PATH_DOWNLOAD, downloadInfo.getName());
+                        }else{
+                            if(FileUtils.isExists(Application.PATH_DOWNLOAD, downloadInfo.getName())){
+                                FileUtils.delete(Application.PATH_DOWNLOAD, downloadInfo.getName());
+                            }
+                            EmojiToast.show(getString(R.string.install_error), EmojiToast.EMOJI_SAD);
+                        }
+                    }
+
+                    @Override
+                    public void onCancel(DownloadInfo downloadInfo) {
+
+                    }
+
+                    @Override
+                    public void onError(DownloadInfo downloadInfo) {
+
+                    }
+                });
     }
 }

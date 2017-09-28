@@ -156,12 +156,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         });
     }
 
-    /**
-     * 判断图片资源是否获取成功
-     * 成功： 显示图片
-     * @param isSuccess 图片资源获取是否成功
-     * @param imageInfo 图片信息，url
-     */
     @Override
     public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
@@ -170,12 +164,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         }
     }
 
-    /**
-     * 判断是否需要更新
-     * 需要： 弹出更新对话框
-     * 不需要： 执行 nextPage()
-     * @param upgrade 是否需要更新
-     */
     @Override
     public void checkUpgrade(boolean upgrade, UpgradeInfo upgradeInfo) {
         if(upgrade){
@@ -190,9 +178,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         }
     }
 
-    /**
-     * 显示不支持的设备对话框
-     */
     private void showDeviceNotSupportDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
         alertDialog.show();
@@ -209,10 +194,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         });
     }
 
-    /**
-     * 显示app upgrade 对话框
-     * @param upgradeInfo upgrade info
-     */
     private void showUpgradeDialog(final UpgradeInfo upgradeInfo) {
         AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
         alertDialog.show();
@@ -240,9 +221,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         });
     }
 
-    /**
-     * 向下一页面跳转
-     */
     private void nextPage(){
         long  currentTime = System.currentTimeMillis();
         long recorderTime = (long) SPUtils.get("recorderTime" , 0L);

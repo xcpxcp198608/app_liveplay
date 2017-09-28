@@ -109,8 +109,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
                 }
                 break;
             case 2:
-                intent.setClass(MainActivity.this, ChannelActivity.class);
-                intent.putExtra(Constant.key.channel_type, "BVISION");
+                intent.setClass(MainActivity.this, ChannelTypeActivity.class);
+                intent.putExtra("type", 2);
+//                intent.putExtra(Constant.key.channel_type, "BVISION");
                 startActivity(intent);
                 break;
             case 3:

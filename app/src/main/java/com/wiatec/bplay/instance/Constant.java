@@ -47,6 +47,8 @@ public final class Constant {
         public static final String type_history = "HISTORY";
         public static final String type_search = "SEARCH";
         public static final String key_search = "KEY_SEARCH";
+        public static final String key_url = "KEY_URL";
+        public static final String key_duration = "KEY_DURATION";
         public static final String radio_music = "RADIO MUSIC";
         public static final String btv = "BTV";
     }
