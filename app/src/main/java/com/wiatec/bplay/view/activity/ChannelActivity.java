@@ -65,8 +65,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     @Override
     public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
-            ImageMaster.load(imageInfo.getUrl(), binding.ivChannel, R.drawable.img_ld_gold,
-                    R.drawable.img_ld_gold);
+            //
         }
     }
 

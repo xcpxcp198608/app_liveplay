@@ -65,6 +65,7 @@ public class HistoryChannelDao {
             contentValues.put("style", channelInfo.getStyle());
             contentValues.put("visible", channelInfo.isVisible());
             contentValues.put("locked", channelInfo.isLocked());
+            contentValues.put("viewTime", System.currentTimeMillis());
             sqLiteDatabase.insert(SQLiteHelper.HISTORY_TABLE_NAME, null, contentValues);
         }catch(Exception e){
             flag = false;
@@ -86,6 +87,7 @@ public class HistoryChannelDao {
             contentValues.put("style", channelInfo.getStyle());
             contentValues.put("visible", channelInfo.isVisible());
             contentValues.put("locked", channelInfo.isLocked());
+            contentValues.put("viewTime", System.currentTimeMillis());
             sqLiteDatabase.update(SQLiteHelper.HISTORY_TABLE_NAME, contentValues, "tag=?",
                     new String[]{channelInfo.getTag()});
         }catch(Exception e){
@@ -94,10 +96,11 @@ public class HistoryChannelDao {
         return flag;
     }
 
-    public boolean delete(ChannelInfo channelInfo){
+    public boolean delete(){
         boolean flag = true;
         try{
-            sqLiteDatabase.delete(SQLiteHelper.HISTORY_TABLE_NAME, "tag=?", new String[]{channelInfo.getTag()});
+            sqLiteDatabase.delete(SQLiteHelper.HISTORY_TABLE_NAME, "viewTime<?",
+                    new String[]{(System.currentTimeMillis() - 2592000000L)+""});
         }catch(Exception e){
             flag = false;
         }
@@ -106,7 +109,7 @@ public class HistoryChannelDao {
 
     public List<ChannelInfo> queryAll(){
         Cursor cursor = sqLiteDatabase.query(SQLiteHelper.HISTORY_TABLE_NAME, null, "_id>?",
-                new String[]{"0"}, null, null, "_id desc");
+                new String[]{"0"}, null, null, "viewTime desc");
         List<ChannelInfo> channelInfoList = new ArrayList<>();
         while (cursor.moveToNext()){
             ChannelInfo channelInfo = new ChannelInfo();
@@ -121,6 +124,7 @@ public class HistoryChannelDao {
             channelInfo.setStyle(cursor.getInt(cursor.getColumnIndex("style")));
             channelInfo.setVisible(cursor.getInt(cursor.getColumnIndex("visible")) == 1);
             channelInfo.setLocked(cursor.getInt(cursor.getColumnIndex("locked")) == 1);
+            channelInfo.setViewTime(cursor.getLong(cursor.getColumnIndex("viewTime")));
             channelInfoList.add(channelInfo);
         }
         cursor.close();

@@ -33,6 +33,9 @@ public class ChannelInfo implements Parcelable {
     private boolean visible;
     private boolean locked;
 
+    //for history sql
+    private long viewTime;
+
     public int getId() {
         return id;
     }
@@ -129,6 +132,14 @@ public class ChannelInfo implements Parcelable {
         this.locked = locked;
     }
 
+    public long getViewTime() {
+        return viewTime;
+    }
+
+    public void setViewTime(long viewTime) {
+        this.viewTime = viewTime;
+    }
+
     @Override
     public String toString() {
         return "ChannelInfo{" +
@@ -144,6 +155,7 @@ public class ChannelInfo implements Parcelable {
                 ", style=" + style +
                 ", visible=" + visible +
                 ", locked=" + locked +
+                ", viewTime=" + viewTime +
                 '}';
     }
 
@@ -166,6 +178,7 @@ public class ChannelInfo implements Parcelable {
         dest.writeInt(this.style);
         dest.writeByte(this.visible ? (byte) 1 : (byte) 0);
         dest.writeByte(this.locked ? (byte) 1 : (byte) 0);
+        dest.writeLong(this.viewTime);
     }
 
     public ChannelInfo() {
@@ -184,6 +197,7 @@ public class ChannelInfo implements Parcelable {
         this.style = in.readInt();
         this.visible = in.readByte() != 0;
         this.locked = in.readByte() != 0;
+        this.viewTime = in.readLong();
     }
 
     public static final Parcelable.Creator<ChannelInfo> CREATOR = new Parcelable.Creator<ChannelInfo>() {

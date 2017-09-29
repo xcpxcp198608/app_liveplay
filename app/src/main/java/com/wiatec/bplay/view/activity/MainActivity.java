@@ -216,8 +216,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
     @Override
     public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
-            ImageMaster.load(imageInfo.getUrl(), binding.ivMain, R.drawable.img_hold4,
-                    R.drawable.img_hold4);
+            ImageMaster.load(imageInfo.getUrl(), binding.ivMain, R.drawable.img_hold,
+                    R.drawable.img_hold);
         }
     }
 

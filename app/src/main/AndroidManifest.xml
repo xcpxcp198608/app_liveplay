@@ -39,9 +39,6 @@
             android:name=".view.activity.AdVideoActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".view.activity.MoviesActivity"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".view.activity.ChannelActivity"
             android:screenOrientation="landscape" />
         <activity

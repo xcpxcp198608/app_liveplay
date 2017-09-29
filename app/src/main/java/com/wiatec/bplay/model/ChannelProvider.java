@@ -73,6 +73,7 @@ public class ChannelProvider implements ChannelLoadService<List<ChannelInfo>> {
     public void loadHistory(OnLoadListener<List<ChannelInfo>> onLoadListener) {
         try{
             HistoryChannelDao historyChannelDao = HistoryChannelDao.getInstance();
+            historyChannelDao.delete();
             List<ChannelInfo> channelInfoList = historyChannelDao.queryAll();
             if(channelInfoList == null || channelInfoList.size() <= 0){
                 onLoadListener.onLoad(false, null);

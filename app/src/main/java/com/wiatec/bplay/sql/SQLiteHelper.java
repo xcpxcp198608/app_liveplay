@@ -20,10 +20,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String CREATE_HISTORY_TABLE = "create table if not exists "+ HISTORY_TABLE_NAME
             +"(_id integer primary key autoincrement, channelId integer, sequence integer, " +
             "tag text, name text, url text, icon text, country text, type integer, style integer, " +
-            "visible boolean, locked boolean)";
+            "visible boolean, locked boolean, viewTime integer)";
     private static final String DROP_FAVORITE_TABLE = "drop table if exists " + FAVORITE_TABLE_NAME;
     private static final String DROP_HISTORY_TABLE = "drop table if exists " + HISTORY_TABLE_NAME;
-    private static final int VERSION = 5;
+    private static final int VERSION = 6;
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
