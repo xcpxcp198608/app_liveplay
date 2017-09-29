@@ -67,6 +67,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private boolean send = true;
     private int currentPlayPosition = 0;
     private String tag = "";
+    private boolean viewChannel = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +101,10 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void showChannelList(final List<ChannelInfo> channelInfoList){
+        if(channelInfoList.get(0).getCountry().equals("LIVETV")) {
+            return;
+        }
+        viewChannel = true;
         PlayChannelAdapter playChannelAdapter = new PlayChannelAdapter(channelInfoList);
         binding.rcvChannel.setAdapter(playChannelAdapter);
         binding.rcvChannel.setLayoutManager(new LinearLayoutManager(PlayActivity.this));
@@ -363,7 +368,9 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         binding.ibtStartStop.setBackgroundResource(R.drawable.bg_button_play);
                     }
                     binding.llController.setVisibility(View.VISIBLE);
-                    binding.rcvChannel.setVisibility(View.VISIBLE);
+                    if(viewChannel) {
+                        binding.rcvChannel.setVisibility(View.VISIBLE);
+                    }
                     binding.ibtStartStop.requestFocus();
                 }
                 break;
