@@ -92,6 +92,10 @@ public class PlayManager {
             handlePlay();
             return;
         }
+        if(channelInfo.getType() == 2){
+            if(mPlayListener != null) mPlayListener.playAd();
+            return;
+        }
         long lastExperienceTime = (long) SPUtils.get("lastExperienceTime", 0L);
         boolean isLastExperience = (boolean) SPUtils.get("isLastExperience", true);
         if(lastExperienceTime + DURATION > System.currentTimeMillis() && isLastExperience){
@@ -109,7 +113,7 @@ public class PlayManager {
         }
         if(minute <= 0) SPUtils.put("isLastExperience", true);
         EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2) + " " + minute +
-                " minutes", EmojiToast.EMOJI_SMILE);
+                CommonApplication.context.getString(R.string.notice22), EmojiToast.EMOJI_SMILE);
         if(mPlayListener != null) mPlayListener.playAd();
     }
 

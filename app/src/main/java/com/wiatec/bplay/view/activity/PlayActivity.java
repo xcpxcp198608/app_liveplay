@@ -460,11 +460,11 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     if(playManager.getChannelInfo().isLocked() && playManager.getLevel() <= 2 &&
                             !playManager.isExperience()) {
                         long lastExperienceTime = (long) SPUtils.get("lastExperienceTime", 0L);
-                        if (lastExperienceTime + 300000 < System.currentTimeMillis()) {
+                        if (lastExperienceTime + 60000 < System.currentTimeMillis()) {
                             boolean isLastExperience = (boolean) SPUtils.get("isLastExperience", true);
                             SPUtils.put("isLastExperience", !isLastExperience);
                             SPUtils.put("lastExperienceTime", System.currentTimeMillis());
-                            EmojiToast.show(getString(R.string.notice3), EmojiToast.EMOJI_SAD);
+                            EmojiToast.showLong(getString(R.string.notice3), EmojiToast.EMOJI_SAD);
                             finish();
                         }
                     }

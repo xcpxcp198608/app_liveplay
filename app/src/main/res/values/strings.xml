@@ -56,8 +56,9 @@
     <string name="skip_ad1">JOIN GOLD PRO TO SKIP ALL ADS </string>
     <string name="skip">SKIP</string>
     <string name="authority">PRESS BACK TO EXIT</string>
-    <string name="notice2">You can watch GOLD channel in </string>
-    <string name="notice3">5 minutes trial expire</string>
+    <string name="notice2">You can enjoy 60 seconds preview in </string>
+    <string name="notice22"> minutes. (0 minute means exit and enter again preview.) </string>
+    <string name="notice3">Preview over, next preview after 5 minutes, please join GOLD to watch full</string>
     <string name="agreement">Agreement</string>
     <string name="error_msg1">Channel down</string>
     <string name="error_msg2">Video/Voice don’t sync</string>
