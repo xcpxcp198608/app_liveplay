@@ -12,6 +12,7 @@ import com.px.common.http.Listener.DownloadListener;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
+import com.px.common.utils.FileUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityUpgradeBinding;
 import com.wiatec.bplay.instance.Application;
@@ -41,6 +42,8 @@ public class UpgradeActivity extends BaseActivity<SplashPresenter> implements Sp
         if(upgradeInfo == null){
             return;
         }
+        FileUtils.delete(Application.PATH_DOWNLOAD, getPackageName());
+        FileUtils.delete(Application.PATH_DOWNLOAD, getPackageName()+".apk");
         startUpgrade(upgradeInfo);
     }
 

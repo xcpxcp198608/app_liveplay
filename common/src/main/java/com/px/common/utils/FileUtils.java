@@ -81,6 +81,7 @@ public class FileUtils {
      * @return 是否删除成功
      */
     public static boolean delete(String filePath ,String fileName ) {
+        if(isExists(filePath, fileName)) return false;
         try {
             return new File(filePath + fileName).delete();
         } catch (Exception e) {
