@@ -1,9 +1,12 @@
 package com.wiatec.bplay.instance;
 
 import com.px.common.utils.CommonApplication;
+import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.task.ImageTask;
 import com.wiatec.bplay.task.TokenTask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +20,7 @@ public class Application extends CommonApplication {
     public static String PATH_AD_IMAGE;
     public static String PATH_DOWNLOAD;
     private static ExecutorService executorService;
+    private static List<ChannelInfo> channelInfoList = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -28,5 +32,13 @@ public class Application extends CommonApplication {
 
     public static ExecutorService getExecutorService(){
         return executorService;
+    }
+
+    public static List<ChannelInfo> getChannelInfoList() {
+        return channelInfoList;
+    }
+
+    public static void setChannelInfoList(List<ChannelInfo> channelInfoList) {
+        Application.channelInfoList = channelInfoList;
     }
 }

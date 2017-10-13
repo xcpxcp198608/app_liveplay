@@ -19,11 +19,11 @@
         android:layout_gravity="center_vertical"
         tool:text="CCTV-1"
         android:padding="5dp"
-        android:textSize="18sp"
+        android:textSize="26sp"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
-        android:textColor="@color/colorWhite"
+        android:textColor="@drawable/text_play_channel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

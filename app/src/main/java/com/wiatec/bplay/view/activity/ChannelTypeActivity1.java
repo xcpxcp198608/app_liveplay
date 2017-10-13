@@ -8,9 +8,11 @@ import android.view.View;
 
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
+import com.px.common.utils.AppUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelType1Adapter;
 import com.wiatec.bplay.databinding.ActivityChannelType1Binding;
+import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ChannelType1Info;
 import com.wiatec.bplay.presenter.ChannelType1Presenter;
 
@@ -60,9 +62,17 @@ public class ChannelTypeActivity1 extends BaseActivity<ChannelType1Presenter> im
             @Override
             public void onItemClick(View view, int position) {
                 ChannelType1Info channelType1Info = channelType1InfoList.get(position);
-                Intent intent = new Intent(ChannelTypeActivity1.this, ChannelTypeActivity2.class);
-                intent.putExtra("type", channelType1Info.getTag());
-                startActivity(intent);
+                if(channelType1Info.getFlag() == 2){
+                    AppUtil.launchApp(ChannelTypeActivity1.this, channelType1Info.getTag());
+                }else if (channelType1Info.getFlag() == 1){
+                        Intent intent = new Intent(ChannelTypeActivity1.this, ChannelActivity.class);
+                        intent.putExtra(Constant.key.channel_type, channelType1Info.getTag());
+                        startActivity(intent);
+                }else if(channelType1Info.getFlag() == 0){
+                    Intent intent = new Intent(ChannelTypeActivity1.this, ChannelTypeActivity2.class);
+                    intent.putExtra("type", channelType1Info.getTag());
+                    startActivity(intent);
+                }
             }
         });
     }

@@ -63,7 +63,7 @@ public class ChannelTypeActivity2 extends BaseActivity<ChannelType2Presenter> im
             public void onItemClick(View view, int position) {
                 ChannelType2Info channelType2Info = channelType2InfoList.get(position);
                 if(channelType2Info.getFlag() == 1){
-                    AppUtil.launchApp(ChannelTypeActivity2.this, Constant.packageName.btv);
+                    AppUtil.launchApp(ChannelTypeActivity2.this, channelType2Info.getTag());
                 } else {
                     Intent intent = new Intent(ChannelTypeActivity2.this, ChannelActivity.class);
                     intent.putExtra(Constant.key.channel_type, channelType2Info.getTag());

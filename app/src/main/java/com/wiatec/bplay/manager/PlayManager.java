@@ -165,7 +165,7 @@ public class PlayManager {
         if(TextUtils.isEmpty(username)) username = "default";
         HttpMaster.post(Constant.url.start_view)
                 .parames("tag", tag)
-                .parames("channelName", getChannelInfo().getName())
+                .parames("channelName", getChannelInfo().getCountry() + "-" + getChannelInfo().getName())
                 .parames("username", username)
                 .parames("mac", SysUtils.getEthernetMac())
                 .enqueue(new StringListener() {

@@ -52,10 +52,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
     private List<View> createViewList() {
         List<View> viewList = new ArrayList<>();
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_btv, binding.viewPager, false));
+        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_basic, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_bvision, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_btv, binding.viewPager, false));
+        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_basic, binding.viewPager, false));
         return viewList;
     }
 

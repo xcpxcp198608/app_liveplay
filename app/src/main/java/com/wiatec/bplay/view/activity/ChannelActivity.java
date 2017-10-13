@@ -14,6 +14,7 @@ import com.px.common.utils.Logger;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelBinding;
+import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
@@ -117,6 +118,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
             @Override
             public void onItemClick(View view, int position) {
                 ChannelInfo channelInfo = channelInfoList.get(position);
+                Application.setChannelInfoList(channelInfoList);
                 if(channelInfo.getStyle() == 1){
                     launchFMPlay(channelInfoList, position);
                 }else {
@@ -141,14 +143,14 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
 
     private void launchPlay(List<ChannelInfo> channelInfoList, int position){
         Intent intent = new Intent(ChannelActivity.this , PlayActivity.class);
-        intent.putExtra("channelInfoList", (Serializable) channelInfoList);
+//        intent.putExtra("channelInfoList", (Serializable) channelInfoList);
         intent.putExtra("position", position);
         startActivity(intent);
     }
 
     private void launchFMPlay(List<ChannelInfo> channelInfoList, int position){
         Intent intent = new Intent(ChannelActivity.this , FMPlayActivity.class);
-        intent.putExtra("channelInfoList", (Serializable) channelInfoList);
+//        intent.putExtra("channelInfoList", (Serializable) channelInfoList);
         intent.putExtra("position", position);
         startActivity(intent);
     }

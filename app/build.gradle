@@ -7,8 +7,8 @@ android {
         applicationId "com.wiatec.bplay"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 108
-        versionName "v1.0.9beta"
+        versionCode 109
+        versionName "v1.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -73,7 +73,7 @@ def releaseTime() {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name: 'libvlc', ext: 'aar')
+//    compile(name: 'libvlc', ext: 'aar')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

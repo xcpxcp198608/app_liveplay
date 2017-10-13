@@ -34,7 +34,7 @@
         android:background="@color/colorTranslucent7"
         android:visibility="gone"
         android:layout_marginBottom="68dp"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"/>
 
     <RelativeLayout

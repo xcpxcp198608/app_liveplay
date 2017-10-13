@@ -19,7 +19,6 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
@@ -37,15 +36,14 @@ import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.PlayChannelAdapter;
-import com.wiatec.bplay.adapter.PlayChannelListAdapter;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
 import com.wiatec.bplay.entity.ResultInfo;
+import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.manager.PlayManager;
 import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.sql.FavoriteChannelDao;
-import com.wiatec.bplay.view.custom_view.TvGridLayoutManager;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -77,7 +75,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         surfaceHolder = binding.surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        List<ChannelInfo> channelInfoList = (List<ChannelInfo>) getIntent().getSerializableExtra("channelInfoList");
+        List<ChannelInfo> channelInfoList = Application.getChannelInfoList();
         int position = getIntent().getIntExtra("position", 0);
         playManager = new PlayManager(channelInfoList, position);
         playManager.setPlayListener(this);
@@ -177,7 +175,6 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
-//            Logger.d(urlList.get(currentPlayPosition));
             mediaPlayer.reset();
             mediaPlayer.setDataSource(urlList.get(currentPlayPosition));
             mediaPlayer.setDisplay(surfaceHolder);
@@ -195,7 +192,6 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                 @Override
                 public boolean onInfo(MediaPlayer mp, int what, int extra) {
-//                    Logger.d("onInfo:" + what + "/" + extra);
                     if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
                         binding.pbPlay.setVisibility(View.VISIBLE);
                         binding.tvNetSpeed.setVisibility(View.VISIBLE);
@@ -210,7 +206,6 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-//                    Logger.d("onError:" + what + "/" + extra);
                     playOtherUrlOnVideo(urlList);
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     return true;
@@ -219,7 +214,6 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-//                    Logger.d("onCompletions");
                     playOtherUrlOnVideo(urlList);
                 }
             });
@@ -314,7 +308,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         if(TextUtils.isEmpty(userName)) userName = "test";
         HttpMaster.post(Constant.url.channel_send_error_report)
                 .parames("userName",userName)
-                .parames("channelName",playManager.getChannelInfo().getName())
+                .parames("channelName",playManager.getChannelInfo().getCountry() + "-" + playManager.getChannelInfo().getName())
                 .parames("message", message)
                 .enqueue(new StringListener() {
                     @Override
