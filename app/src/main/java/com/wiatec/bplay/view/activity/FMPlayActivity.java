@@ -64,7 +64,7 @@ public class FMPlayActivity extends AppCompatActivity implements PlayManager.Pla
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fm_play);
-        List<ChannelInfo> channelInfoList = (List<ChannelInfo>) getIntent().getSerializableExtra("channelInfoList");
+        List<ChannelInfo> channelInfoList = Application.getChannelInfoList();
         int position = getIntent().getIntExtra("position", 0);
         playManager = new PlayManager(channelInfoList, position);
         playManager.setPlayListener(this);

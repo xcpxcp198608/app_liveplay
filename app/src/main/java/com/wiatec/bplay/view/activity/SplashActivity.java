@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
+import com.px.common.utils.FileUtils;
 import com.px.common.utils.Logger;
 import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
@@ -170,6 +171,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             showUpgradeDialog(upgradeInfo);
         }else{
             try {
+                FileUtils.delete(Application.PATH_DOWNLOAD, upgradeInfo.getPackageName());
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Logger.d(e.toString());
