@@ -34,6 +34,7 @@ import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelTypeInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.presenter.ChannelTypePresenter;
+import com.wiatec.bplay.task.TokenTask;
 
 import java.util.List;
 
@@ -104,6 +105,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         channelTypeAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                Application.getExecutorService().execute(new TokenTask());
                 ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
                 handleProtect(channelTypeInfo);
             }

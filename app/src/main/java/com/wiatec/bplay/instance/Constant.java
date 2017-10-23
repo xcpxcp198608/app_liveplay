@@ -18,6 +18,7 @@ public final class Constant {
         public static final String channel_type1 = base+"channel_type1/";
         public static final String channel_type2 = base+"channel_type2/";
         public static final String channel_search = base+"channels/search/";
+        public static final String live_channel = "http://blive.protv.company:8080/blive/channel/";
         public static final String upgrade = base+"upgrade"+token;
         public static final String access = "http://liveplay.protv.company:8803/apk/com.wiatec.update.apk";
         public static final String ldservice = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
@@ -46,6 +47,7 @@ public final class Constant {
         public static final String type_favorite = "FAVORITE";
         public static final String type_history = "HISTORY";
         public static final String type_search = "SEARCH";
+        public static final String type_live_channel = "CHANNEL";
         public static final String key_search = "KEY_SEARCH";
         public static final String key_url = "KEY_URL";
         public static final String key_duration = "KEY_DURATION";

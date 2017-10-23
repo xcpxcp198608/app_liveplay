@@ -6,6 +6,7 @@ import com.wiatec.bplay.model.ChannelProvider;
 import com.wiatec.bplay.model.LoadService;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
+import com.wiatec.bplay.pojo.LiveChannelInfo;
 import com.wiatec.bplay.view.activity.Channel;
 
 import java.util.List;
@@ -47,6 +48,17 @@ public class ChannelPresenter extends BasePresenter {
                 @Override
                 public void onLoad(boolean execute, List<ChannelInfo> channelInfos) {
                     channel.loadChannel(execute, channelInfos);
+                }
+            });
+        }
+    }
+
+    public void loadLiveChannel(){
+        if(channelProvider != null){
+            channelProvider.loadLiveChannel(new ChannelLoadService.OnLoadListener<List<LiveChannelInfo>>() {
+                @Override
+                public void onLoad(boolean execute, List<LiveChannelInfo> liveChannelInfoList) {
+                    channel.loadLiveChannel(execute, liveChannelInfoList);
                 }
             });
         }

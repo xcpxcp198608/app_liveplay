@@ -52,7 +52,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         Application.getExecutorService().execute(new ImageTask());
         if(timer != null) timer = null;
         timer = new Timer();
-        timer.schedule(new TokenTask(), 0,  18000000);
+        timer.schedule(new TokenTask(), 0,  300000);
     }
 
     @Override

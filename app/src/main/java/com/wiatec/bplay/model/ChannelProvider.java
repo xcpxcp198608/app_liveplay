@@ -10,6 +10,7 @@ import com.px.common.utils.Logger;
 import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ChannelInfo;
+import com.wiatec.bplay.pojo.LiveChannelInfo;
 import com.wiatec.bplay.sql.FavoriteChannelDao;
 import com.wiatec.bplay.sql.HistoryChannelDao;
 
@@ -19,6 +20,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+
+import static com.wiatec.bplay.instance.Constant.url.live_channel;
 
 /**
  * channel provider
@@ -49,6 +52,27 @@ public class ChannelProvider implements ChannelLoadService<List<ChannelInfo>> {
                             return;
                         }
                         onLoadListener.onLoad(true, channelInfoList);
+                    }
+
+                    @Override
+                    public void onFailure(String e) {
+                        onLoadListener.onLoad(false, null);
+                    }
+                });
+    }
+
+    public void loadLiveChannel(final OnLoadListener<List<LiveChannelInfo>> onLoadListener){
+        HttpMaster.get(Constant.url.live_channel)
+                .enqueue(new StringListener() {
+                    @Override
+                    public void onSuccess(String s) throws IOException {
+                        List<LiveChannelInfo> liveChannelInfoList = new Gson().fromJson(s,
+                                new TypeToken<List<LiveChannelInfo>>(){}.getType());
+                        if(liveChannelInfoList == null || liveChannelInfoList.size() <= 0){
+                            onLoadListener.onLoad(false, null);
+                            return;
+                        }
+                        onLoadListener.onLoad(true, liveChannelInfoList);
                     }
 
                     @Override

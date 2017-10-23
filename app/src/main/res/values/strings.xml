@@ -94,7 +94,7 @@ By confirming “OK” below, you affirm that you are over 18 years of age.
 
 We hope that you wish to help us improve your experience.  If yes, click confirm “OK”.</string>
     <string name="download_title">Downloading Resources</string>
-    <string name="download_message">please wait download finish</string>
+    <string name="download_message">Please wait for download to finish.</string>
     <string name="install_error">install error</string>
     <string name="report">report</string>
     <string name="start">start</string>
