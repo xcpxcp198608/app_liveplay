@@ -121,9 +121,9 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         channelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ChannelInfo channelInfo = channelInfoList.get(position);
+                int style = channelInfoList.get(position).getStyle();
                 Application.setChannelInfoList(channelInfoList);
-                if(channelInfo.getStyle() == 1){
+                if(style == 1){
                     launchFMPlay(channelInfoList, position);
                 }else {
                     launchPlay(channelInfoList, position);

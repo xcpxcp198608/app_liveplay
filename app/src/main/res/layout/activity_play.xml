@@ -63,6 +63,17 @@
             android:layout_height="48dp"
             android:contentDescription="@string/start" />
 
+        <TextView
+            android:id="@+id/tvCurrentPosition"
+            android:layout_toStartOf="@id/ibtFastRewind"
+            android:textSize="28sp"
+            android:textColor="@android:color/white"
+            android:text="00:00:00"
+            android:gravity="center"
+            android:layout_marginEnd="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp" />
+
         <ImageButton
             android:layout_marginStart="20dp"
             android:background="@drawable/bg_button_forward"
@@ -71,6 +82,17 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/start" />
+
+        <TextView
+            android:id="@+id/tvDuration"
+            android:layout_toEndOf="@id/ibtFastForward"
+            android:textSize="28sp"
+            android:textColor="@android:color/white"
+            android:text="00:00:00"
+            android:gravity="center"
+            android:layout_marginStart="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp" />
 
         <ImageButton
             android:layout_alignParentEnd="true"

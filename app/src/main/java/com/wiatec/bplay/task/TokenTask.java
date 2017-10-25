@@ -48,6 +48,7 @@ public class TokenTask extends TimerTask {
                             SPUtils.put(Application.context, "streamToken", streamToken);
                         } catch (JSONException e) {
                             Logger.d("token json format error");
+                            Logger.d(e.getMessage());
                             loadToken();
                         }
                     }

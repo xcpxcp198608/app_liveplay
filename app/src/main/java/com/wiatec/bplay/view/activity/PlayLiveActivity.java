@@ -37,6 +37,7 @@ import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.PlayChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
+import com.wiatec.bplay.databinding.ActivityPlayLiveBinding;
 import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
@@ -56,7 +57,7 @@ import java.util.List;
 
 public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder.Callback{
 
-    private ActivityPlayBinding binding;
+    private ActivityPlayLiveBinding binding;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mediaPlayer;
     private LiveChannelInfo liveChannelInfo;
@@ -66,11 +67,12 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_play);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_play_live);
         surfaceHolder = binding.surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         liveChannelInfo = getIntent().getParcelableExtra("liveChannelInfo");
+        binding.tvTitle.setText(liveChannelInfo.getName());
     }
 
     @Override
@@ -126,12 +128,14 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
+                    play(liveChannelInfo.getPlayUrl());
                     return true;
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    play(liveChannelInfo.getPlayUrl());
                 }
             });
         } catch (IOException e) {

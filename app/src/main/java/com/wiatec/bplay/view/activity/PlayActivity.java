@@ -34,6 +34,7 @@ import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.px.common.utils.NetUtils;
 import com.px.common.utils.SPUtils;
+import com.px.common.utils.TimeUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.PlayChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
@@ -187,6 +188,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     EmojiToast.show(playManager.getChannelInfo().getName()+" playing" , EmojiToast.EMOJI_SMILE);
                     binding.tvNetSpeed.setVisibility(View.GONE);
                     mediaPlayer.start();
+                    setDuration();
+                    seekToLastPosition();
                 }
             });
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -220,6 +223,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
+                    setCurrentPosition();
                     mediaPlayer.start();
                 }
             });
@@ -259,9 +263,9 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        send = false;
         releaseMediaPlayer();
         playManager.stopView(tag);
-        send = false;
     }
 
     private void showErrorReportDialog(){
@@ -426,7 +430,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 while (send){
                     int s1 = NetUtils.getNetSpeedBytes();
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -462,8 +466,35 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                             finish();
                         }
                     }
+                    setCurrentPosition();
                     break;
             }
         }
     };
+
+    private void setCurrentPosition(){
+        if(mediaPlayer == null || !mediaPlayer.isPlaying()) return;
+        int currentPosition = mediaPlayer.getCurrentPosition();
+        if(currentPosition > 0){
+            SPUtils.put(playManager.getChannelInfo().getTag() + "position", currentPosition);
+            String sPosition = TimeUtil.getMediaTime(currentPosition);
+            binding.tvCurrentPosition.setText(sPosition);
+        }
+    }
+
+    private void setDuration(){
+        if(mediaPlayer == null || !mediaPlayer.isPlaying()) return;
+        int duration = mediaPlayer.getDuration();
+        if(duration > 0){
+            binding.tvDuration.setText(TimeUtil.getMediaTime(duration));
+        }
+    }
+
+    private void seekToLastPosition(){
+        int lastPosition = (int) SPUtils.get(playManager.getChannelInfo().getTag() + "position", 0);
+        int targetPosition = lastPosition - 3000;
+        if(targetPosition > 0){
+            mediaPlayer.seekTo(targetPosition);
+        }
+    }
 }
