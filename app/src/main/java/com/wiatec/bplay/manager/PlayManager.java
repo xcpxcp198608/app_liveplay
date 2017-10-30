@@ -163,9 +163,17 @@ public class PlayManager {
         if(tag == null) return;
         String username = UserContentResolver.get("userName");
         if(TextUtils.isEmpty(username)) username = "default";
+        String country = getChannelInfo().getCountry();
+        if(country.contains("&")){
+            country = country.replaceAll("&", " ");
+        }
+        String name = getChannelInfo().getName();
+        if(name.contains("&")){
+            name = name.replaceAll("&", "");
+        }
         HttpMaster.post(Constant.url.start_view)
                 .parames("tag", tag)
-                .parames("channelName", getChannelInfo().getCountry() + "-" + getChannelInfo().getName())
+                .parames("channelName", country + ":" + name)
                 .parames("username", username)
                 .parames("mac", SysUtils.getEthernetMac())
                 .enqueue(new StringListener() {
