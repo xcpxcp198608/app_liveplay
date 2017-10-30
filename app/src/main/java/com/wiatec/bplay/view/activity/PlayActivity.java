@@ -176,8 +176,10 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
+            String url = urlList.get(currentPlayPosition);
+            Logger.d(url);
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(urlList.get(currentPlayPosition));
+            mediaPlayer.setDataSource(url);
             mediaPlayer.setDisplay(surfaceHolder);
             mediaPlayer.prepareAsync();
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -209,6 +211,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
+                    Logger.d("error");
                     playOtherUrlOnVideo(urlList);
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
                     return true;
@@ -217,6 +220,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    Logger.d("completion");
                     playOtherUrlOnVideo(urlList);
                 }
             });

@@ -33,9 +33,16 @@
         android:id="@+id/tvTitle"
         android:layout_margin="10dp"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
-        tools:text="sfsdfsdfsdfdsfsdf"
-        android:layout_width="wrap_content"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        tools:text="Living"
+        android:padding="10dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="200dp"
+        android:background="@drawable/bg_live_hint"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </FrameLayout>
 </layout>

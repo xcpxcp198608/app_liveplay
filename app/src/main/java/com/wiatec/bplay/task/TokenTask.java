@@ -42,9 +42,11 @@ public class TokenTask extends TimerTask {
                     @Override
                     public void onSuccess(String s) throws IOException {
                         try {
+                            Logger.d(s);
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject data = jsonObject.getJSONObject("data");
                             String streamToken = data.getString("token");
+                            Logger.d(streamToken);
                             SPUtils.put(Application.context, "streamToken", streamToken);
                         } catch (JSONException e) {
                             Logger.d("token json format error");

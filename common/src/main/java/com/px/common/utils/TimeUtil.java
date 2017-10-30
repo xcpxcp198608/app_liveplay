@@ -39,17 +39,17 @@ public class TimeUtil {
         if (hour < 10) {
             sHour = "0" + hour;
         } else {
-            sHour = hour+"";
+            sHour = String.valueOf(hour);
         }
         if (minute < 10) {
             sMinute = "0" + minute;
         } else {
-            sMinute = minute + "";
+            sMinute = String.valueOf(minute);
         }
         if (second < 10) {
             sSecond = "0" + second;
         } else {
-            sSecond = second + "";
+            sSecond = String.valueOf(second);
         }
         return sHour + ":" + sMinute + ":" + sSecond;
     }

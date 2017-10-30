@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.wiatec.bplay"
         minSdkVersion 17
@@ -50,12 +50,12 @@ android {
             def outputFile = output.outputFile
             def fileName
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                if (variant.buildType.name.equals('release')) {
+                if (variant.buildType.name == 'release') {
                     fileName = "${defaultConfig.applicationId}_${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}.apk"
-                } else if (variant.buildType.name.equals('debug')) {
+                } else if (variant.buildType.name == 'debug') {
                     fileName = "${defaultConfig.applicationId}_${defaultConfig.versionName}_${defaultConfig.versionCode}_debug.apk"
                 }
-                output.outputFile = new File(outputFile.parent, fileName)
+//                output.outputFile = new File(outputFile.parent, fileName)
             }
         }
     }
@@ -67,7 +67,7 @@ android {
     }
 }
 
-def releaseTime() {
+static def releaseTime() {
     return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
 
@@ -81,10 +81,11 @@ dependencies {
 
     //dagger2
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.google.dagger:dagger:2.0'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.google.dagger:dagger:2.4'
     compile 'org.glassfish:javax.annotation:10.0-b28'
+
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.0'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.4'
 }

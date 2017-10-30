@@ -1,13 +1,13 @@
 package com.px.common.image;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.RequestOptions;
 import com.px.common.utils.CommonApplication;
 
 /**
@@ -24,7 +24,11 @@ public class ImageMaster {
     //设置加载中以及加载失败图片
     public static void load(Context context, String url, ImageView imageView,
                             int placeholder, int error) {
-        Glide.with(context).load(url).placeholder(placeholder).error(error).into(imageView);
+        Glide.with(context).load(url)
+                .apply(new RequestOptions()
+                        .placeholder(placeholder)
+                        .error(error))
+                .into(imageView);
     }
 
     //设置加载中以及加载失败图片,使用application context, 不设置加载动画
@@ -32,16 +36,17 @@ public class ImageMaster {
                             int placeholder, int error) {
         Glide.with(CommonApplication.context)
                 .load(url)
-                .placeholder(placeholder)
-                .error(error)
-                .dontAnimate()
+                .apply(new RequestOptions()
+                        .placeholder(placeholder)
+                        .error(error)
+                        .dontAnimate())
                 .into(imageView);
     }
 
     //加载指定大小
     public static void loadWithSize(Context context, String url, ImageView imageView,
                                     int width, int height) {
-        Glide.with(context).load(url).override(width, height).into(imageView);
+        Glide.with(context).load(url).apply(new RequestOptions().override(width, height)).into(imageView);
     }
 
     //设置加载中以及加载失败图片并且指定大小
@@ -49,10 +54,11 @@ public class ImageMaster {
                                     int width, int height, int placeholder, int error) {
         Glide.with(CommonApplication.context)
                 .load(url)
-                .override(width, height)
-                .placeholder(placeholder)
-                .error(error)
-                .dontAnimate()
+                .apply(new RequestOptions()
+                        .override(width, height)
+                        .placeholder(placeholder)
+                        .error(error)
+                        .dontAnimate())
                 .into(imageView);
     }
 
@@ -60,8 +66,9 @@ public class ImageMaster {
     public static void loadNoMemoryCache(Context context, String url, ImageView imageView) {
         Glide.with(CommonApplication.context)
                 .load(url)
-                .skipMemoryCache(true)
-                .dontAnimate()
+                .apply(new RequestOptions()
+                        .skipMemoryCache(true)
+                        .dontAnimate())
                 .into(imageView);
     }
 
@@ -69,8 +76,9 @@ public class ImageMaster {
     public static void loadWithPriority(Context context, String url, ImageView imageView) {
         Glide.with(CommonApplication.context)
                 .load(url)
-                .priority(Priority.NORMAL)
-                .dontAnimate()
+                .apply(new RequestOptions()
+                        .priority(Priority.NORMAL)
+                        .dontAnimate())
                 .into(imageView);
     }
 
@@ -88,7 +96,8 @@ public class ImageMaster {
 
     //设置缓存策略
     public static void loadWithDiskCache(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(context).load(url)
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)).into(imageView);
     }
 
     /**
@@ -97,7 +106,7 @@ public class ImageMaster {
     //设置加载动画
     public static void loadWithAnimate(Context context, String url, int animate,
                                        ImageView imageView) {
-        Glide.with(context).load(url).animate(animate).into(imageView);
+//        Glide.with(context).load(url).apply(new RequestOptions().animate(animate)).into(imageView);
     }
 
     /**
@@ -113,32 +122,32 @@ public class ImageMaster {
      */
     //设置动态转换
     public static void loadWithCrop(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).centerCrop().into(imageView);
+        Glide.with(context).load(url).apply(new RequestOptions().centerCrop()).into(imageView);
     }
 
     //设置动态GIF加载方式
     public static void loadGif(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).asGif().into(imageView);
+//        Glide.with(context).load(url).apply(new RequestOptions().asGif()).into(imageView);
     }
 
     //设置静态GIF加载方式
     public static void loadStaticGif(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).asBitmap().into(imageView);
+//        Glide.with(context).load(url).apply(new RequestOptions().asBitmap()).into(imageView);
     }
 
     //设置监听的用处 可以用于监控请求发生错误来源，以及图片来源 是内存还是磁盘
     //设置监听请求接口
     public static void loadListener(Context context, String url, ImageView imageView,
-                                    RequestListener<String, GlideDrawable> listener) {
+                                    RequestListener<Drawable> listener) {
         Glide.with(context).load(url).listener(listener).into(imageView);
     }
 
     //项目中有很多需要先下载图片然后再做一些合成的功能，比如项目中出现的图文混排
     //设置要加载的内容
-    public static void loadContent(Context context, String url,
-                                            SimpleTarget<GlideDrawable> simpleTarget) {
-        Glide.with(context).load(url).centerCrop().into(simpleTarget);
-    }
+//    public static void loadContent(Context context, String url,
+//                                            SimpleTarget<GlideDrawable> simpleTarget) {
+//        Glide.with(context).load(url).centerCrop().into(simpleTarget);
+//    }
 
     //清理磁盘缓存
     public static void clearDiskCache(Context context) {
