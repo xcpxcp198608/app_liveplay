@@ -417,11 +417,13 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP &&
                 binding.llController.getVisibility() == View.GONE) ||
                 event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PREVIOUS){
+            currentPlayPosition = 0;
             playManager.previousChannel();
         }
         if((event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN &&
                 binding.llController.getVisibility() == View.GONE) ||
                 event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_NEXT){
+            currentPlayPosition = 0;
             playManager.nextChannel();
         }
         return super.onKeyDown(keyCode, event);

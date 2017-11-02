@@ -35,7 +35,7 @@ public class LiveChannelAdapter extends BaseRecycleAdapter<ChannelViewHolder> {
     @Override
     protected void bindHolder(final ChannelViewHolder holder, final int position) {
         LiveChannelInfo liveChannelInfo = liveChannelInfoList.get(position);
-        holder.textView.setText(liveChannelInfo.getName());
+        holder.textView.setText(liveChannelInfo.getTitle());
         ImageMaster.load(liveChannelInfo.getPreview(), holder.imageView, R.drawable.img_hold3,
                 R.drawable.img_hold3);
     }

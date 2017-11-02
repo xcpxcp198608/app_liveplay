@@ -1,5 +1,7 @@
 package com.wiatec.bplay.task;
 
+import android.text.TextUtils;
+
 import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AESUtil;
@@ -47,7 +49,9 @@ public class TokenTask extends TimerTask {
                             JSONObject data = jsonObject.getJSONObject("data");
                             String streamToken = data.getString("token");
                             Logger.d(streamToken);
-                            SPUtils.put(Application.context, "streamToken", streamToken);
+                            if(!TextUtils.isEmpty(streamToken)) {
+                                SPUtils.put(Application.context, "streamToken", streamToken);
+                            }
                         } catch (JSONException e) {
                             Logger.d("token json format error");
                             Logger.d(e.getMessage());

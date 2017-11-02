@@ -72,7 +72,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         liveChannelInfo = getIntent().getParcelableExtra("liveChannelInfo");
-        binding.tvTitle.setText(liveChannelInfo.getName());
+        binding.tvTitle.setText(liveChannelInfo.getMessage());
     }
 
     @Override
