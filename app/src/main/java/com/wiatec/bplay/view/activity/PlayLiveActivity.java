@@ -17,8 +17,14 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
@@ -55,13 +61,16 @@ import java.util.List;
  * play
  */
 
-public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder.Callback,
+        View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
     private ActivityPlayLiveBinding binding;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mediaPlayer;
     private LiveChannelInfo liveChannelInfo;
     private boolean send = true;
+    private boolean isJSLoaded = false;
+    private String channel = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +81,23 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         liveChannelInfo = getIntent().getParcelableExtra("liveChannelInfo");
-        binding.tvTitle.setText(liveChannelInfo.getMessage());
+        channel = liveChannelInfo.getId()+"";
+        String message = liveChannelInfo.getMessage();
+        if(!TextUtils.isEmpty(message)) {
+            binding.tvTitle.setText(liveChannelInfo.getMessage());
+            binding.tvTitle.setVisibility(View.VISIBLE);
+        }
+        binding.btSend.setOnClickListener(this);
+        binding.switchDanMu.setOnCheckedChangeListener(this);
+        initWebView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(binding.switchDanMu.isChecked()){
+            loadWebView();
+        }
     }
 
     @Override
@@ -168,6 +193,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
         super.onDestroy();
         releaseMediaPlayer();
         send = false;
+        releaseWebView();
     }
 
     private void sendNetSpeed(){
@@ -206,4 +232,104 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
             }
         }
     };
+
+    class MyWebViewClient extends WebViewClient{
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return true;
+        }
+    }
+
+    private void initWebView(){
+        binding.webView.setWebViewClient(new MyWebViewClient());
+        binding.webView.setBackgroundColor(0);
+        WebSettings webSettings = binding.webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+    }
+
+    private void loadWebView(){
+        isJSLoaded = false;
+        binding.webView.loadUrl("http://blive.protv.company:8804/html/danmu.html");
+        binding.webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if(newProgress >= 100){
+                    if(!isJSLoaded) {
+                        Logger.d(newProgress+"");
+                        binding.webView.loadUrl("javascript:showDanMu('" + channel + "')");
+                        isJSLoaded = true;
+                    }
+                }
+            }
+        });
+    }
+
+    private void unloadWebView(){
+        binding.webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+        isJSLoaded = false;
+    }
+
+    private void releaseWebView(){
+        binding.webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+        isJSLoaded = false;
+        binding.webView.clearHistory();
+        ((ViewGroup) binding.webView.getParent()).removeView(binding.webView);
+        binding.webView.destroy();
+    }
+
+    private void sendGoEasyMessage(String message){
+        HttpMaster.post("http://rest-hangzhou.goeasy.io/publish")
+                .parames("appkey", "BC-6a9b6c468c894389881bc1df7d90cddb")
+                .parames("channel", channel)
+                .parames("content", message)
+                .enqueue(new StringListener() {
+                    @Override
+                    public void onSuccess(String s) throws IOException {
+
+                    }
+
+                    @Override
+                    public void onFailure(String e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btSend){
+            String message = binding.etMessage.getText().toString();
+            if(!TextUtils.isEmpty(message)){
+                sendGoEasyMessage(message);
+            }
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(buttonView.getId() == R.id.switchDanMu){
+            if(isChecked){
+                binding.webView.setVisibility(View.VISIBLE);
+                binding.etMessage.setVisibility(View.VISIBLE);
+                binding.btSend.setVisibility(View.VISIBLE);
+                loadWebView();
+            }else{
+                binding.webView.setVisibility(View.GONE);
+                binding.etMessage.setVisibility(View.GONE);
+                binding.btSend.setVisibility(View.GONE);
+                unloadWebView();
+            }
+        }
+    }
 }

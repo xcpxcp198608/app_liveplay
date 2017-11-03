@@ -314,9 +314,17 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private void sendErrorReport(String message) {
         String userName = UserContentResolver.get("userName");
         if(TextUtils.isEmpty(userName)) userName = "test";
+        String country = playManager.getChannelInfo().getCountry();
+        if(country.contains("&")){
+            country = country.replaceAll("&", " ");
+        }
+        String name = playManager.getChannelInfo().getName();
+        if(name.contains("&")){
+            name = name.replaceAll("&", "");
+        }
         HttpMaster.post(Constant.url.channel_send_error_report)
                 .parames("userName",userName)
-                .parames("channelName",playManager.getChannelInfo().getCountry() + "-" + playManager.getChannelInfo().getName())
+                .parames("channelName",country + "-" + name)
                 .parames("message", message)
                 .enqueue(new StringListener() {
                     @Override

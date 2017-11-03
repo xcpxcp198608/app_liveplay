@@ -31,18 +31,56 @@
 
     <TextView
         android:id="@+id/tvTitle"
+        android:visibility="gone"
         android:layout_margin="10dp"
         android:textColor="@android:color/white"
         android:textSize="35sp"
         android:textStyle="bold"
         tools:text="Living"
         android:padding="10dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="200dp"
         android:background="@drawable/bg_live_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </WebView>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Switch
+            android:id="@+id/switchDanMu"
+            android:checked="true"
+            android:layout_marginRight="5dp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DanMu"/>
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:textColor="@android:color/white"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btSend"
+            android:text="Send"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </FrameLayout>
 </layout>
