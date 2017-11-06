@@ -3,20 +3,30 @@ package com.wiatec.bplay.view.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
-import com.px.common.image.ImageMaster;
+import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelAdapter;
 import com.wiatec.bplay.adapter.LiveChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelBinding;
+import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
+import com.wiatec.bplay.model.UserContentResolver;
+import com.wiatec.bplay.pay.PayInfo;
+import com.wiatec.bplay.pay.PayPalConfig;
+import com.wiatec.bplay.pay.PayPalManager;
+import com.wiatec.bplay.pay.PayResultInfo;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.LiveChannelInfo;
@@ -29,10 +39,11 @@ import java.util.List;
  * channel activity
  */
 
-public class ChannelActivity extends BaseActivity<ChannelPresenter> implements Channel {
+public class ChannelActivity extends BaseActivity<ChannelPresenter> implements Channel, PayPalManager.OnPayResultListener {
 
     private ActivityChannelBinding binding;
     private String type;
+    private LiveChannelInfo mLiveChannelInfo;
 
     @Override
     protected ChannelPresenter createPresenter() {
@@ -43,6 +54,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel);
+        PayPalConfig.startPayPalService(this);
         type = getIntent().getStringExtra(Constant.key.channel_type);
         String key = getIntent().getStringExtra(Constant.key.key_search);
         if(Constant.key.type_favorite.equals(type)){
@@ -65,6 +77,12 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 presenter.loadChannel(type);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PayPalConfig.stopPayPalService(this);
     }
 
     @Override
@@ -173,7 +191,8 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         liveChannelAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                launchLivePlay(liveChannelInfoList.get(position));
+                mLiveChannelInfo = liveChannelInfoList.get(position);
+                play(mLiveChannelInfo);
             }
         });
         liveChannelAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
@@ -189,6 +208,80 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 }
             }
         });
+    }
+
+    private void play(LiveChannelInfo liveChannelInfo){
+        if(liveChannelInfo.getPrice() <= 0){
+            launchLivePlay(liveChannelInfo);
+            return;
+        }
+        String payerName = UserContentResolver.get("userName");
+        if(TextUtils.isEmpty(payerName)){
+            EmojiToast.show("no sign in", EmojiToast.EMOJI_SAD);
+            return;
+        }
+        presenter.verifyPay(payerName, liveChannelInfo.getUserId(), "");
+    }
+
+    private void showPayDialog(final PayInfo payInfo) {
+        new MaterialDialog.Builder(ChannelActivity.this)
+                .title(getString(R.string.notice))
+                .content("you will pay "+
+                        payInfo.getPrice() + " "+
+                        payInfo.getCurrency() + " for " +
+                        payInfo.getDescription())
+                .positiveText(getString(R.string.confirm))
+                .negativeText(getString(R.string.cancel))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        PayPalManager.pay(ChannelActivity.this, payInfo);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PayPalManager.payResult(requestCode, resultCode, data, this);
+    }
+
+    @Override
+    public void paySuccess(String paymentId) {
+        Logger.d(paymentId);
+        String payerName = UserContentResolver.get("userName");
+        if(TextUtils.isEmpty(payerName)){
+            EmojiToast.show("no sign in", EmojiToast.EMOJI_SAD);
+            return;
+        }
+        presenter.verifyPay(payerName, mLiveChannelInfo.getUserId(), paymentId);
+    }
+
+    @Override
+    public void customerCancel(String error) {
+
+    }
+
+    @Override
+    public void onPayVerify(boolean execute, ResultInfo<PayResultInfo> resultInfo) {
+        if(execute && resultInfo != null){
+            if(resultInfo.getCode() == 200){
+                launchLivePlay(mLiveChannelInfo);
+            }else{
+                showPayDialog(new PayInfo(mLiveChannelInfo.getPrice(), "USD", mLiveChannelInfo.getTitle()));
+                EmojiToast.show(resultInfo.getMessage(), EmojiToast.EMOJI_SAD);
+            }
+        }else{
+            EmojiToast.show("communication error", EmojiToast.EMOJI_SAD);
+        }
     }
 
     private void launchPlay(List<ChannelInfo> channelInfoList, int position){

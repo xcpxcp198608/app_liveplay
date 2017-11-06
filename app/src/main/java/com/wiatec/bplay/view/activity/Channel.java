@@ -1,5 +1,7 @@
 package com.wiatec.bplay.view.activity;
 
+import com.wiatec.bplay.entity.ResultInfo;
+import com.wiatec.bplay.pay.PayResultInfo;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.LiveChannelInfo;
@@ -17,4 +19,5 @@ public interface Channel extends Common {
     void loadFavorite(boolean execute, List<ChannelInfo> channelInfoList);
     void loadHistory(boolean execute, List<ChannelInfo> channelInfoList);
     void loadSearch(boolean execute, List<ChannelInfo> channelInfoList);
+    void onPayVerify(boolean execute, ResultInfo<PayResultInfo> resultInfo);
 }

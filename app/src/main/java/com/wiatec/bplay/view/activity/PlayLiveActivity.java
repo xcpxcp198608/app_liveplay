@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -28,6 +29,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -96,6 +98,17 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     protected void onStart() {
         super.onStart();
         if(binding.switchDanMu.isChecked()){
+            binding.etMessage.requestFocus();
+            binding.etMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEND) {
+                        sendGoEasyMessage();
+                        return true;
+                    }
+                    return false;
+                }
+            });
             loadWebView();
         }
     }
@@ -266,7 +279,6 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
                 super.onProgressChanged(view, newProgress);
                 if(newProgress >= 100){
                     if(!isJSLoaded) {
-                        Logger.d(newProgress+"");
                         binding.webView.loadUrl("javascript:showDanMu('" + channel + "')");
                         isJSLoaded = true;
                     }
@@ -288,7 +300,20 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
         binding.webView.destroy();
     }
 
-    private void sendGoEasyMessage(String message){
+
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btSend){
+            sendGoEasyMessage();
+        }
+    }
+
+    private void sendGoEasyMessage(){
+        String message = binding.etMessage.getText().toString();
+        if(TextUtils.isEmpty(message)){
+            return;
+        }
         HttpMaster.post("http://rest-hangzhou.goeasy.io/publish")
                 .parames("appkey", "BC-6a9b6c468c894389881bc1df7d90cddb")
                 .parames("channel", channel)
@@ -296,7 +321,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {
-
+                        binding.etMessage.setText("");
                     }
 
                     @Override
@@ -304,16 +329,6 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
 
                     }
                 });
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v.getId() == R.id.btSend){
-            String message = binding.etMessage.getText().toString();
-            if(!TextUtils.isEmpty(message)){
-                sendGoEasyMessage(message);
-            }
-        }
     }
 
     @Override

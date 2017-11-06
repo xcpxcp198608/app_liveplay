@@ -21,6 +21,7 @@ public class LiveChannelInfo implements Parcelable {
      * 1:default live
      */
     private int type;
+    private float price;
     private String startTime;
     private int userId;
 
@@ -103,6 +104,14 @@ public class LiveChannelInfo implements Parcelable {
         this.type = type;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public String getStartTime() {
         return startTime;
     }
@@ -131,6 +140,7 @@ public class LiveChannelInfo implements Parcelable {
                 ", category='" + category + '\'' +
                 ", available=" + available +
                 ", type=" + type +
+                ", price=" + price +
                 ", startTime='" + startTime + '\'' +
                 ", userId=" + userId +
                 '}';
@@ -152,6 +162,7 @@ public class LiveChannelInfo implements Parcelable {
         dest.writeString(this.category);
         dest.writeByte(this.available ? (byte) 1 : (byte) 0);
         dest.writeInt(this.type);
+        dest.writeFloat(this.price);
         dest.writeString(this.startTime);
         dest.writeInt(this.userId);
     }
@@ -166,6 +177,7 @@ public class LiveChannelInfo implements Parcelable {
         this.category = in.readString();
         this.available = in.readByte() != 0;
         this.type = in.readInt();
+        this.price = in.readFloat();
         this.startTime = in.readString();
         this.userId = in.readInt();
     }

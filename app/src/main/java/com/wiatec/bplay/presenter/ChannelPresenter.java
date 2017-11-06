@@ -1,9 +1,12 @@
 package com.wiatec.bplay.presenter;
 
+import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.model.AdImageProvider;
 import com.wiatec.bplay.model.ChannelLoadService;
 import com.wiatec.bplay.model.ChannelProvider;
 import com.wiatec.bplay.model.LoadService;
+import com.wiatec.bplay.pay.PayProvider;
+import com.wiatec.bplay.pay.PayResultInfo;
 import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.LiveChannelInfo;
@@ -22,11 +25,13 @@ public class ChannelPresenter extends BasePresenter {
     private Channel channel;
     AdImageProvider adImageProvider;
     ChannelProvider channelProvider;
+    PayProvider payProvider;
 
     public ChannelPresenter(Channel channel) {
         this.channel = channel;
         adImageProvider= new AdImageProvider();
         channelProvider = new ChannelProvider();
+        payProvider = new PayProvider();
     }
 
     //调用model - loadService 获取需要的Image文件
@@ -92,6 +97,17 @@ public class ChannelPresenter extends BasePresenter {
                 @Override
                 public void onLoad(boolean execute, List<ChannelInfo> channelInfos) {
                     channel.loadSearch(execute, channelInfos);
+                }
+            });
+        }
+    }
+
+    public void verifyPay(String payerName, int publisherId, String paymentId){
+        if(payProvider != null){
+            payProvider.payVerify(payerName, publisherId, paymentId, new LoadService.OnLoadListener<ResultInfo<PayResultInfo>>() {
+                @Override
+                public void onLoad(boolean execute, ResultInfo<PayResultInfo> payResultInfoResultInfo) {
+                    channel.onPayVerify(execute, payResultInfoResultInfo);
                 }
             });
         }

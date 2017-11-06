@@ -9,6 +9,8 @@
     android:layout_height="match_parent">
 
     <SurfaceView
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -31,7 +33,7 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:visibility="gone"
+        android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:textColor="@android:color/white"
         android:textSize="35sp"
@@ -47,14 +49,12 @@
     <WebView
         android:id="@+id/webView"
         android:background="@android:color/transparent"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </WebView>
 
     <LinearLayout
-        android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -71,6 +71,8 @@
         <EditText
             android:id="@+id/etMessage"
             android:textColor="@android:color/white"
+            android:imeOptions="actionSend"
+            android:singleLine="true"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
@@ -78,7 +80,10 @@
         <Button
             android:id="@+id/btSend"
             android:text="Send"
+            android:padding="0dp"
+            android:textColor="@color/colorGray"
             android:textAllCaps="false"
+            android:background="@drawable/bg_button_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

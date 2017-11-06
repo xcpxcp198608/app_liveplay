@@ -14,7 +14,7 @@ import java.util.List;
  * channel adapter
  */
 
-public class LiveChannelAdapter extends BaseRecycleAdapter<ChannelViewHolder> {
+public class LiveChannelAdapter extends BaseRecycleAdapter<LiveChannelViewHolder> {
 
     private List<LiveChannelInfo> liveChannelInfoList;
 
@@ -24,18 +24,22 @@ public class LiveChannelAdapter extends BaseRecycleAdapter<ChannelViewHolder> {
 
     @Override
     protected int setLayoutId() {
-        return R.layout.item_rcv_channel;
+        return R.layout.item_rcv_live_channel;
     }
 
     @Override
-    protected ChannelViewHolder createHolder(View view) {
-        return new ChannelViewHolder(view);
+    protected LiveChannelViewHolder createHolder(View view) {
+        return new LiveChannelViewHolder(view);
     }
 
     @Override
-    protected void bindHolder(final ChannelViewHolder holder, final int position) {
+    protected void bindHolder(final LiveChannelViewHolder holder, final int position) {
         LiveChannelInfo liveChannelInfo = liveChannelInfoList.get(position);
         holder.textView.setText(liveChannelInfo.getTitle());
+        if(liveChannelInfo.getPrice() > 0){
+            holder.tvPrice.setText("$"+liveChannelInfo.getPrice());
+            holder.tvPrice.setVisibility(View.VISIBLE);
+        }
         ImageMaster.load(liveChannelInfo.getPreview(), holder.imageView, R.drawable.img_hold3,
                 R.drawable.img_hold3);
     }

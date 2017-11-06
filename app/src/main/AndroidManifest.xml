@@ -52,7 +52,8 @@
         <activity android:name=".view.activity.FMPlayActivity" />
         <activity android:name=".view.activity.ChannelTypeActivity1" />
         <activity android:name=".view.activity.ChannelTypeActivity2" />
-        <activity android:name=".view.activity.PlayLiveActivity" />
+        <activity android:name=".view.activity.PlayLiveActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".view.activity.AutomaticPlayActivity"
             android:exported="true">
