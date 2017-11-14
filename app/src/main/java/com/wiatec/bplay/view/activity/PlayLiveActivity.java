@@ -58,6 +58,8 @@ import com.wiatec.bplay.sql.FavoriteChannelDao;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * play
@@ -73,6 +75,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     private boolean send = true;
     private boolean isJSLoaded = false;
     private String channel = "";
+    private boolean isNeedPaid = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         liveChannelInfo = getIntent().getParcelableExtra("liveChannelInfo");
+        isNeedPaid = getIntent().getBooleanExtra("isNeedPaid", false);
         channel = liveChannelInfo.getId()+"";
         String message = liveChannelInfo.getMessage();
         if(!TextUtils.isEmpty(message)) {
@@ -97,6 +101,22 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     @Override
     protected void onStart() {
         super.onStart();
+        if(isNeedPaid){
+            SPUtils.put("already_preview" + liveChannelInfo.getUserId() +
+                    liveChannelInfo.getTitle(), true);
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            EmojiToast.showLong("preview over, you can view full live after pay", EmojiToast.EMOJI_SAD);
+                            finish();
+                        }
+                    });
+                }
+            }, 60000);
+        }
         if(binding.switchDanMu.isChecked()){
             binding.etMessage.requestFocus();
             binding.etMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {

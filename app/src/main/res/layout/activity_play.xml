@@ -113,8 +113,54 @@
             android:layout_width="48dp"
             android:layout_height="48dp" />
 
-
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llViewPosition"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal|bottom"
+        android:orientation="horizontal"
+        android:layout_marginBottom="100dp"
+        android:background="@color/colorTranslucent5"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:text="Resume at "
+            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/tvLastPosition"
+            tools:text="05:00"
+            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+        <Button
+            android:id="@+id/btGo"
+            android:layout_marginLeft="10dp"
+            android:textColor="@drawable/text_select"
+            android:text="GO"
+            android:textSize="24sp"
+            android:background="@android:color/transparent"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <Button
+            android:id="@+id/btClose"
+            android:textColor="@drawable/text_select"
+            android:text="X"
+            android:textSize="24sp"
+            android:background="@android:color/transparent"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
 
 </FrameLayout>
 </layout>

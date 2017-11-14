@@ -40,7 +40,8 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.activity.ChannelActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".view.activity.ChannelTypeActivity"
             android:screenOrientation="landscape"

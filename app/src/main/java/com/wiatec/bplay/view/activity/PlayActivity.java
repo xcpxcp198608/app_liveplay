@@ -49,6 +49,8 @@ import com.wiatec.bplay.sql.FavoriteChannelDao;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * play
@@ -67,6 +69,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private int currentPlayPosition = 0;
     private String tag = "";
     private boolean viewChannel = false;
+    private int targetPosition;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +90,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         binding.ibtFastForward.setOnClickListener(this);
         binding.ibtReport.setOnClickListener(this);
         binding.cbFavorite.setOnCheckedChangeListener(this);
+        binding.btGo.setOnClickListener(this);
+        binding.btClose.setOnClickListener(this);
         showFavoriteStatus();
         showChannelList(channelInfoList);
     }
@@ -191,7 +196,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     binding.tvNetSpeed.setVisibility(View.GONE);
                     mediaPlayer.start();
                     setDuration();
-                    seekToLastPosition();
+                    showLastPosition();
                 }
             });
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -408,6 +413,15 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 if(t2 > mediaPlayer.getDuration()) t2 = mediaPlayer.getDuration();
                 mediaPlayer.seekTo(t2);
                 break;
+            case R.id.btGo:
+                if(targetPosition > 0){
+                    mediaPlayer.seekTo(targetPosition);
+                    binding.llViewPosition.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.btClose:
+                binding.llViewPosition.setVisibility(View.GONE);
+                break;
             default:
                 break;
         }
@@ -482,6 +496,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     }
                     setCurrentPosition();
                     break;
+                case 2:
+                    binding.llViewPosition.setVisibility(View.GONE);
             }
         }
     };
@@ -504,11 +520,21 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
     }
 
-    private void seekToLastPosition(){
+    private void showLastPosition(){
         int lastPosition = (int) SPUtils.get(playManager.getChannelInfo().getTag() + "position", 0);
-        int targetPosition = lastPosition - 3000;
-        if(targetPosition > 0){
-            mediaPlayer.seekTo(targetPosition);
+        targetPosition = lastPosition - 3000;
+        int duration = mediaPlayer.getDuration();
+        if(duration > 0 && targetPosition > 0){
+            String p = TimeUtil.getMediaTime(targetPosition);
+            binding.tvLastPosition.setText(p);
+            binding.llViewPosition.setVisibility(View.VISIBLE);
+            binding.btGo.requestFocus();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    handler.sendEmptyMessage(2);
+                }
+            }, 8000);
         }
     }
 }
