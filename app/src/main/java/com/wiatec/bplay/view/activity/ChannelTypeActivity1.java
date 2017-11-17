@@ -47,7 +47,7 @@ public class ChannelTypeActivity1 extends BaseActivity<ChannelType1Presenter> im
         binding.llLoading.setVisibility(View.GONE);
         ChannelType1Adapter channelType1Adapter = new ChannelType1Adapter(channelType1InfoList);
         binding.rcvChannelType1.setAdapter(channelType1Adapter);
-        binding.rcvChannelType1.setLayoutManager(new GridLayoutManager(this ,5));
+        binding.rcvChannelType1.setLayoutManager(new GridLayoutManager(this ,2));
         channelType1Adapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
             @Override
             public void onFocus(View view, int position, boolean hasFocus) {

@@ -24,7 +24,7 @@ public class ChannelType1Adapter extends BaseRecycleAdapter<ChannelType1ViewHold
 
     @Override
     protected int setLayoutId() {
-        return R.layout.item_rcv_channel;
+        return R.layout.item_rcv_channel_type;
     }
 
     @Override

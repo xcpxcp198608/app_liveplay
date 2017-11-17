@@ -33,7 +33,6 @@ import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.LiveChannelInfo;
 import com.wiatec.bplay.presenter.ChannelPresenter;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -115,7 +114,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     }
 
     @Override
-    public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
+    public void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
             //
         }
@@ -265,7 +264,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 }else {
                     showPreviewPayDialog(new PayInfo(mLiveChannelInfo.getPrice(), "USD", mLiveChannelInfo.getTitle()));
                 }
-                EmojiToast.showLong(resultInfo.getMessage(), EmojiToast.EMOJI_SAD);
+                EmojiToast.showLong(resultInfo.getMessage(), EmojiToast.EMOJI_SMILE);
             }
         }else{
             EmojiToast.showLong("communication error", EmojiToast.EMOJI_SAD);
@@ -275,10 +274,10 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     private void showPreviewPayDialog(final PayInfo payInfo) {
         new MaterialDialog.Builder(ChannelActivity.this)
                 .title(getString(R.string.notice))
-                .content("you will pay "+
+                .content("You agree to pay $"+
                         payInfo.getPrice() + " "+
-                        payInfo.getCurrency() + " for " +
-                        payInfo.getDescription() +" to view full live or preview 60s without pay" )
+                        payInfo.getCurrency() + " to view " +
+                        payInfo.getDescription() +". Without payment you may only view patrick for a 60 second preview." )
                 .positiveText(getString(R.string.pay))
                 .negativeText(getString(R.string.preview))
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -304,9 +303,9 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     private void showPayDialog(final PayInfo payInfo) {
         new MaterialDialog.Builder(ChannelActivity.this)
                 .title(getString(R.string.notice))
-                .content("you will pay "+
+                .content("You agree to pay $"+
                         payInfo.getPrice() + " "+
-                        payInfo.getCurrency() + " for " +
+                        payInfo.getCurrency() + " to view " +
                         payInfo.getDescription())
                 .positiveText(getString(R.string.confirm))
                 .negativeText(getString(R.string.cancel))
@@ -361,7 +360,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
     }
 
     private void launchFMPlay(List<ChannelInfo> channelInfoList, int position){
-        Intent intent = new Intent(ChannelActivity.this , FMPlayActivity.class);
+        Intent intent = new Intent(ChannelActivity.this , PlayFMActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
     }

@@ -48,7 +48,7 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-public class FMPlayActivity extends AppCompatActivity implements PlayManager.PlayListener,
+public class PlayFMActivity extends AppCompatActivity implements PlayManager.PlayListener,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener{
 
     private ActivityFmPlayBinding binding;
@@ -97,24 +97,24 @@ public class FMPlayActivity extends AppCompatActivity implements PlayManager.Pla
 
     @Override
     public void playAd() {
-        startActivity(new Intent(FMPlayActivity.this, AdScreenActivity.class));
+        startActivity(new Intent(PlayFMActivity.this, AdScreenActivity.class));
         finish();
     }
 
     @Override
     public void launchApp(String packageName) {
-        if(AppUtil.isInstalled(FMPlayActivity.this , packageName)) {
-            AppUtil.launchApp(FMPlayActivity.this, packageName);
+        if(AppUtil.isInstalled(PlayFMActivity.this , packageName)) {
+            AppUtil.launchApp(PlayFMActivity.this, packageName);
         }else{
             EmojiToast.show(getString(R.string.notice1), EmojiToast.EMOJI_SAD);
-            AppUtil.launchApp(FMPlayActivity.this, Constant.packageName.market);
+            AppUtil.launchApp(PlayFMActivity.this, Constant.packageName.market);
         }
         finish();
     }
 
     private void showImage(){
         String icon = playManager.getChannelInfo().getIcon();
-        ImageMaster.load(FMPlayActivity.this, icon, binding.ivFM, R.drawable.img_hold3, R.drawable.img_hold3);
+        ImageMaster.load(PlayFMActivity.this, icon, binding.ivFM, R.drawable.img_hold3, R.drawable.img_hold3);
     }
 
     private void playFM(final String url) {

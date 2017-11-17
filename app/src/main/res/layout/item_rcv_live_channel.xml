@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_margin="10dp"
+    android:padding="2dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/bg_item_channel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:cropToPadding="true"
+            android:id="@+id/imageView"
+            android:layout_width="210dp"
+            android:layout_height="95dp" />
+
+        <TextView
+            android:background="@color/colorTranslucent3"
+            android:id="@+id/textView"
+            android:gravity="center"
+            android:layout_gravity="center"
+            tool:text="CCTV-1"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textColor="@color/colorWhite"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_red_light"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:layout_gravity="right"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

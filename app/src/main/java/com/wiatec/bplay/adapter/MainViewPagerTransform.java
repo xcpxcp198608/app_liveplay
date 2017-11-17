@@ -12,7 +12,7 @@ public class MainViewPagerTransform implements ViewPager.PageTransformer {
     @Override
     public void transformPage(View page, float position) {
         if(position < -1){
-            page.setAlpha(0.2f);
+            page.setAlpha(0.8f);
             page.setScaleX(1f);
             page.setScaleY(1f);
         }else if(position <= 0){
@@ -26,7 +26,7 @@ public class MainViewPagerTransform implements ViewPager.PageTransformer {
         }else{
             page.setScaleX(1f);
             page.setScaleY(1f);
-            page.setAlpha(0.2f);
+            page.setAlpha(0.8f);
         }
     }
 }

@@ -7,8 +7,6 @@ import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.view.activity.Splash;
 
-import javax.inject.Inject;
-
 /**
  * splash presenter
  */
@@ -31,7 +29,7 @@ public class SplashPresenter extends BasePresenter<Splash> {
             adImageProvider.load(new LoadService.OnLoadListener<ImageInfo>() {
                 @Override
                 public void onLoad(boolean execute, ImageInfo imageInfo) {
-                    splash.loadAdImage(execute, imageInfo);
+                    splash.onLoadAdImage(execute, imageInfo);
                 }
             });
         }

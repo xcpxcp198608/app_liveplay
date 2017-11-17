@@ -4,9 +4,7 @@ import com.wiatec.bplay.model.AdImageProvider;
 import com.wiatec.bplay.model.LoadService;
 import com.wiatec.bplay.model.UpgradeProvider;
 import com.wiatec.bplay.pojo.ImageInfo;
-import com.wiatec.bplay.pojo.UpgradeInfo;
 import com.wiatec.bplay.view.activity.Common;
-import com.wiatec.bplay.view.activity.Splash;
 
 /**
  * splash presenter
@@ -30,7 +28,7 @@ public class MainPresenter extends BasePresenter<Common> {
             adImageProvider.load(new LoadService.OnLoadListener<ImageInfo>() {
                 @Override
                 public void onLoad(boolean execute, ImageInfo imageInfo) {
-                    common.loadAdImage(execute, imageInfo);
+                    common.onLoadAdImage(execute, imageInfo);
                 }
             });
         }

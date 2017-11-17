@@ -8,5 +8,5 @@ import com.wiatec.bplay.pojo.ImageInfo;
  */
 
 public interface Common {
-    void loadAdImage(boolean isSuccess, ImageInfo imageInfo);
+    void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo);
 }

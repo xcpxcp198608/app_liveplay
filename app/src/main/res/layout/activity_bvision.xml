@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wiatec.bplay.view.activity.BVisionActivity">
+
+    <FrameLayout
+        android:layout_weight="6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvChannelType"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:id="@+id/llLoading"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvLoading"
+                android:text="@string/data_loading"
+                android:textSize="50sp"
+                android:textColor="@color/colorAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btRetry"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:textSize="22sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_button_retry"
+                android:text="@string/retry"
+                android:layout_width="150dp"
+                android:layout_height="60dp" />
+
+            <ProgressBar
+                android:id="@+id/pbLoading"
+                style="@style/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:padding="3dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="blocksDescendants"
+        android:id="@+id/ll_ld_fam"
+        android:layout_margin="10dp"
+        android:layout_weight="5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_item_channel_type"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:text="LD   FAM"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:layout_gravity="center"
+                android:textColor="@color/colorWhite"
+                android:background="@color/colorBlue5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_margin="3dp"
+                android:layout_gravity="right"
+                android:id="@+id/pb_ld_fam"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+
+        </FrameLayout>
+
+        <com.wiatec.bplay.view.custom_view.LDFamListView
+            android:background="@color/colorGray1"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:id="@+id/lv_ld_fam"
+            android:divider="@color/colorGray1"
+            android:dividerHeight="8dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <android.support.v4.widget.Space
+            android:background="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <TextView
+            android:text="Powered by LD TECH"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorBlue5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+</layout>

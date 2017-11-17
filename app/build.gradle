@@ -13,7 +13,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("/KeyStore/234.jks")
+            storeFile file("/Users/xuchengpeng/KeyStore/234.jks")
             storePassword KEYSTORE_PASSWORD
             keyAlias "234"
             keyPassword KEY_PASSWORD
@@ -69,6 +69,7 @@ static def releaseTime() {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

@@ -110,7 +110,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            EmojiToast.showLong("preview over, you can view full live after pay", EmojiToast.EMOJI_SAD);
+                            EmojiToast.showLong("Preview over.  To continue watch, please click the channel and confirm to proceed with payment.", EmojiToast.EMOJI_SAD);
                             finish();
                         }
                     });

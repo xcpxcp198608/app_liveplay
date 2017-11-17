@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface ChannelType extends Common {
 
-    void loadChannelType(boolean execute, List<ChannelTypeInfo> channelTypeInfoList);
+    void onLoadChannelType(boolean execute, List<ChannelTypeInfo> channelTypeInfoList);
 }

@@ -50,11 +50,12 @@
             android:name=".view.activity.PlayActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".view.activity.FMPlayActivity" />
+        <activity android:name=".view.activity.PlayFMActivity" />
         <activity android:name=".view.activity.ChannelTypeActivity1" />
         <activity android:name=".view.activity.ChannelTypeActivity2" />
-        <activity android:name=".view.activity.PlayLiveActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".view.activity.PlayLiveActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".view.activity.AutomaticPlayActivity"
             android:exported="true">
@@ -62,6 +63,7 @@
                 <action android:name="com.wiatec.bplay.view.activity.AutomaticPlayActivity" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.BVisionActivity"></activity>
     </application>
 
 </manifest>

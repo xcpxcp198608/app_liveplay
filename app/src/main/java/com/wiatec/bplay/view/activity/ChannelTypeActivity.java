@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -57,7 +58,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_channel_type);
         type = getIntent().getIntExtra("type", 0);
-        if(type == 0){
+        if(type == 9){
             binding.llSearch.setVisibility(View.VISIBLE);
         }
         presenter.loadAdImage();
@@ -68,7 +69,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
     }
 
     @Override
-    public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
+    public void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
             ImageMaster.load(imageInfo.getUrl(), binding.ivChannelType, R.drawable.img_hold,
                     R.drawable.img_hold);
@@ -76,7 +77,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
     }
 
     @Override
-    public void loadChannelType(boolean execute, final List<ChannelTypeInfo> channelTypeInfoList) {
+    public void onLoadChannelType(boolean execute, final List<ChannelTypeInfo> channelTypeInfoList) {
         if(!execute){
             binding.pbLoading.setVisibility(View.GONE);
             binding.tvLoading.setText(getString(R.string.data_load_error));
@@ -87,19 +88,17 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         binding.llLoading.setVisibility(View.GONE);
         ChannelTypeAdapter channelTypeAdapter = new ChannelTypeAdapter(channelTypeInfoList);
         binding.rcvChannelType.setAdapter(channelTypeAdapter);
-        binding.rcvChannelType.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false));
+        binding.rcvChannelType.setLayoutManager(new GridLayoutManager(this, 2));
         binding.rcvChannelType.requestFocus();
         channelTypeAdapter.setOnItemFocusListener(new BaseRecycleAdapter.OnItemFocusListener() {
             @Override
             public void onFocus(View view, int position, boolean hasFocus) {
                 if(hasFocus){
                     Zoom.zoomIn10to11(view);
-                    presenter.loadAdImage();
-                    binding.rcvChannelType.smoothToCenter(position);
                 }else{
                     Zoom.zoomOut11to10(view);
                 }
+                presenter.loadAdImage();
             }
         });
         channelTypeAdapter.setOnItemClickListener(new BaseRecycleAdapter.OnItemClickListener() {
@@ -282,6 +281,12 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
     }
 
     private void showChannel(ChannelTypeInfo channelTypeInfo){
+        if("HISTORIES".equals(channelTypeInfo.getTag())){
+            Intent intent = new Intent(ChannelTypeActivity.this, ChannelActivity.class);
+            intent.putExtra(Constant.key.channel_type, Constant.key.type_history);
+            startActivity(intent);
+            return;
+        }
         if(channelTypeInfo.getFlag() == 1){
             Intent intent = new Intent(ChannelTypeActivity.this, ChannelTypeActivity1.class);
             intent.putExtra("type", channelTypeInfo.getTag());

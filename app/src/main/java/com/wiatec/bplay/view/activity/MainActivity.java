@@ -51,47 +51,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
 
     private List<View> createViewList() {
         List<View> viewList = new ArrayList<>();
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_basic, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_bvision, binding.viewPager, false));
         viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_basic, binding.viewPager, false));
         return viewList;
     }
 
     private void initViewPager(){
-        binding.viewPager.setOffscreenPageLimit(5);
+        binding.viewPager.setOffscreenPageLimit(3);
         binding.viewPager.setPageMargin(100);
         binding.viewPager.setPageTransformer(true, new MainViewPagerTransform());
-        final List<View> viewList = createViewList();
-        MainViewPagerAdapter adapter = new MainViewPagerAdapter(viewList);
+        MainViewPagerAdapter adapter = new MainViewPagerAdapter(createViewList());
         binding.viewPager.setAdapter(adapter);
-        binding.viewPager.setCurrentItem(2);
+        binding.viewPager.setCurrentItem(1);
         adapter.setOnItemPageClick(new MainViewPagerAdapter.OnItemPageClick() {
             @Override
             public void onClick(View view, int position) {
                launchShortcut(position);
-            }
-        });
-        binding.viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                presenter.loadAdImage();
-                if(position == 0){
-                    binding.viewPager.setCurrentItem(viewList.size()-2);
-                }else if(position == viewList.size() -1){
-                    binding.viewPager.setCurrentItem(1);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -99,7 +75,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
     private void launchShortcut(int position){
         Intent intent = new Intent();
         switch (position){
-            case 1:
+            case 0:
                 if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.access)) {
                     intent.setClass(MainActivity.this, ChannelTypeActivity.class);
                     intent.putExtra("type", 1);
@@ -108,15 +84,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
                     showInstallNoticeDialog("Access2.0", Constant.url.access, Constant.packageName.access);
                 }
                 break;
-            case 2:
-                intent.setClass(MainActivity.this, ChannelTypeActivity.class);
-                intent.putExtra("type", 2);
-//                intent.putExtra(Constant.key.channel_type, "BVISION");
+            case 1:
+                intent.setClass(MainActivity.this, BVisionActivity.class);
                 startActivity(intent);
                 break;
-            case 3:
+            case 2:
                 if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.ldservice)) {
                     intent.setClass(MainActivity.this, ChannelTypeActivity.class);
+                    intent.putExtra("type", 9);
                     startActivity(intent);
                 }else{
                     showInstallNoticeDialog("GoldService", Constant.url.ldservice, Constant.packageName.ldservice);
@@ -214,7 +189,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
     }
 
     @Override
-    public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
+    public void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
             ImageMaster.load(imageInfo.getUrl(), binding.ivMain, R.drawable.img_hold,
                     R.drawable.img_hold);

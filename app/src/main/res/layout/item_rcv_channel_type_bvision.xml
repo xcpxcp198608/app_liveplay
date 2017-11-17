@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:focusable="true"
-    android:layout_margin="20dp"
+    android:layout_margin="10dp"
     android:focusableInTouchMode="true"
     android:background="@drawable/bg_item_channel_type"
     android:padding="3dp"
-    android:layout_width="536dp"
+    android:layout_width="636dp"
     android:layout_height="116dp">
 
     <ImageView
@@ -27,7 +27,7 @@
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
         android:gravity="center"
-        android:textSize="40sp"
+        android:textSize="33sp"
         android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

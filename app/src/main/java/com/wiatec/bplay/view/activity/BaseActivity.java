@@ -41,6 +41,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        String levelStr = UserContentResolver.get("userLevel");
+        try {
+            int level = Integer.parseInt(levelStr);
+            if(level <=0){
+                finish();
+            }
+        }catch (Exception e){
+            Logger.d(e.getMessage());
+        }
         presenter = createPresenter();
         presenter.attach(this);
     }

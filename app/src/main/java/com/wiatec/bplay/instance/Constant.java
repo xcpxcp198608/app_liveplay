@@ -25,6 +25,7 @@ public final class Constant {
         public static final String ldservice = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
         public static final String start_view = base+"log_view/start/";
         public static final String stop_view = base+"log_view/end/";
+        public static final String ld_fam = "http://www.ldlegacy.com:8080/LDFAM/get";
     }
 
     public static final class path{

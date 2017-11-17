@@ -14,8 +14,6 @@ import com.wiatec.bplay.view.activity.Channel;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * channel presenter
  */
@@ -40,7 +38,7 @@ public class ChannelPresenter extends BasePresenter {
             adImageProvider.load(new LoadService.OnLoadListener<ImageInfo>() {
                 @Override
                 public void onLoad(boolean execute, ImageInfo imageInfo) {
-                    channel.loadAdImage(execute, imageInfo);
+                    channel.onLoadAdImage(execute, imageInfo);
                 }
             });
         }

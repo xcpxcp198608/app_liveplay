@@ -158,7 +158,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     @Override
-    public void loadAdImage(boolean isSuccess, ImageInfo imageInfo) {
+    public void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
             ImageMaster.load(imageInfo.getUrl(), binding.ivSplash, R.drawable.img_bg_splash,
                     R.drawable.img_bg_splash);
@@ -173,7 +173,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             try {
                 FileUtils.delete(Application.PATH_DOWNLOAD, upgradeInfo.getPackageName());
                 Thread.sleep(3000);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 Logger.d(e.toString());
             }
             nextPage();
