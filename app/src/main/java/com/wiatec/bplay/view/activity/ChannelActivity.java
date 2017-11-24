@@ -277,7 +277,8 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 .content("You agree to pay $"+
                         payInfo.getPrice() + " "+
                         payInfo.getCurrency() + " to view " +
-                        payInfo.getDescription() +". Without payment you may only view patrick for a 60 second preview." )
+                        payInfo.getDescription() +". Without payment you may only view " +
+                        payInfo.getDescription() + " for a 60 second preview." )
                 .positiveText(getString(R.string.pay))
                 .negativeText(getString(R.string.preview))
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

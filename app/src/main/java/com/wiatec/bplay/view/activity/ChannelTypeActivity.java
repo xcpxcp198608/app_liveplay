@@ -71,8 +71,8 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
     @Override
     public void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo) {
         if(isSuccess){
-            ImageMaster.load(imageInfo.getUrl(), binding.ivChannelType, R.drawable.img_hold,
-                    R.drawable.img_hold);
+//            ImageMaster.load(imageInfo.getUrl(), binding.ivChannelType, R.drawable.img_hold,
+//                    R.drawable.img_hold);
         }
     }
 

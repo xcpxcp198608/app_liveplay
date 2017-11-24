@@ -52,9 +52,11 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-
         <com.wiatec.bplay.view.custom_view.ItemRecyclerView
             android:layout_margin="40dp"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            android:scrollbarThumbVertical="@drawable/bg_scroll_bar_vertical"
             android:clipChildren="false"
             android:layout_gravity="center"
             android:id="@+id/rcvChannelType1"

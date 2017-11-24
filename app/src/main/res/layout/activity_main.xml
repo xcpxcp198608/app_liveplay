@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     tools:context="com.wiatec.bplay.view.activity.MainActivity">
 
     <ImageView
@@ -20,21 +19,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <FrameLayout
-        android:clipChildren="false"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_width="match_parent"
+        android:padding="40dp"
         android:background="@color/colorTranslucentA"
-        android:layout_height="300dp">
+        android:layout_height="280dp">
 
-        <android.support.v4.view.ViewPager
-            android:clipChildren="false"
-            android:id="@+id/viewPager"
-            android:layout_gravity="center"
-            android:layout_width="406dp"
-            android:layout_height="206dp"/>
+        <ImageButton
+            android:padding="3dp"
+            android:id="@+id/ibtBasic"
+            android:background="@drawable/bg_button_basic"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
 
-    </FrameLayout>
+        <ImageButton
+            android:padding="3dp"
+            android:id="@+id/ibtBvision"
+            android:background="@drawable/bg_button_bvision"
+            android:layout_marginStart="40dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:padding="3dp"
+            android:id="@+id/ibtPremium"
+            android:background="@drawable/bg_button_bvip"
+            android:layout_marginStart="40dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </FrameLayout>
 </layout>

@@ -32,7 +32,7 @@ import com.wiatec.bplay.presenter.MainPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements Common {
+public class MainActivity extends BaseActivity<MainPresenter> implements Common, View.OnClickListener {
 
     private ActivityMainBinding binding;
 
@@ -46,36 +46,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         presenter.loadAdImage();
-        initViewPager();
+        binding.ibtBasic.setOnClickListener(this);
+        binding.ibtBvision.setOnClickListener(this);
+        binding.ibtPremium.setOnClickListener(this);
     }
 
-    private List<View> createViewList() {
-        List<View> viewList = new ArrayList<>();
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_basic, binding.viewPager, false));
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_bvision, binding.viewPager, false));
-        viewList.add(LayoutInflater.from(this).inflate(R.layout.item_view_premium, binding.viewPager, false));
-        return viewList;
-    }
-
-    private void initViewPager(){
-        binding.viewPager.setOffscreenPageLimit(3);
-        binding.viewPager.setPageMargin(100);
-        binding.viewPager.setPageTransformer(true, new MainViewPagerTransform());
-        MainViewPagerAdapter adapter = new MainViewPagerAdapter(createViewList());
-        binding.viewPager.setAdapter(adapter);
-        binding.viewPager.setCurrentItem(1);
-        adapter.setOnItemPageClick(new MainViewPagerAdapter.OnItemPageClick() {
-            @Override
-            public void onClick(View view, int position) {
-               launchShortcut(position);
-            }
-        });
-    }
-
-    private void launchShortcut(int position){
+    @Override
+    public void onClick(View v) {
         Intent intent = new Intent();
-        switch (position){
-            case 0:
+        switch (v.getId()){
+            case R.id.ibtBasic:
                 if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.access)) {
                     intent.setClass(MainActivity.this, ChannelTypeActivity.class);
                     intent.putExtra("type", 1);
@@ -84,11 +64,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common 
                     showInstallNoticeDialog("Access2.0", Constant.url.access, Constant.packageName.access);
                 }
                 break;
-            case 1:
+            case R.id.ibtBvision:
                 intent.setClass(MainActivity.this, BVisionActivity.class);
                 startActivity(intent);
                 break;
-            case 2:
+            case R.id.ibtPremium:
                 if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.ldservice)) {
                     intent.setClass(MainActivity.this, ChannelTypeActivity.class);
                     intent.putExtra("type", 9);

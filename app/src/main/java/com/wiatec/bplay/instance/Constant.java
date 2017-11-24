@@ -18,14 +18,17 @@ public final class Constant {
         public static final String channel_type1 = base+"channel_type1/";
         public static final String channel_type2 = base+"channel_type2/";
         public static final String channel_search = base+"channels/search/";
-        public static final String live_channel = "http://blive.protv.company:8080/blive/channel/";
-        public static final String live_base = "http://blive.protv.company:8080/blive/";
         public static final String upgrade = base+"upgrade"+token;
         public static final String access = "http://liveplay.protv.company:8803/apk/com.wiatec.update.apk";
         public static final String ldservice = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
         public static final String start_view = base+"log_view/start/";
         public static final String stop_view = base+"log_view/end/";
         public static final String ld_fam = "http://www.ldlegacy.com:8080/LDFAM/get";
+
+        public static final String live_base = "http://blive.bvision.live:8080/blive/";
+        public static final String live_channel = live_base + "channel/";
+        public static final String danmu_url = "http://blive.bvision.live:8804/html/danmu.html";
+
     }
 
     public static final class path{

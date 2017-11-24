@@ -292,7 +292,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
 
     private void loadWebView(){
         isJSLoaded = false;
-        binding.webView.loadUrl("http://blive.protv.company:8804/html/danmu.html");
+        binding.webView.loadUrl(Constant.url.danmu_url);
         binding.webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {

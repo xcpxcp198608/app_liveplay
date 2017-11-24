@@ -35,8 +35,8 @@ public class ChannelTypeAdapter extends BaseRecycleAdapter<ChannelTypeViewHolder
     protected void bindHolder(ChannelTypeViewHolder holder, int position) {
         ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
         holder.textView.setText(channelTypeInfo.getName());
-        ImageMaster.load(channelTypeInfo.getIcon(),holder.imageView, R.drawable.img_hold1 ,
-                R.drawable.img_hold1);
+        ImageMaster.load(channelTypeInfo.getIcon(),holder.imageView, R.drawable.bg_button_holder ,
+                R.drawable.bg_button_holder);
     }
 
     @Override
