@@ -1,6 +1,7 @@
 package com.wiatec.bplay.view.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -35,6 +36,7 @@ import com.wiatec.bplay.model.UserContentResolver;
 import com.wiatec.bplay.pojo.ChannelTypeInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.presenter.ChannelTypePresenter;
+import com.wiatec.bplay.sql.HistoryChannelDao;
 import com.wiatec.bplay.task.TokenTask;
 
 import java.util.List;
@@ -64,8 +66,9 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         presenter.loadAdImage();
         presenter.loadChannelType(type+"");
         binding.btRetry.setOnClickListener(this);
-        binding.ibtHistory.setOnClickListener(this);
         binding.ibtSearch.setOnClickListener(this);
+        binding.ibtHistory.setOnClickListener(this);
+        binding.ibtCleanHistory.setOnClickListener(this);
     }
 
     @Override
@@ -142,9 +145,37 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 intent1.putExtra(Constant.key.key_search, key);
                 startActivity(intent1);
                 break;
+            case R.id.ibtCleanHistory:
+                showCleanDialog();
             default:
                 break;
         }
+    }
+
+    private void showCleanDialog(){
+        final Dialog dialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        if(window == null) return;
+        dialog.setContentView(R.layout.dialog_update);
+        TextView tvInfo = (TextView) window.findViewById(R.id.tv_info);
+        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
+        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
+        tvInfo.setText(R.string.clean_history);
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HistoryChannelDao historyChannelDao = HistoryChannelDao.getInstance();
+                historyChannelDao.deleteAll();
+                dialog.dismiss();
+            }
+        });
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void handleProtect(ChannelTypeInfo channelTypeInfo){

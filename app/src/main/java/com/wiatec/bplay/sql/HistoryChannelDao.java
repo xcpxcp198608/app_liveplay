@@ -107,6 +107,16 @@ public class HistoryChannelDao {
         return flag;
     }
 
+    public boolean deleteAll(){
+        boolean flag = true;
+        try{
+            sqLiteDatabase.delete(SQLiteHelper.HISTORY_TABLE_NAME, "_id>?", new String[]{"0"});
+        }catch(Exception e){
+            flag = false;
+        }
+        return flag;
+    }
+
     public List<ChannelInfo> queryAll(){
         Cursor cursor = sqLiteDatabase.query(SQLiteHelper.HISTORY_TABLE_NAME, null, "_id>?",
                 new String[]{"0"}, null, null, "viewTime desc");

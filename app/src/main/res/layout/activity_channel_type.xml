@@ -18,39 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/llLoading"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tvLoading"
-            android:text="@string/data_loading"
-            android:textSize="50sp"
-            android:textColor="@color/colorAccent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btRetry"
-            android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:textSize="22sp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/bg_button_retry"
-            android:text="@string/retry"
-            android:layout_width="150dp"
-            android:layout_height="60dp" />
-
-        <ProgressBar
-            android:id="@+id/pbLoading"
-            style="@style/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
     <FrameLayout
         android:background="@color/colorTranslucentA"
         android:clipChildren="false"
@@ -100,7 +67,46 @@
             android:background="@drawable/bg_button_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/ibtCleanHistory"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_button_clean_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/llLoading"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvLoading"
+            android:text="@string/data_loading"
+            android:textSize="50sp"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btRetry"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:textSize="22sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_button_retry"
+            android:text="@string/retry"
+            android:layout_width="150dp"
+            android:layout_height="60dp" />
+
+        <ProgressBar
+            android:id="@+id/pbLoading"
+            style="@style/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </FrameLayout>
 </layout>

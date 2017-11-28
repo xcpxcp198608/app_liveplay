@@ -101,5 +101,6 @@ We hope that you wish to help us improve your experience.  If yes, click confirm
     <string name="time_demo">00:00:00</string>
     <string name="pay">Pay</string>
     <string name="preview">Preview</string>
+    <string name="clean_history">press confirm to clean all history</string>
 
 </resources>

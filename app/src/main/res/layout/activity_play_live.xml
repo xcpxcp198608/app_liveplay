@@ -59,15 +59,20 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <ImageView
+            android:layout_marginLeft="3dp"
+            android:src="@drawable/bvision_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <Switch
+            android:layout_marginLeft="5dp"
             android:id="@+id/switchDanMu"
             android:checked="true"
             android:layout_marginRight="5dp"
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DanMu"/>
+            android:text="Comment"/>
 
         <EditText
             android:id="@+id/etMessage"

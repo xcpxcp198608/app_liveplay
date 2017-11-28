@@ -71,11 +71,16 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     private ActivityPlayLiveBinding binding;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mediaPlayer;
-    private LiveChannelInfo liveChannelInfo;
     private boolean send = true;
     private boolean isJSLoaded = false;
-    private String channel = "";
+
     private boolean isNeedPaid = false;
+
+    private String channel = "";
+    private String userId = "";
+    private String title = "";
+    private String message ="";
+    private String playUrl ="";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,12 +90,17 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
         surfaceHolder = binding.surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        liveChannelInfo = getIntent().getParcelableExtra("liveChannelInfo");
+//        liveChannelInfo = getIntent().getParcelableExtra("liveChannelInfo");
         isNeedPaid = getIntent().getBooleanExtra("isNeedPaid", false);
-        channel = liveChannelInfo.getId()+"";
-        String message = liveChannelInfo.getMessage();
+
+        channel =  getIntent().getStringExtra("id");
+        userId =  getIntent().getStringExtra("userId");
+        title =  getIntent().getStringExtra("title");
+        message =  getIntent().getStringExtra("message");
+        playUrl = getIntent().getStringExtra("playUrl");
+
         if(!TextUtils.isEmpty(message)) {
-            binding.tvTitle.setText(liveChannelInfo.getMessage());
+            binding.tvTitle.setText(message);
             binding.tvTitle.setVisibility(View.VISIBLE);
         }
         binding.btSend.setOnClickListener(this);
@@ -102,8 +112,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     protected void onStart() {
         super.onStart();
         if(isNeedPaid){
-            SPUtils.put("already_preview" + liveChannelInfo.getUserId() +
-                    liveChannelInfo.getTitle(), true);
+            SPUtils.put("already_preview" + userId + title, true);
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -135,7 +144,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        play(liveChannelInfo.getPlayUrl());
+        play(playUrl);
     }
 
     @Override
@@ -186,14 +195,14 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     binding.tvNetSpeed.setVisibility(View.VISIBLE);
-                    play(liveChannelInfo.getPlayUrl());
+                    play(playUrl);
                     return true;
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    play(liveChannelInfo.getPlayUrl());
+                    play(playUrl);
                 }
             });
         } catch (IOException e) {

@@ -1,13 +1,20 @@
 package com.wiatec.bplay.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,6 +39,7 @@ import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.LiveChannelInfo;
 import com.wiatec.bplay.presenter.ChannelPresenter;
+import com.wiatec.bplay.sql.HistoryChannelDao;
 
 import java.util.List;
 
@@ -39,11 +47,13 @@ import java.util.List;
  * channel activity
  */
 
-public class ChannelActivity extends BaseActivity<ChannelPresenter> implements Channel, PayPalManager.OnPayResultListener {
+public class ChannelActivity extends BaseActivity<ChannelPresenter> implements Channel,
+        View.OnClickListener, PayPalManager.OnPayResultListener {
 
     private ActivityChannelBinding binding;
     private String type;
     private LiveChannelInfo mLiveChannelInfo;
+    private String key;
 
     @Override
     protected ChannelPresenter createPresenter() {
@@ -63,7 +73,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                 type.equals("AFRICA") || type.equals("MIDEAST") || type.equals("HISTORY")){
             binding.llSearch.setVisibility(View.GONE);
         }
-        String key = getIntent().getStringExtra(Constant.key.key_search);
+        key = getIntent().getStringExtra(Constant.key.key_search);
         if(Constant.key.type_favorite.equals(type)){
             presenter.loadFavorite();
         }else if(Constant.key.type_history.equals(type)){
@@ -75,34 +85,74 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
         }else {
             presenter.loadChannel(type);
         }
-        binding.btRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.tvLoading.setText(getString(R.string.data_loading));
-                binding.pbLoading.setVisibility(View.VISIBLE);
-                binding.btRetry.setVisibility(View.GONE);
-                presenter.loadChannel(type);
-            }
-        });
-        binding.ibtSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String key = binding.etSearch.getText().toString().trim();
-                if(TextUtils.isEmpty(key)){
+        binding.btRetry.setOnClickListener(this);
+        binding.ibtSearch.setOnClickListener(this);
+        binding.ibtHistory.setOnClickListener(this);
+        binding.ibtCleanHistory.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ibtSearch:
+                String searchKey = binding.etSearch.getText().toString().trim();
+                if(TextUtils.isEmpty(searchKey)){
                     return;
                 }
                 Intent intent1 = new Intent(ChannelActivity.this, ChannelActivity.class);
                 intent1.putExtra(Constant.key.channel_type, Constant.key.type_search);
-                intent1.putExtra(Constant.key.key_search, key);
+                intent1.putExtra(Constant.key.key_search, searchKey);
                 startActivity(intent1);
-            }
-        });
-        binding.ibtHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.ibtHistory:
                 Intent intent = new Intent(ChannelActivity.this, ChannelActivity.class);
                 intent.putExtra(Constant.key.channel_type, Constant.key.type_history);
                 startActivity(intent);
+                break;
+            case R.id.ibtCleanHistory:
+                showCleanDialog();
+                break;
+            case R.id.btRetry:
+                binding.tvLoading.setText(getString(R.string.data_loading));
+                binding.pbLoading.setVisibility(View.VISIBLE);
+                binding.btRetry.setVisibility(View.GONE);
+                if(Constant.key.type_favorite.equals(type)){
+                    presenter.loadFavorite();
+                }else if(Constant.key.type_history.equals(type)){
+                    presenter.loadHistory();
+                }else if(Constant.key.type_search.equals(type)){
+                    presenter.loadSearch(key);
+                }else if(Constant.key.type_live_channel.equals(type)){
+                    presenter.loadLiveChannel();
+                }else {
+                    presenter.loadChannel(type);
+                }
+                break;
+        }
+    }
+
+    private void showCleanDialog(){
+        final Dialog dialog = new AlertDialog.Builder(this).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        if(window == null) return;
+        dialog.setContentView(R.layout.dialog_update);
+        TextView tvInfo = (TextView) window.findViewById(R.id.tv_info);
+        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
+        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
+        tvInfo.setText(R.string.clean_history);
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HistoryChannelDao historyChannelDao = HistoryChannelDao.getInstance();
+                historyChannelDao.deleteAll();
+                dialog.dismiss();
+            }
+        });
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
     }
@@ -292,8 +342,12 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         Intent intent = new Intent(ChannelActivity.this , PlayLiveActivity.class);
-                        intent.putExtra("liveChannelInfo", mLiveChannelInfo);
                         intent.putExtra("isNeedPaid", true);
+                        intent.putExtra("id", mLiveChannelInfo.getId()+"");
+                        intent.putExtra("userId", mLiveChannelInfo.getUserId()+"");
+                        intent.putExtra("title", mLiveChannelInfo.getTitle());
+                        intent.putExtra("message", mLiveChannelInfo.getMessage());
+                        intent.putExtra("playUrl", mLiveChannelInfo.getPlayUrl());
                         startActivity(intent);
                         dialog.dismiss();
                     }
@@ -356,7 +410,11 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
 
     private void launchLivePlay(LiveChannelInfo liveChannelInfo){
         Intent intent = new Intent(ChannelActivity.this , PlayLiveActivity.class);
-        intent.putExtra("liveChannelInfo", liveChannelInfo);
+        intent.putExtra("id", liveChannelInfo.getId()+"");
+        intent.putExtra("userId", liveChannelInfo.getUserId()+"");
+        intent.putExtra("title", liveChannelInfo.getTitle());
+        intent.putExtra("message", liveChannelInfo.getMessage());
+        intent.putExtra("playUrl", liveChannelInfo.getPlayUrl());
         startActivity(intent);
     }
 
