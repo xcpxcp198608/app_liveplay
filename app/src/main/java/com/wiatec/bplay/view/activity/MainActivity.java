@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
                     intent.putExtra("type", 9);
                     startActivity(intent);
                 }else{
-                    showInstallNoticeDialog("GoldService", Constant.url.ldservice, Constant.packageName.ldservice);
+                    showInstallNoticeDialog("VIP Experience", Constant.url.ldservice, Constant.packageName.ldservice);
                 }
                 break;
             default:
@@ -109,6 +109,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
     }
 
     public void showDownloadDialog(String url, String packageName) {
+        FileUtils.delete(Application.PATH_DOWNLOAD, packageName);
+        FileUtils.delete(Application.PATH_DOWNLOAD, packageName +".apk");
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getString(R.string.download_title));
         progressDialog.setMessage(getString(R.string.download_message));
