@@ -1,5 +1,7 @@
 package com.wiatec.bplay.task;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
@@ -39,22 +41,27 @@ public class ImageTask implements Runnable {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        String s = response.body().string();
-                        if(s == null) {
-                            return;
+                        try {
+                            String s = response.body().string();
+                            if (s == null) {
+                                return;
+                            }
+                            List<ImageInfo> imageInfoList = new Gson().fromJson(s,
+                                    new TypeToken<List<ImageInfo>>() {
+                                    }.getType());
+                            if (imageInfoList == null || imageInfoList.size() <= 0) {
+                                Logger.d("image list gson parse error");
+                                return;
+                            }
+                            List<String> fileNameList = new ArrayList<>();
+                            for (ImageInfo imageInfo : imageInfoList) {
+                                fileNameList.add(imageInfo.getName());
+                                download(imageInfo);
+                            }
+                            deleteOldImage(Application.PATH_AD_IMAGE, fileNameList);
+                        }catch (Exception e){
+                            Logger.e(e.getMessage());
                         }
-                        List<ImageInfo> imageInfoList = new Gson().fromJson(s,
-                                new TypeToken<List<ImageInfo>>(){}.getType());
-                        if(imageInfoList == null || imageInfoList.size() <= 0){
-                            Logger.d("image list gson parse error");
-                            return;
-                        }
-                        List<String> fileNameList = new ArrayList<>();
-                        for(ImageInfo imageInfo: imageInfoList){
-                            fileNameList.add(imageInfo.getName());
-                            download(imageInfo);
-                        }
-                        deleteOldImage(Application.PATH_AD_IMAGE, fileNameList);
                     }
                 });
     }
