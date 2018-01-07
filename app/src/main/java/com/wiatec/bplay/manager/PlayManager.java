@@ -8,8 +8,8 @@ import com.px.common.utils.AESUtil;
 import com.px.common.utils.CommonApplication;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
-import com.px.common.utils.SPUtils;
-import com.px.common.utils.SysUtils;
+import com.px.common.utils.SPUtil;
+import com.px.common.utils.SysUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.model.UserContentResolver;
@@ -96,22 +96,22 @@ public class PlayManager {
             if(mPlayListener != null) mPlayListener.playAd();
             return;
         }
-        long lastExperienceTime = (long) SPUtils.get("lastExperienceTime", 0L);
-        boolean isLastExperience = (boolean) SPUtils.get("isLastExperience", true);
+        long lastExperienceTime = (long) SPUtil.get("lastExperienceTime", 0L);
+        boolean isLastExperience = (boolean) SPUtil.get("isLastExperience", true);
         if(lastExperienceTime + DURATION > System.currentTimeMillis() && isLastExperience){
             handlePlay();
             return;
         }
         int minute = 0;
         if (lastExperienceTime <= System.currentTimeMillis() - DURATION){
-            SPUtils.put("lastExperienceTime", System.currentTimeMillis());
+            SPUtil.put("lastExperienceTime", System.currentTimeMillis());
         }else {
             long leftTime = System.currentTimeMillis() - lastExperienceTime;
             minute = (int) (leftTime / 1000 / 60);
             minute = DURATION_MINUTE - minute;
             minute = minute < 1 && minute > 0 ? 1 : minute;
         }
-        if(minute <= 0) SPUtils.put("isLastExperience", true);
+        if(minute <= 0) SPUtil.put("isLastExperience", true);
         EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2) + " " + minute +
                 CommonApplication.context.getString(R.string.notice22), EmojiToast.EMOJI_SMILE);
         if(mPlayListener != null) mPlayListener.playAd();
@@ -175,7 +175,7 @@ public class PlayManager {
                 .parames("tag", tag)
                 .parames("channelName", country + ":" + name)
                 .parames("username", username)
-                .parames("mac", SysUtils.getEthernetMac())
+                .parames("mac", SysUtil.getEthernetMac())
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {
@@ -217,7 +217,7 @@ public class PlayManager {
         List<String> urlList1 = new ArrayList<>();
         for (String u : urlList){
             if (u.contains("protv.company")){
-                String streamToken = (String) SPUtils.get("streamToken", "123");
+                String streamToken = (String) SPUtil.get("streamToken", "123");
                 u += "?token=" + streamToken;
             }
             urlList1.add(u);

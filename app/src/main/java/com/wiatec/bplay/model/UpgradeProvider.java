@@ -46,8 +46,7 @@ public class UpgradeProvider implements LoadService<UpgradeInfo> {
                             onLoadListener.onLoad(false, null);
                             return;
                         }
-                        onLoadListener.onLoad(AppUtil.isNeedUpgrade(CommonApplication.context,
-                                upgradeInfo.getCode()), upgradeInfo);
+                        onLoadListener.onLoad(AppUtil.isNeedUpgrade(upgradeInfo.getCode()), upgradeInfo);
                     }
 
                     @Override

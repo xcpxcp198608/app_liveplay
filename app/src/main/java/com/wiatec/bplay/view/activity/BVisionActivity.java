@@ -6,17 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.px.common.adapter.BaseRecycleAdapter;
-import com.px.common.animator.Zoom;
-import com.px.common.utils.AppUtil;
 import com.px.common.utils.Logger;
-import com.px.common.utils.SPUtils;
 import com.wiatec.bplay.R;
-import com.wiatec.bplay.adapter.ChannelTypeAdapter;
 import com.wiatec.bplay.adapter.ChannelTypeBVisionAdapter;
 import com.wiatec.bplay.adapter.LDFamAdapter;
 import com.wiatec.bplay.databinding.ActivityBvisionBinding;
@@ -26,7 +19,6 @@ import com.wiatec.bplay.pojo.ChannelTypeInfo;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.pojo.LDFamInfo;
 import com.wiatec.bplay.presenter.BVisionPresenter;
-import com.wiatec.bplay.presenter.ChannelTypePresenter;
 import com.wiatec.bplay.task.TokenTask;
 import com.wiatec.bplay.view.custom_view.LDFamListView;
 

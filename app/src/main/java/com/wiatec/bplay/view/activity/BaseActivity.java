@@ -18,11 +18,11 @@ import com.wiatec.bplay.presenter.BasePresenter;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * base activity
@@ -33,7 +33,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected T presenter;
     protected abstract T createPresenter();
     protected int userLevel;
-    private Subscription keyEventSubscription;
+    private Disposable keyEventDisposable;
     protected boolean isSubscribe = true;
     protected boolean startAd = true;
 
@@ -82,12 +82,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if(userLevel > 2){
             return;
         }
-        keyEventSubscription = Observable.timer(1200 , TimeUnit.SECONDS)
+        keyEventDisposable = Observable.timer(1200 , TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) {
                         if(startAd) {
                             startActivity(new Intent(BaseActivity.this, AdScreenActivity.class));
                         }
@@ -143,8 +143,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     private void release(){
         startAd = false;
-        if(keyEventSubscription != null){
-            keyEventSubscription.unsubscribe();
+        if(keyEventDisposable != null){
+            keyEventDisposable.dispose();
         }
     }
 

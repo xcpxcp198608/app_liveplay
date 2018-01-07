@@ -22,7 +22,7 @@ import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelAdapter;
 import com.wiatec.bplay.adapter.LiveChannelAdapter;
@@ -234,7 +234,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                     Zoom.zoomIn10to11(view);
                     view.setSelected(true);
                 }else{
-                    Zoom.zoomOut11to10(view);
+                    Zoom.zoomIn11to10(view);
                     view.setSelected(false);
                 }
             }
@@ -281,7 +281,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
                     Zoom.zoomIn10to11(view);
                     view.setSelected(true);
                 }else{
-                    Zoom.zoomOut11to10(view);
+                    Zoom.zoomIn11to10(view);
                     view.setSelected(false);
                 }
             }
@@ -307,7 +307,7 @@ public class ChannelActivity extends BaseActivity<ChannelPresenter> implements C
             if(resultInfo.getCode() == 200){
                 launchLivePlay(mLiveChannelInfo);
             }else{
-                boolean alreadyPreview = (boolean) SPUtils.get("already_preview" +
+                boolean alreadyPreview = (boolean) SPUtil.get("already_preview" +
                         mLiveChannelInfo.getUserId() + mLiveChannelInfo.getTitle(), false);
                 if(alreadyPreview) {
                     showPayDialog(new PayInfo(mLiveChannelInfo.getPrice(), "USD", mLiveChannelInfo.getTitle()));

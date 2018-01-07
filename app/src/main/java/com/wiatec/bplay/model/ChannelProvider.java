@@ -19,10 +19,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-
-import static com.wiatec.bplay.instance.Constant.url.live_channel;
-
 /**
  * channel provider
  */

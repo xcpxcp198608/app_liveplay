@@ -6,8 +6,8 @@ import com.px.common.http.HttpMaster;
 import com.px.common.http.Listener.StringListener;
 import com.px.common.utils.AESUtil;
 import com.px.common.utils.Logger;
-import com.px.common.utils.NetUtils;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.NetUtil;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.instance.Application;
 
 import org.json.JSONException;
@@ -31,7 +31,7 @@ public class TokenTask extends TimerTask {
     public void run() {
         do{
             loadToken();
-        }while (!NetUtils.isConnected(Application.context));
+        }while (!NetUtil.isConnected());
     }
 
     private void loadToken(){
@@ -44,13 +44,13 @@ public class TokenTask extends TimerTask {
                     @Override
                     public void onSuccess(String s) throws IOException {
                         try {
-//                            Logger.d(s);
+                            Logger.d(s);
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject data = jsonObject.getJSONObject("data");
                             String streamToken = data.getString("token");
 //                            Logger.d(streamToken);
                             if(!TextUtils.isEmpty(streamToken)) {
-                                SPUtils.put(Application.context, "streamToken", streamToken);
+                                SPUtil.put("streamToken", streamToken);
                             }
                         } catch (JSONException e) {
                             Logger.d("token json format error");

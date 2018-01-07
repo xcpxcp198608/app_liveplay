@@ -9,7 +9,7 @@ import java.security.MessageDigest;
  * file utils
  */
 
-public class FileUtils {
+public class FileUtil {
 
     /**
      * 通过file path 和 file name 判断文件是否存在

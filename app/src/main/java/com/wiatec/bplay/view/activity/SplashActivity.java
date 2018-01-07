@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
-import com.px.common.utils.FileUtils;
+import com.px.common.utils.FileUtil;
 import com.px.common.utils.Logger;
-import com.px.common.utils.NetUtils;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.NetUtil;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivitySplashBinding;
 import com.wiatec.bplay.instance.Application;
@@ -47,32 +47,33 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
-        binding.tvVersion.setText(AppUtil.getVersionName(SplashActivity.this , getPackageName()));
+        binding.tvVersion.setText(AppUtil.getVersionName(getPackageName()));
         presenter.loadAdImage();
-        Application.getExecutorService().execute(new ImageTask());
+//        Application.getExecutorService().execute(new ImageTask());
         if(timer != null) timer = null;
         timer = new Timer();
-        timer.schedule(new TokenTask(), 0,  300000);
+        timer.schedule(new TokenTask(), 0,  3000000);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         isSubscribe = false;
-        if(!"BTVi3".equals(Build.MODEL) && !"MorphoBT E110".equals(Build.MODEL) &&
-                !"BTV3".equals(Build.MODEL) && !"Z69".equals(Build.MODEL) &&
+        if(!"BTVi3".equals(Build.MODEL)  &&
+                !"BTV3".equals(Build.MODEL) &&
+                !"Z69".equals(Build.MODEL) &&
                 !"X96".equals(Build.MODEL)){
             showDeviceNotSupportDialog();
             return;
         }
-        boolean showAgree = (boolean) SPUtils.get("agree", true);
-        boolean showConsent = (boolean) SPUtils.get("consent_agree", true);
+        boolean showAgree = (boolean) SPUtil.get("agree", true);
+        boolean showConsent = (boolean) SPUtil.get("consent_agree", true);
         if(showAgree) {
             showAgreement();
         }else if(showConsent){
             showConsentDialog();
         }else {
-            if (NetUtils.isConnected(this)) {
+            if (NetUtil.isConnected()) {
                 presenter.checkUpgrade();
             } else {
                 nextPage();
@@ -99,13 +100,13 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SPUtils.put(SplashActivity.this, "agree", false);
+                SPUtil.put("agree", false);
                 alertDialog.dismiss();
-                boolean showConsent = (boolean) SPUtils.get("consent_agree", true);
+                boolean showConsent = (boolean) SPUtil.get("consent_agree", true);
                 if(showConsent){
                     showConsentDialog();
                 }else{
-                    if(NetUtils.isConnected(SplashActivity.this)){
+                    if(NetUtil.isConnected()){
                         presenter.checkUpgrade();
                     }else{
                         nextPage();
@@ -140,9 +141,9 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SPUtils.put(SplashActivity.this, "consent_agree", false);
+                SPUtil.put("consent_agree", false);
                 alertDialog.dismiss();
-                if(NetUtils.isConnected(SplashActivity.this)){
+                if(NetUtil.isConnected()){
                     presenter.checkUpgrade();
                 }else{
                     nextPage();
@@ -171,7 +172,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             showUpgradeDialog(upgradeInfo);
         }else{
             try {
-                FileUtils.delete(Application.PATH_DOWNLOAD, upgradeInfo.getPackageName());
+                FileUtil.delete(Application.PATH_DOWNLOAD, upgradeInfo.getPackageName());
                 Thread.sleep(3000);
             } catch (Exception e) {
                 Logger.d(e.toString());
@@ -225,7 +226,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     private void nextPage(){
         long  currentTime = System.currentTimeMillis();
-        long recorderTime = (long) SPUtils.get("recorderTime" , 0L);
+        long recorderTime = (long) SPUtil.get("recorderTime" , 0L);
         if (currentTime >= recorderTime+10800000){
             startActivity(new Intent(SplashActivity.this, AdVideoActivity.class));
         }else{

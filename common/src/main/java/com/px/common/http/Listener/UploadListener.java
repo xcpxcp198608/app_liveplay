@@ -1,6 +1,6 @@
 package com.px.common.http.Listener;
 
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.SPUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +28,7 @@ public abstract class UploadListener implements Callback {
         if(cookies != null && cookies.size() > 0 ) {
             String session = cookies.get(0);
             String cookie = session.substring(0, session.indexOf(";"));
-            SPUtils.put("cookie", cookie);
+            SPUtil.put("cookie", cookie);
         }
         if(response!= null) {
             onSuccess(response);

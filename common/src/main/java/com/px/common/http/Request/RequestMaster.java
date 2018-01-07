@@ -10,7 +10,7 @@ import com.px.common.http.Listener.DownloadListener;
 import com.px.common.http.Listener.UploadListener;
 import com.px.common.http.configuration.Header;
 import com.px.common.http.configuration.Parameters;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.SPUtil;
 
 import java.io.File;
 import java.util.Map;
@@ -30,7 +30,7 @@ public abstract class RequestMaster {
     public RequestMaster() {
         parameters = new Parameters();
         header = new Header();
-        String cookie = (String) SPUtils.get("cookie", "");
+        String cookie = (String) SPUtil.get("cookie", "");
         if(!TextUtils.isEmpty(cookie)){
             header.put("Cookie", cookie);
         }

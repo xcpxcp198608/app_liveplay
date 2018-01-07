@@ -14,7 +14,7 @@ import java.io.IOException;
  * network utils
  */
 
-public class NetUtils {
+public class NetUtil {
 
     /**
      * 判断当前是否有网络连接

@@ -9,7 +9,7 @@ import java.util.Map;
  * shared preferences utils
  */
 
-public class SPUtils {
+public class SPUtil {
 
     private static final String NAME = "sp";
 

@@ -25,8 +25,8 @@ import com.px.common.http.Listener.DownloadListener;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
-import com.px.common.utils.FileUtils;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.FileUtil;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.ChannelTypeAdapter;
 import com.wiatec.bplay.databinding.ActivityChannelTypeBinding;
@@ -99,7 +99,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                 if(hasFocus){
                     Zoom.zoomIn10to11(view);
                 }else{
-                    Zoom.zoomOut11to10(view);
+                    Zoom.zoomIn11to10(view);
                 }
                 presenter.loadAdImage();
             }
@@ -116,7 +116,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             @Override
             public void onItemLongClick(View view, int position) {
                 ChannelTypeInfo channelTypeInfo = channelTypeInfoList.get(position);
-                boolean isSetting = (boolean) SPUtils.get(channelTypeInfo.getTag()+"protect", false);
+                boolean isSetting = (boolean) SPUtil.get(channelTypeInfo.getTag()+"protect", false);
                 if(!isSetting) {
                     showInputPasswordDialog(channelTypeInfo);
                 }
@@ -180,9 +180,9 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
 
     private void handleProtect(ChannelTypeInfo channelTypeInfo){
         String tag = channelTypeInfo.getTag();
-        boolean isProtect = (boolean) SPUtils.get(tag, true);
-        boolean isSetting = (boolean) SPUtils.get(tag+"protect", false);
-        String password = (String) SPUtils.get(tag+"protectpassword", "");
+        boolean isProtect = (boolean) SPUtil.get(tag, true);
+        boolean isSetting = (boolean) SPUtil.get(tag+"protect", false);
+        String password = (String) SPUtil.get(tag+"protectpassword", "");
         if(channelTypeInfo.getType() == 2){
             showChannel(channelTypeInfo);
             return;
@@ -223,9 +223,9 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
                     return;
                 }
-                SPUtils.put(tag+"protectpassword", p1);
-                SPUtils.put(tag, true);
-                SPUtils.put(tag+"protect", true);
+                SPUtil.put(tag+"protectpassword", p1);
+                SPUtil.put(tag, true);
+                SPUtil.put(tag+"protect", true);
                 dialog.dismiss();
                 EmojiToast.show(getString(R.string.password_setting_success), EmojiToast.EMOJI_SMILE);
             }
@@ -233,8 +233,8 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
         btCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SPUtils.put(tag+"protectpassword", "");
-                SPUtils.put(tag, false);
+                SPUtil.put(tag+"protectpassword", "");
+                SPUtil.put(tag, false);
                 dialog.dismiss();
                 EmojiToast.show(getString(R.string.parent_control_disabled), EmojiToast.EMOJI_SMILE);
             }
@@ -260,7 +260,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     EmojiToast.show(getString(R.string.password_format_error), EmojiToast.EMOJI_SAD);
                     return;
                 }
-                String cp = (String) SPUtils.get(channelTypeInfo.getTag()+"protectpassword", "");
+                String cp = (String) SPUtil.get(channelTypeInfo.getTag()+"protectpassword", "");
                 if(cp.equals(p)){
                     showChannel(channelTypeInfo);
                     dialog.dismiss();
@@ -327,7 +327,7 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
             intent.putExtra("type", channelTypeInfo.getTag());
             startActivity(intent);
         }else if(channelTypeInfo.getFlag() == 3){
-            if(AppUtil.isInstalled(ChannelTypeActivity.this, Constant.packageName.access)) {
+            if(AppUtil.isInstalled(Constant.packageName.access)) {
                 AppUtil.launchApp(ChannelTypeActivity.this, channelTypeInfo.getTag());
             }else{
                 showInstallNoticeDialog("Access2.0", Constant.url.access, Constant.packageName.access);
@@ -405,13 +405,11 @@ public class ChannelTypeActivity extends BaseActivity<ChannelTypePresenter> impl
                     public void onFinished(DownloadInfo downloadInfo) {
                         progressDialog.setProgress(100);
                         progressDialog.dismiss();
-                        if(AppUtil.isApkCanInstall(ChannelTypeActivity.this,
-                                Application.PATH_DOWNLOAD, downloadInfo.getName())){
-                            AppUtil.installApk(ChannelTypeActivity.this,
-                                    Application.PATH_DOWNLOAD, downloadInfo.getName());
+                        if(AppUtil.isApkCanInstall(Application.PATH_DOWNLOAD, downloadInfo.getName())){
+                            AppUtil.installApk(Application.PATH_DOWNLOAD, downloadInfo.getName(), "");
                         }else{
-                            if(FileUtils.isExists(Application.PATH_DOWNLOAD, downloadInfo.getName())){
-                                FileUtils.delete(Application.PATH_DOWNLOAD, downloadInfo.getName());
+                            if(FileUtil.isExists(Application.PATH_DOWNLOAD, downloadInfo.getName())){
+                                FileUtil.delete(Application.PATH_DOWNLOAD, downloadInfo.getName());
                             }
                             EmojiToast.show(getString(R.string.install_error), EmojiToast.EMOJI_SAD);
                         }

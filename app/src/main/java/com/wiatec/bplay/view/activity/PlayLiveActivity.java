@@ -40,8 +40,8 @@ import com.px.common.utils.AESUtil;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
-import com.px.common.utils.NetUtils;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.NetUtil;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.PlayChannelAdapter;
 import com.wiatec.bplay.databinding.ActivityPlayBinding;
@@ -112,7 +112,7 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
     protected void onStart() {
         super.onStart();
         if(isNeedPaid){
-            SPUtils.put("already_preview" + userId + title, true);
+            SPUtil.put("already_preview" + userId + title, true);
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -243,13 +243,13 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
             @Override
             public void run() {
                 while (send){
-                    int s1 = NetUtils.getNetSpeedBytes();
+                    int s1 = NetUtil.getNetSpeedBytes();
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    int s2 = NetUtils.getNetSpeedBytes();
+                    int s2 = NetUtil.getNetSpeedBytes();
                     float f  = (s2-s1)/2/1024F;
                     DecimalFormat decimalFormat = new DecimalFormat("##0.00");
                     String s = decimalFormat.format(f);

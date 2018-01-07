@@ -32,8 +32,8 @@ import com.px.common.utils.AESUtil;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
-import com.px.common.utils.NetUtils;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.NetUtil;
+import com.px.common.utils.SPUtil;
 import com.px.common.utils.TimeUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.adapter.PlayChannelAdapter;
@@ -165,7 +165,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     public void launchApp(String packageName) {
-        if(AppUtil.isInstalled(PlayActivity.this , packageName)) {
+        if(AppUtil.isInstalled(packageName)) {
             AppUtil.launchApp(PlayActivity.this, packageName);
         }else{
             EmojiToast.show(getString(R.string.notice1), EmojiToast.EMOJI_SAD);
@@ -458,13 +458,13 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             @Override
             public void run() {
                 while (send){
-                    int s1 = NetUtils.getNetSpeedBytes();
+                    int s1 = NetUtil.getNetSpeedBytes();
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    int s2 = NetUtils.getNetSpeedBytes();
+                    int s2 = NetUtil.getNetSpeedBytes();
                     float f  = (s2-s1)/2/1024F;
                     DecimalFormat decimalFormat = new DecimalFormat("##0.00");
                     String s = decimalFormat.format(f);
@@ -487,11 +487,11 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     binding.tvNetSpeed.setText(s + "kbs");
                     if(playManager.getChannelInfo().isLocked() && playManager.getLevel() <= 2 &&
                             !playManager.isExperience()) {
-                        long lastExperienceTime = (long) SPUtils.get("lastExperienceTime", 0L);
+                        long lastExperienceTime = (long) SPUtil.get("lastExperienceTime", 0L);
                         if (lastExperienceTime + 60000 < System.currentTimeMillis()) {
-                            boolean isLastExperience = (boolean) SPUtils.get("isLastExperience", true);
-                            SPUtils.put("isLastExperience", !isLastExperience);
-                            SPUtils.put("lastExperienceTime", System.currentTimeMillis());
+                            boolean isLastExperience = (boolean) SPUtil.get("isLastExperience", true);
+                            SPUtil.put("isLastExperience", !isLastExperience);
+                            SPUtil.put("lastExperienceTime", System.currentTimeMillis());
                             EmojiToast.showLong(getString(R.string.notice3), EmojiToast.EMOJI_SAD);
                             finish();
                         }
@@ -508,7 +508,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
         if(mediaPlayer == null || !mediaPlayer.isPlaying()) return;
         int currentPosition = mediaPlayer.getCurrentPosition();
         if(currentPosition > 0){
-            SPUtils.put(playManager.getChannelInfo().getTag() + "position", currentPosition);
+            SPUtil.put(playManager.getChannelInfo().getTag() + "position", currentPosition);
             String sPosition = TimeUtil.getMediaTime(currentPosition);
             binding.tvCurrentPosition.setText(sPosition);
         }
@@ -523,7 +523,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void showLastPosition(){
-        int lastPosition = (int) SPUtils.get(playManager.getChannelInfo().getTag() + "position", 0);
+        int lastPosition = (int) SPUtil.get(playManager.getChannelInfo().getTag() + "position", 0);
         targetPosition = lastPosition - 3000;
         int duration = mediaPlayer.getDuration();
         if(duration > 0 && targetPosition > 0){

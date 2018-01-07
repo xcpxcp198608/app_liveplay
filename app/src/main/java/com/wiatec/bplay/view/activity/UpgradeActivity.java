@@ -12,7 +12,7 @@ import com.px.common.http.Listener.DownloadListener;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
-import com.px.common.utils.FileUtils;
+import com.px.common.utils.FileUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityUpgradeBinding;
 import com.wiatec.bplay.instance.Application;
@@ -42,8 +42,8 @@ public class UpgradeActivity extends BaseActivity<SplashPresenter> implements Sp
         if(upgradeInfo == null){
             return;
         }
-        FileUtils.delete(Application.PATH_DOWNLOAD, getPackageName());
-        FileUtils.delete(Application.PATH_DOWNLOAD, getPackageName()+".apk");
+        FileUtil.delete(Application.PATH_DOWNLOAD, getPackageName());
+        FileUtil.delete(Application.PATH_DOWNLOAD, getPackageName()+".apk");
         startUpgrade(upgradeInfo);
     }
 
@@ -87,10 +87,8 @@ public class UpgradeActivity extends BaseActivity<SplashPresenter> implements Sp
                         binding.tvProgress.setText("100%");
                         binding.pbUpgrade.setProgress(100);
                         binding.llProgress.setVisibility(View.GONE);
-                        if(AppUtil.isApkCanInstall(UpgradeActivity.this, downloadInfo.getPath(),
-                                downloadInfo.getName())){
-                            AppUtil.installApk(UpgradeActivity.this, downloadInfo.getPath(),
-                                    downloadInfo.getName());
+                        if(AppUtil.isApkCanInstall(downloadInfo.getPath(), downloadInfo.getName())){
+                            AppUtil.installApk(downloadInfo.getPath(), downloadInfo.getName(), "");
                         }else{
                             EmojiToast.show("download error", EmojiToast.EMOJI_SAD);
                         }

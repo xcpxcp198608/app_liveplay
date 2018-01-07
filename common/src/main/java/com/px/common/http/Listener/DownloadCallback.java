@@ -5,7 +5,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.px.common.http.Bean.DownloadInfo;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.SPUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -106,7 +106,7 @@ public class DownloadCallback implements Callback {
         if(cookies != null && cookies.size() > 0 ) {
             String session = cookies.get(0);
             String cookie = session.substring(0, session.indexOf(";"));
-            SPUtils.put("cookie", cookie);
+            SPUtil.put("cookie", cookie);
         }
         downloadInfo.setLength(response.body().contentLength());
         InputStream inputStream =null;

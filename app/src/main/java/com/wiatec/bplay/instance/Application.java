@@ -2,12 +2,9 @@ package com.wiatec.bplay.instance;
 
 import com.px.common.utils.CommonApplication;
 import com.wiatec.bplay.pojo.ChannelInfo;
-import com.wiatec.bplay.task.ImageTask;
-import com.wiatec.bplay.task.TokenTask;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

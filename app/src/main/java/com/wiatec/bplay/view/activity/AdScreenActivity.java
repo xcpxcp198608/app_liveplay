@@ -14,10 +14,10 @@ import com.wiatec.bplay.presenter.SplashPresenter;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * ad screen
@@ -26,7 +26,7 @@ import rx.functions.Action1;
 public class AdScreenActivity extends BaseActivity<SplashPresenter> implements Splash {
 
     private ActivityAdScreenBinding binding;
-    private Subscription autoChangeImageSubscription;
+    private Disposable autoChangeImageDisposable;
 
     @Override
     protected SplashPresenter createPresenter() {
@@ -45,12 +45,12 @@ public class AdScreenActivity extends BaseActivity<SplashPresenter> implements S
     protected void onStart() {
         super.onStart();
         isSubscribe = false;
-        autoChangeImageSubscription = Observable.interval(8000, TimeUnit.MILLISECONDS)
+        autoChangeImageDisposable = Observable.interval(8000, TimeUnit.MILLISECONDS)
                 .repeat()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) {
                         presenter.loadAdImage();
                     }
                 });
@@ -89,8 +89,8 @@ public class AdScreenActivity extends BaseActivity<SplashPresenter> implements S
     }
 
     private void release(){
-        if(autoChangeImageSubscription != null){
-            autoChangeImageSubscription.unsubscribe();
+        if(autoChangeImageDisposable != null){
+            autoChangeImageDisposable.dispose();
         }
     }
 }

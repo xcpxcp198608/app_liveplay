@@ -20,7 +20,7 @@ public final class Constant {
         public static final String channel_search = base+"channels/search/";
         public static final String upgrade = base+"upgrade"+token;
         public static final String access = "http://liveplay.protv.company:8803/apk/com.wiatec.update.apk";
-        public static final String ldservice = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
+        public static final String ld_service = "http://liveplay.protv.company:8803/apk/com.wiatec.ldservice.apk";
         public static final String start_view = base+"log_view/start/";
         public static final String stop_view = base+"log_view/end/";
         public static final String ld_fam = "http://www.ldlegacy.com:8080/LDFAM/get";
@@ -43,7 +43,7 @@ public final class Constant {
         public static final String terrarium_tv = "com.nitroxenon.terrarium";
         public static final String popcom = "pct.droid";
         public static final String access = "com.wiatec.update";
-        public static final String ldservice = "com.wiatec.ldservice";
+        public static final String ld_service = "com.wiatec.ldservice";
     }
 
 

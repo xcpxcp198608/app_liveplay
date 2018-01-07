@@ -54,7 +54,7 @@ public class ChannelTypeActivity2 extends BaseActivity<ChannelType2Presenter> im
                 if(hasFocus){
                     Zoom.zoomIn10to11(view);
                 }else{
-                    Zoom.zoomOut11to10(view);
+                    Zoom.zoomIn11to10(view);
                 }
             }
         });

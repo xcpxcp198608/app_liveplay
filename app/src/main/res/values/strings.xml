@@ -96,6 +96,7 @@ We hope that you wish to help us improve your experience.  If yes, click confirm
     <string name="download_title">Downloading Resources</string>
     <string name="download_message">Please wait for download to finish.</string>
     <string name="install_error">install error</string>
+    <string name="download_error">download error</string>
     <string name="report">report</string>
     <string name="start">start</string>
     <string name="time_demo">00:00:00</string>

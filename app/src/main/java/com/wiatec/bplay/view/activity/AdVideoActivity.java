@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityAdVideoBinding;
 import com.wiatec.bplay.instance.Constant;
@@ -17,11 +17,11 @@ import com.wiatec.bplay.model.UserContentResolver;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * ad video
@@ -31,7 +31,7 @@ public class AdVideoActivity extends AppCompatActivity {
 
     private ActivityAdVideoBinding binding;
     private int time = 0;
-    private Subscription subscription;
+    private Disposable disposable;
     private static final int SKIP_TIME = 15;
     private int userLevel;
 
@@ -70,7 +70,7 @@ public class AdVideoActivity extends AppCompatActivity {
             public void onPrepared(MediaPlayer mp) {
                 time = mp.getDuration() / 1000 + 1 ;
                 showTime();
-                SPUtils.put(AdVideoActivity.this, "recorderTime", System.currentTimeMillis());
+                SPUtil.put("recorderTime", System.currentTimeMillis());
                 binding.videoView.start();
             }
         });
@@ -93,12 +93,12 @@ public class AdVideoActivity extends AppCompatActivity {
     private void showTime(){
         if(time >0){
             binding.llDelay.setVisibility(View.VISIBLE);
-            subscription = Observable.interval(0,1, TimeUnit.SECONDS).take(time)
+            disposable = Observable.interval(0,1, TimeUnit.SECONDS).take(time)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Long>() {
+                    .subscribe(new Consumer<Long>() {
                         @Override
-                        public void call(Long aLong) {
+                        public void accept(Long aLong) {
                             int i = (int) (time -1 -aLong);
                             binding.tvDelayTime.setText(i +" s");
                             if(userLevel >= 2){
@@ -127,8 +127,8 @@ public class AdVideoActivity extends AppCompatActivity {
         if(binding.videoView != null ){
             binding.videoView.stopPlayback();
         }
-        if(subscription != null){
-            subscription.unsubscribe();
+        if(disposable != null){
+            disposable.dispose();
         }
     }
 

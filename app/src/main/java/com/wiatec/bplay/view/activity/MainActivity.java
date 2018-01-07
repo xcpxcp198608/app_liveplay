@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -19,18 +17,13 @@ import com.px.common.http.Listener.DownloadListener;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
-import com.px.common.utils.FileUtils;
+import com.px.common.utils.FileUtil;
 import com.wiatec.bplay.R;
-import com.wiatec.bplay.adapter.MainViewPagerAdapter;
-import com.wiatec.bplay.adapter.MainViewPagerTransform;
 import com.wiatec.bplay.databinding.ActivityMainBinding;
 import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ImageInfo;
 import com.wiatec.bplay.presenter.MainPresenter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements Common, View.OnClickListener {
 
@@ -56,7 +49,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
         Intent intent = new Intent();
         switch (v.getId()){
             case R.id.ibtBasic:
-                if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.access)) {
+                if(AppUtil.isInstalled(Constant.packageName.access)) {
                     intent.setClass(MainActivity.this, ChannelTypeActivity.class);
                     intent.putExtra("type", 1);
                     startActivity(intent);
@@ -69,12 +62,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
                 startActivity(intent);
                 break;
             case R.id.ibtPremium:
-                if(AppUtil.isInstalled(MainActivity.this, Constant.packageName.ldservice)) {
+                if(AppUtil.isInstalled(Constant.packageName.ld_service)) {
                     intent.setClass(MainActivity.this, ChannelTypeActivity.class);
                     intent.putExtra("type", 9);
                     startActivity(intent);
                 }else{
-                    showInstallNoticeDialog("VIP Experience", Constant.url.ldservice, Constant.packageName.ldservice);
+                    showInstallNoticeDialog("VIP Experience", Constant.url.ld_service, Constant.packageName.ld_service);
                 }
                 break;
             default:
@@ -109,8 +102,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
     }
 
     public void showDownloadDialog(String url, String packageName) {
-        FileUtils.delete(Application.PATH_DOWNLOAD, packageName);
-        FileUtils.delete(Application.PATH_DOWNLOAD, packageName +".apk");
+        FileUtil.delete(Application.PATH_DOWNLOAD, packageName +".apk");
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(getString(R.string.download_title));
         progressDialog.setMessage(getString(R.string.download_message));
@@ -148,11 +140,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
                     public void onFinished(DownloadInfo downloadInfo) {
                         progressDialog.setProgress(100);
                         progressDialog.dismiss();
-                        if(AppUtil.isApkCanInstall(MainActivity.this, Application.PATH_DOWNLOAD, downloadInfo.getName())){
-                            AppUtil.installApk(MainActivity.this, Application.PATH_DOWNLOAD, downloadInfo.getName());
+                        if(AppUtil.isApkCanInstall(Application.PATH_DOWNLOAD, downloadInfo.getName())){
+                            AppUtil.installApk(Application.PATH_DOWNLOAD, downloadInfo.getName(), "");
                         }else{
-                            if(FileUtils.isExists(Application.PATH_DOWNLOAD, downloadInfo.getName())){
-                                FileUtils.delete(Application.PATH_DOWNLOAD, downloadInfo.getName());
+                            if(FileUtil.isExists(Application.PATH_DOWNLOAD, downloadInfo.getName())){
+                                FileUtil.delete(Application.PATH_DOWNLOAD, downloadInfo.getName());
                             }
                             EmojiToast.show(getString(R.string.install_error), EmojiToast.EMOJI_SAD);
                         }
@@ -165,7 +157,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Common,
 
                     @Override
                     public void onError(DownloadInfo downloadInfo) {
-
+                        EmojiToast.show(getString(R.string.download_error), EmojiToast.EMOJI_SAD);
                     }
                 });
     }

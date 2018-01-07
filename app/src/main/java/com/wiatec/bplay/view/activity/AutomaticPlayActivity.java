@@ -12,7 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 
 import com.px.common.utils.Logger;
-import com.px.common.utils.NetUtils;
+import com.px.common.utils.NetUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityAutomaticPlayBinding;
 import com.wiatec.bplay.instance.Constant;
@@ -24,10 +24,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class AutomaticPlayActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
@@ -155,9 +155,9 @@ public class AutomaticPlayActivity extends AppCompatActivity implements SurfaceH
         Observable.timer(time, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void accept(Long aLong) {
                         exit = true;
                         finish();
                     }
@@ -169,13 +169,13 @@ public class AutomaticPlayActivity extends AppCompatActivity implements SurfaceH
             @Override
             public void run() {
                 while (send){
-                    int s1 = NetUtils.getNetSpeedBytes();
+                    int s1 = NetUtil.getNetSpeedBytes();
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    int s2 = NetUtils.getNetSpeedBytes();
+                    int s2 = NetUtil.getNetSpeedBytes();
                     float f  = (s2-s1)/2/1024F;
                     DecimalFormat decimalFormat = new DecimalFormat("##0.00");
                     String s = decimalFormat.format(f);

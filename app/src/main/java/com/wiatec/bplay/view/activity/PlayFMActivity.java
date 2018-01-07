@@ -27,8 +27,8 @@ import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
-import com.px.common.utils.NetUtils;
-import com.px.common.utils.SPUtils;
+import com.px.common.utils.NetUtil;
+import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
 import com.wiatec.bplay.databinding.ActivityFmPlayBinding;
 import com.wiatec.bplay.entity.ResultInfo;
@@ -43,10 +43,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class PlayFMActivity extends AppCompatActivity implements PlayManager.PlayListener,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener{
@@ -56,7 +56,7 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
     private MediaPlayer mediaPlayer;
     private FavoriteChannelDao favoriteChannelDao;
     private String errorMessage = "";
-    private Subscription subscription;
+    private Disposable disposable;
     private boolean send = true;
 
     @Override
@@ -103,7 +103,7 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
 
     @Override
     public void launchApp(String packageName) {
-        if(AppUtil.isInstalled(PlayFMActivity.this , packageName)) {
+        if(AppUtil.isInstalled(packageName)) {
             AppUtil.launchApp(PlayFMActivity.this, packageName);
         }else{
             EmojiToast.show(getString(R.string.notice1), EmojiToast.EMOJI_SAD);
@@ -119,8 +119,8 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
 
     private void playFM(final String url) {
         sendNetSpeed();
-        if(subscription != null){
-            subscription.unsubscribe();
+        if(disposable != null){
+            disposable.dispose();
         }
         binding.progressBar.setVisibility(View.VISIBLE);
         try {
@@ -181,18 +181,18 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
     }
 
     private void voiceViewStart(){
-        subscription = Observable.interval(0,200 , TimeUnit.MILLISECONDS)
+        disposable = Observable.interval(0,200 , TimeUnit.MILLISECONDS)
                 .repeat()
-                .map(new Func1<Long, Object>() {
+                .map(new Function<Long, Object>() {
                     @Override
-                    public Object call(Long aLong) {
+                    public Object apply(Long aLong) {
                         binding.vsvFM.start();
-                        return null;
+                        return "";
                     }
                 })
-                .subscribe(new Action1<Object>() {
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Object o) {
+                    public void accept(Object o) {
 
                     }
                 });
@@ -204,8 +204,8 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        if(subscription != null){
-            subscription.unsubscribe();
+        if(disposable != null){
+            disposable.dispose();
         }
     }
 
@@ -265,7 +265,7 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
     }
 
     private void sendErrorReport(String message) {
-        String userName = (String) SPUtils.get("userName", "test");
+        String userName = (String) SPUtil.get("userName", "test");
         HttpMaster.post(Constant.url.channel_send_error_report)
                 .parames("userName",userName)
                 .parames("channelName",playManager.getChannelInfo().getName())
@@ -357,13 +357,13 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
             @Override
             public void run() {
                 while (send){
-                    int s1 = NetUtils.getNetSpeedBytes();
+                    int s1 = NetUtil.getNetSpeedBytes();
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    int s2 = NetUtils.getNetSpeedBytes();
+                    int s2 = NetUtil.getNetSpeedBytes();
                     float f  = (s2-s1)/2/1024F;
                     DecimalFormat decimalFormat = new DecimalFormat("##0.00");
                     String s = decimalFormat.format(f);
