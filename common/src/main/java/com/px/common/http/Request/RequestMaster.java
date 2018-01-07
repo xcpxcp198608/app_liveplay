@@ -1,5 +1,6 @@
 package com.px.common.http.Request;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.px.common.http.Bean.DownloadInfo;
@@ -9,6 +10,7 @@ import com.px.common.http.Listener.DownloadListener;
 import com.px.common.http.Listener.UploadListener;
 import com.px.common.http.configuration.Header;
 import com.px.common.http.configuration.Parameters;
+import com.px.common.utils.SPUtils;
 
 import java.io.File;
 import java.util.Map;
@@ -28,6 +30,10 @@ public abstract class RequestMaster {
     public RequestMaster() {
         parameters = new Parameters();
         header = new Header();
+        String cookie = (String) SPUtils.get("cookie", "");
+        if(!TextUtils.isEmpty(cookie)){
+            header.put("Cookie", cookie);
+        }
     }
 
     public RequestMaster tag(Object tag){
