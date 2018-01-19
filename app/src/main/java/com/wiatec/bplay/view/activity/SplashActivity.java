@@ -227,10 +227,13 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     private void nextPage(){
         long  currentTime = System.currentTimeMillis();
         long recorderTime = (long) SPUtil.get("recorderTime" , 0L);
-        if (currentTime >= recorderTime+10800000){
+        if (currentTime >= recorderTime + 10800000){
             startActivity(new Intent(SplashActivity.this, AdVideoActivity.class));
         }else{
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            Intent intent = new Intent();
+            intent.setClass(SplashActivity.this, ChannelTypeActivity.class);
+            intent.putExtra("type", 9);
+            startActivity(intent);
         }
         finish();
     }

@@ -3,7 +3,7 @@ package com.wiatec.bplay.model;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
+import com.px.common.http.listener.StringListener;
 import com.px.common.utils.Logger;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.pojo.ChannelType2Info;

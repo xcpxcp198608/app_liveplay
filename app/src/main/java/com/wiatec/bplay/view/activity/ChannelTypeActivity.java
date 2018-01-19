@@ -19,10 +19,9 @@ import android.widget.TextView;
 
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.animator.Zoom;
-import com.px.common.http.Bean.DownloadInfo;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.DownloadListener;
-import com.px.common.image.ImageMaster;
+import com.px.common.http.listener.DownloadListener;
+import com.px.common.http.pojo.DownloadInfo;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.FileUtil;

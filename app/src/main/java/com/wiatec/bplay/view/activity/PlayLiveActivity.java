@@ -1,24 +1,18 @@
 package com.wiatec.bplay.view.activity;
 
-import android.app.Dialog;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.WebChromeClient;
@@ -26,38 +20,21 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
-import com.px.common.utils.AESUtil;
-import com.px.common.utils.AppUtil;
+import com.px.common.http.listener.StringListener;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.px.common.utils.NetUtil;
 import com.px.common.utils.SPUtil;
 import com.wiatec.bplay.R;
-import com.wiatec.bplay.adapter.PlayChannelAdapter;
-import com.wiatec.bplay.databinding.ActivityPlayBinding;
 import com.wiatec.bplay.databinding.ActivityPlayLiveBinding;
-import com.wiatec.bplay.entity.ResultInfo;
-import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
-import com.wiatec.bplay.manager.PlayManager;
-import com.wiatec.bplay.model.UserContentResolver;
-import com.wiatec.bplay.pojo.ChannelInfo;
-import com.wiatec.bplay.pojo.LiveChannelInfo;
-import com.wiatec.bplay.sql.FavoriteChannelDao;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -344,9 +321,9 @@ public class PlayLiveActivity extends AppCompatActivity implements SurfaceHolder
             return;
         }
         HttpMaster.post("http://rest-hangzhou.goeasy.io/publish")
-                .parames("appkey", "BC-6a9b6c468c894389881bc1df7d90cddb")
-                .parames("channel", channel)
-                .parames("content", message)
+                .param("appkey", "BC-6a9b6c468c894389881bc1df7d90cddb")
+                .param("channel", channel)
+                .param("content", message)
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {

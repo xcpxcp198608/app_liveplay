@@ -3,12 +3,11 @@ package com.wiatec.bplay.task;
 import android.text.TextUtils;
 
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
+import com.px.common.http.listener.StringListener;
 import com.px.common.utils.AESUtil;
 import com.px.common.utils.Logger;
 import com.px.common.utils.NetUtil;
 import com.px.common.utils.SPUtil;
-import com.wiatec.bplay.instance.Application;
 
 import org.json.JSONException;
 import org.json.JSONObject;

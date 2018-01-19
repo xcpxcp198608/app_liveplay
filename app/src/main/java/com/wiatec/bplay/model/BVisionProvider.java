@@ -1,24 +1,15 @@
 package com.wiatec.bplay.model;
 
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
-import com.px.common.utils.Logger;
-import com.wiatec.bplay.entity.ResultInfo;
+import com.px.common.http.listener.StringListener;
 import com.wiatec.bplay.instance.Constant;
-import com.wiatec.bplay.pojo.ChannelInfo;
 import com.wiatec.bplay.pojo.LDFamInfo;
-import com.wiatec.bplay.pojo.LiveChannelInfo;
-import com.wiatec.bplay.sql.FavoriteChannelDao;
-import com.wiatec.bplay.sql.HistoryChannelDao;
 
 import java.io.IOException;
 import java.util.List;
 
-import javax.inject.Inject;
 
 /**
  * channel provider

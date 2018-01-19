@@ -119,7 +119,10 @@ public class AdVideoActivity extends AppCompatActivity {
 
     private void skipAds() {
         release();
-        startActivity(new Intent(AdVideoActivity.this, MainActivity.class));
+        Intent intent = new Intent();
+        intent.setClass(AdVideoActivity.this, ChannelTypeActivity.class);
+        intent.putExtra("type", 9);
+        startActivity(intent);
         finish();
     }
 

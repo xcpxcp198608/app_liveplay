@@ -2,10 +2,10 @@ package com.wiatec.bplay.manager;
 
 import android.text.TextUtils;
 
+import com.px.common.constant.CommonApplication;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
+import com.px.common.http.listener.StringListener;
 import com.px.common.utils.AESUtil;
-import com.px.common.utils.CommonApplication;
 import com.px.common.utils.EmojiToast;
 import com.px.common.utils.Logger;
 import com.px.common.utils.SPUtil;
@@ -113,7 +113,7 @@ public class PlayManager {
         }
         if(minute <= 0) SPUtil.put("isLastExperience", true);
         EmojiToast.showLong(CommonApplication.context.getString(R.string.notice2) + " " + minute +
-                CommonApplication.context.getString(R.string.notice22), EmojiToast.EMOJI_SMILE);
+                CommonApplication.getContext().getString(R.string.notice22), EmojiToast.EMOJI_SMILE);
         if(mPlayListener != null) mPlayListener.playAd();
     }
 
@@ -172,10 +172,10 @@ public class PlayManager {
             name = name.replaceAll("&", "");
         }
         HttpMaster.post(Constant.url.start_view)
-                .parames("tag", tag)
-                .parames("channelName", country + ":" + name)
-                .parames("username", username)
-                .parames("mac", SysUtil.getEthernetMac())
+                .param("tag", tag)
+                .param("channelName", country + ":" + name)
+                .param("username", username)
+                .param("mac", SysUtil.getEthernetMac())
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {
@@ -192,7 +192,7 @@ public class PlayManager {
     public void stopView(String tag){
         if(tag == null) return;
         HttpMaster.post(Constant.url.stop_view)
-                .parames("tag", tag)
+                .param("tag", tag)
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {

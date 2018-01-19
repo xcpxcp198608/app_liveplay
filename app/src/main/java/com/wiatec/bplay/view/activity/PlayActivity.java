@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.adapter.BaseRecycleAdapter;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
+import com.px.common.http.listener.StringListener;
 import com.px.common.utils.AESUtil;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
@@ -330,9 +330,9 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
             name = name.replaceAll("&", "");
         }
         HttpMaster.post(Constant.url.channel_send_error_report)
-                .parames("userName",userName)
-                .parames("channelName",country + "-" + name)
-                .parames("message", message)
+                .param("userName",userName)
+                .param("channelName",country + "-" + name)
+                .param("message", message)
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {

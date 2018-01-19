@@ -22,7 +22,7 @@ import android.widget.RadioGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
+import com.px.common.http.listener.StringListener;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
@@ -267,9 +267,9 @@ public class PlayFMActivity extends AppCompatActivity implements PlayManager.Pla
     private void sendErrorReport(String message) {
         String userName = (String) SPUtil.get("userName", "test");
         HttpMaster.post(Constant.url.channel_send_error_report)
-                .parames("userName",userName)
-                .parames("channelName",playManager.getChannelInfo().getName())
-                .parames("message", message)
+                .param("userName",userName)
+                .param("channelName",playManager.getChannelInfo().getName())
+                .param("message", message)
                 .enqueue(new StringListener() {
                     @Override
                     public void onSuccess(String s) throws IOException {

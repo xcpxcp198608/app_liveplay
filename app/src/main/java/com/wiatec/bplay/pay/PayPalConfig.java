@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalService;
 
-import static com.px.common.utils.CommonApplication.context;
 
 
 public class PayPalConfig{

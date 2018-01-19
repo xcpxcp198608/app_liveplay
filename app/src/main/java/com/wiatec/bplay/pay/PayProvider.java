@@ -5,15 +5,12 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.StringListener;
+import com.px.common.http.listener.StringListener;
 import com.px.common.utils.Logger;
 import com.wiatec.bplay.entity.ResultInfo;
 import com.wiatec.bplay.instance.Constant;
 import com.wiatec.bplay.model.LoadService;
-import com.wiatec.bplay.pojo.LiveChannelInfo;
-
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by patrick on 06/11/2017.

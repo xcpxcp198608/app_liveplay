@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.px.common.utils.CommonApplication;
+import com.px.common.constant.CommonApplication;
 import com.wiatec.bplay.pojo.ChannelInfo;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class FavoriteChannelDao {
     private static FavoriteChannelDao instance;
 
     private FavoriteChannelDao(){
-        sqLiteDatabase = new SQLiteHelper(CommonApplication.context).getWritableDatabase();
+        sqLiteDatabase = new SQLiteHelper(CommonApplication.getContext()).getWritableDatabase();
     }
 
     public static FavoriteChannelDao getInstance(){

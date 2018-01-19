@@ -58,6 +58,9 @@ android {
     }
 
     repositories {
+        maven {
+            url '/Users/xuchengpeng/.m2/repository'
+        }
         flatDir {
             dirs 'libs'
         }
@@ -69,7 +72,6 @@ static def releaseTime() {
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -80,5 +82,6 @@ dependencies {
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.paypal.sdk:paypal-android-sdk:2.15.3'
     compile 'com.afollestad.material-dialogs:commons:0.9.5.0'
-    implementation project(':module_common')
+
+    implementation 'com.px.library:module_common:1.0.0'
 }

@@ -2,8 +2,8 @@ package com.wiatec.bplay.task;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.px.common.constant.CommonApplication;
 import com.px.common.http.HttpMaster;
-import com.px.common.utils.CommonApplication;
 import com.px.common.utils.Logger;
 import com.wiatec.bplay.instance.Application;
 import com.wiatec.bplay.instance.Constant;
@@ -66,7 +66,7 @@ public class ImageTask implements Runnable {
 
     // download image
     private void download(ImageInfo imageInfo){
-        HttpMaster.download(CommonApplication.context)
+        HttpMaster.download(CommonApplication.getContext())
                 .name(imageInfo.getName())
                 .url(imageInfo.getUrl())
                 .path(Application.PATH_AD_IMAGE)

@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.px.common.http.Bean.DownloadInfo;
 import com.px.common.http.HttpMaster;
-import com.px.common.http.Listener.DownloadListener;
+import com.px.common.http.listener.DownloadListener;
+import com.px.common.http.pojo.DownloadInfo;
 import com.px.common.image.ImageMaster;
 import com.px.common.utils.AppUtil;
 import com.px.common.utils.EmojiToast;
