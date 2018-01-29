@@ -49,7 +49,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         binding.tvVersion.setText(AppUtil.getVersionName(getPackageName()));
         presenter.loadAdImage();
-//        Application.getExecutorService().execute(new ImageTask());
+        Application.getExecutorService().execute(new ImageTask());
         if(timer != null) timer = null;
         timer = new Timer();
         timer.schedule(new TokenTask(), 0,  3000000);

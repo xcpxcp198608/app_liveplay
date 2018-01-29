@@ -218,7 +218,7 @@ public class PlayManager {
         for (String u : urlList){
             if (u.contains("protv.company")){
                 String streamToken = (String) SPUtil.get("streamToken", "123");
-                u += "?token=" + streamToken;
+                u = u.trim() + "?token=" + streamToken;
             }
             urlList1.add(u);
         }

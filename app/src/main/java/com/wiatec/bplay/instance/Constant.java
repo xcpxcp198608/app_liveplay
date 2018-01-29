@@ -5,11 +5,10 @@ import android.os.Environment;
 /**
  * constant
  */
-
 public final class Constant {
 
     public static final class url{
-        static final String base = "http://liveplay.ldlegacy.com:8080/liveplay/";
+        static final String base = "http://liveplay.protv.company:8080/liveplay/";
         public static final String token = "/9B67E88314F416F2092AB8ECA6A7C8EDCCE3D6D85A816E6E6F9F919B2E6C277D";
         public static final String ad_image = base+"adimage/";
         public static final String channel = base+"channels/list/";

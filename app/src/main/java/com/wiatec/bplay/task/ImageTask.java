@@ -49,6 +49,7 @@ public class ImageTask implements Runnable {
                                     }.getType());
                             if (imageInfoList == null || imageInfoList.size() <= 0) {
                                 Logger.d("image list gson parse error");
+                                deleteOldImage(Application.PATH_AD_IMAGE);
                                 return;
                             }
                             List<String> fileNameList = new ArrayList<>();
@@ -71,6 +72,21 @@ public class ImageTask implements Runnable {
                 .url(imageInfo.getUrl())
                 .path(Application.PATH_AD_IMAGE)
                 .startDownload(null);
+    }
+
+
+    private void deleteOldImage(String path) {
+        File file = new File(path);
+        if(file.exists()){
+            File [] files = file.listFiles();
+            if(files.length <= 0){
+                return;
+            }
+            for (File file1 : files) {
+                file1.delete();
+            }
+
+        }
     }
 
     private void deleteOldImage(String path, List<String> fileNameList) {
