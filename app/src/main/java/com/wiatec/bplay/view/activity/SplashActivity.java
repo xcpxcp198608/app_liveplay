@@ -67,11 +67,8 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             return;
         }
         boolean showAgree = (boolean) SPUtil.get("agree", true);
-        boolean showConsent = (boolean) SPUtil.get("consent_agree", true);
         if(showAgree) {
             showAgreement();
-        }else if(showConsent){
-            showConsentDialog();
         }else {
             if (NetUtil.isConnected()) {
                 presenter.checkUpgrade();
@@ -88,10 +85,10 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         Window window = alertDialog.getWindow();
         if(window == null) return;
         window.setContentView(R.layout.dialog_update);
-        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
-        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
-        TextView tvTitle = (TextView) window.findViewById(R.id.tvTitle);
-        TextView textView = (TextView) window.findViewById(R.id.tv_info);
+        Button btConfirm = window.findViewById(R.id.bt_confirm);
+        Button btCancel = window.findViewById(R.id.bt_cancel);
+        TextView tvTitle = window.findViewById(R.id.tvTitle);
+        TextView textView = window.findViewById(R.id.tv_info);
         btConfirm.setText(getString(R.string.agree));
         btCancel.setText(getString(R.string.reject));
         tvTitle.setText(getString(R.string.agreement));
@@ -101,47 +98,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             @Override
             public void onClick(View v) {
                 SPUtil.put("agree", false);
-                alertDialog.dismiss();
-                boolean showConsent = (boolean) SPUtil.get("consent_agree", true);
-                if(showConsent){
-                    showConsentDialog();
-                }else{
-                    if(NetUtil.isConnected()){
-                        presenter.checkUpgrade();
-                    }else{
-                        nextPage();
-                    }
-                }
-            }
-        });
-        btCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
-    private void showConsentDialog(){
-        final AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
-        alertDialog.show();
-        alertDialog.setCancelable(false);
-        Window window = alertDialog.getWindow();
-        if(window == null) return;
-        window.setContentView(R.layout.dialog_update);
-        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
-        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
-        TextView tvTitle = (TextView) window.findViewById(R.id.tvTitle);
-        TextView textView = (TextView) window.findViewById(R.id.tv_info);
-        btConfirm.setText(getString(R.string.ok));
-        btCancel.setText(getString(R.string.reject));
-        tvTitle.setText(getString(R.string.consent_title));
-        textView.setTextSize(15);
-        textView.setText(getString(R.string.consent_content));
-        btConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SPUtil.put("consent_agree", false);
                 alertDialog.dismiss();
                 if(NetUtil.isConnected()){
                     presenter.checkUpgrade();
@@ -157,6 +113,42 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             }
         });
     }
+
+//    private void showConsentDialog(){
+//        final AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
+//        alertDialog.show();
+//        alertDialog.setCancelable(false);
+//        Window window = alertDialog.getWindow();
+//        if(window == null) return;
+//        window.setContentView(R.layout.dialog_update);
+//        Button btConfirm = (Button) window.findViewById(R.id.bt_confirm);
+//        Button btCancel = (Button) window.findViewById(R.id.bt_cancel);
+//        TextView tvTitle = (TextView) window.findViewById(R.id.tvTitle);
+//        TextView textView = (TextView) window.findViewById(R.id.tv_info);
+//        btConfirm.setText(getString(R.string.ok));
+//        btCancel.setText(getString(R.string.reject));
+//        tvTitle.setText(getString(R.string.consent_title));
+//        textView.setTextSize(15);
+//        textView.setText(getString(R.string.consent_content));
+//        btConfirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SPUtil.put("consent_agree", false);
+//                alertDialog.dismiss();
+//                if(NetUtil.isConnected()){
+//                    presenter.checkUpgrade();
+//                }else{
+//                    nextPage();
+//                }
+//            }
+//        });
+//        btCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//    }
 
     @Override
     public void onLoadAdImage(boolean isSuccess, ImageInfo imageInfo) {
