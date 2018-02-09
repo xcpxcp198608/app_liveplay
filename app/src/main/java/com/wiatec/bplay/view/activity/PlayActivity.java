@@ -228,7 +228,7 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     Logger.d("completion");
 //                    playOtherUrlOnVideo(urlList);
                     currentPlayPosition = 0;
-                    playManager.nextChannel();
+//                    playManager.nextChannel();
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
