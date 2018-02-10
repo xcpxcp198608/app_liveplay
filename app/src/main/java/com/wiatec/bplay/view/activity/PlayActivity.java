@@ -226,8 +226,8 @@ public class PlayActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     Logger.d("completion");
-//                    playOtherUrlOnVideo(urlList);
                     currentPlayPosition = 0;
+                    playOtherUrlOnVideo(urlList);
 //                    playManager.nextChannel();
                 }
             });
